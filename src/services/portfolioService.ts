@@ -111,11 +111,19 @@ export const portfolioService = {
     },
 
     getCleanSource(referrer: string) {
-        if (referrer === "Direct") return "Direct";
-        if (referrer.includes("google")) return "Google";
-        if (referrer.includes("github")) return "GitHub";
-        if (referrer.includes("linkedin")) return "LinkedIn";
-        if (referrer.includes("twitter") || referrer.includes("t.co")) return "Twitter";
+        const ref = referrer.toLowerCase();
+        if (!referrer || ref === "" || ref.includes("localhost")) return "Direct";
+        if (ref.includes("linkedin")) return "LinkedIn";
+        if (ref.includes("github")) return "GitHub";
+        if (ref.includes("google")) return "Google";
+        if (ref.includes("twitter") || ref.includes("t.co")) return "Twitter";
+        if (ref.includes("whatsapp") || ref.includes("wa.me")) return "WhatsApp";
+        if (ref.includes("facebook") || ref.includes("fb.com")) return "Facebook";
+        if (ref.includes("instagram")) return "Instagram";
+
+        // Check for common mobile app strings
+        if (ref.includes("com.whatsapp")) return "WhatsApp";
+
         return "Other";
     },
 

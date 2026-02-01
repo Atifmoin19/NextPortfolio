@@ -26,19 +26,14 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
 import { useFirebasePagination } from "../../hooks/useFirebasePagination";
-import { portfolioService } from "../../services/portfolioService";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
-  Legend,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 
 interface Todo {
@@ -51,15 +46,6 @@ interface Todo {
   date: string;
 }
 
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884d8",
-  "#82ca9d",
-];
-
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const {
@@ -69,11 +55,7 @@ const AdminDashboard = () => {
     fetchInitialPage,
     hasNextPage,
   } = useFirebasePagination<Todo>("todos", 5);
-  const [viewCount, setViewCount] = useState<number>(0);
-  const [analyticsData, setAnalyticsData] = useState<
-    { name: string; value: number }[]
-  >([]);
-  const [isStatsLoading, setIsStatsLoading] = useState(true);
+  const [isStatsLoading] = useState(false);
 
   const cardBg = useColorModeValue("white", "whiteAlpha.50");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
@@ -87,39 +69,12 @@ const AdminDashboard = () => {
 
     fetchInitialPage();
 
-    // Set up real-time listener for view count
-    const unsubscribe = portfolioService.subscribeToViewCount((count) => {
-      setViewCount(count);
-      setIsStatsLoading(false);
-    });
-
-    const loadStats = async () => {
-      try {
-        const analytics = await portfolioService.getAnalyticsData();
-        setAnalyticsData(analytics);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    loadStats();
-
-    return () => unsubscribe();
+    // Internal Firebase view tracking removed as per user request to rely on Google Analytics
   }, [navigate, fetchInitialPage]);
 
   const handleLogout = () => {
     localStorage.removeItem("isAdminAuthenticated");
     navigate("/admin/login");
-  };
-
-  const handleResetStats = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to reset all view stats? This cannot be undone.",
-      )
-    ) {
-      await portfolioService.resetStats();
-      window.location.reload();
-    }
   };
 
   return (
@@ -201,15 +156,11 @@ const AdminDashboard = () => {
               borderColor={borderColor}
               shadow="sm"
             >
-              <StatLabel color="gray.500">Profile Views</StatLabel>
-              <StatNumber fontSize="3xl" fontWeight="bold">
-                {isStatsLoading ? (
-                  <Spinner size="sm" />
-                ) : (
-                  viewCount.toLocaleString()
-                )}
+              <StatLabel color="gray.500">Live Traffic</StatLabel>
+              <StatNumber fontSize="lg" fontWeight="bold">
+                See Google Analytics
               </StatNumber>
-              <StatHelpText>Total site visits</StatHelpText>
+              <StatHelpText>Internal counter disabled</StatHelpText>
             </Stat>
             <Stat
               p={6}
@@ -241,41 +192,29 @@ const AdminDashboard = () => {
                 Traffic Sources
               </Heading>
               <Box h="300px">
-                {analyticsData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={analyticsData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={100}
-                        paddingAngle={5}
-                        dataKey="value"
-                      >
-                        {analyticsData.map((_, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend verticalAlign="bottom" height={36} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <Center h="full">
-                    <VStack spacing={2}>
-                      <Text fontSize="sm" color="gray.500" fontWeight="medium">
-                        Waiting for first visitors...
-                      </Text>
-                      <Text fontSize="xs" color="gray.600">
-                        Traffic sources will appear here.
-                      </Text>
-                    </VStack>
-                  </Center>
-                )}
+                <Center h="full">
+                  <VStack spacing={4}>
+                    <Text
+                      fontSize="sm"
+                      color="gray.500"
+                      fontWeight="medium"
+                      textAlign="center"
+                    >
+                      Detailed traffic analytics are available in your Google
+                      Analytics dashboard.
+                    </Text>
+                    <Button
+                      as="a"
+                      href="https://analytics.google.com/"
+                      target="_blank"
+                      size="xs"
+                      colorScheme="orange"
+                      variant="outline"
+                    >
+                      View Official Reports
+                    </Button>
+                  </VStack>
+                </Center>
               </Box>
             </Box>
 
@@ -288,21 +227,18 @@ const AdminDashboard = () => {
               shadow="sm"
             >
               <Heading size="sm" mb={6}>
-                Activity Overview
+                Leads Performance
               </Heading>
               <Box h="300px">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={[
-                      { name: "Views", value: viewCount },
-                      { name: "Leads", value: todos.length },
-                    ]}
+                    data={[{ name: "Total Inquiries", value: todos.length }]}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="value" fill="#4299E1" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </Box>
@@ -393,19 +329,6 @@ const AdminDashboard = () => {
                 </Button>
               </Center>
             )}
-          </Box>
-
-          <Box textAlign="center" pt={4}>
-            <Button
-              variant="link"
-              color="red.400"
-              size="xs"
-              onClick={handleResetStats}
-              opacity={0.6}
-              _hover={{ opacity: 1 }}
-            >
-              Reset Internal Database Stats
-            </Button>
           </Box>
         </VStack>
       </Container>

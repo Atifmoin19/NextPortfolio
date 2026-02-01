@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolioData } from "../store/slices/portfolioSlice";
 import type { RootState, AppDispatch } from "../store";
-import { portfolioService } from "../services/portfolioService";
 import StructuredData from "../components/SEO/StructuredData";
 
 const Hero = lazy(() => import("store/../components/sections/Hero"));
@@ -30,13 +29,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchPortfolioData());
 
-    // Only increment view if not already done in this session
-    const hasIncremented = sessionStorage.getItem("view_incremented");
-    if (!hasIncremented) {
-      portfolioService.incrementViewCount();
-      portfolioService.addAnalyticsEvent();
-      sessionStorage.setItem("view_incremented", "true");
-    }
+    // View tracking is now handled exclusively by Google Analytics
   }, [dispatch]);
 
   const isCompleteLoading = loading || dataLoading || !data;
