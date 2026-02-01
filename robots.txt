@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://atifmoin19.github.io/NextPortfolio/sitemap.xml
