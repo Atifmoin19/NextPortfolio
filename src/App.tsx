@@ -1,5 +1,5 @@
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -26,7 +26,7 @@ const PageTracker = () => {
 
 function App() {
   return (
-    <Router basename="/NextPortfolio">
+    <Router>
       <PageTracker />
       <Routes>
         <Route path="/" element={<Home />} />
