@@ -13,11 +13,13 @@ import { FaSun, FaMoon } from "react-icons/fa";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const navRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const bg = useColorModeValue(
     "rgba(255, 255, 255, 0.8)",
@@ -45,6 +47,32 @@ export default function Navbar() {
       ease: "back.out(1.7)",
     });
     toggleColorMode();
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId.toLowerCase());
+    if (element) {
+      const offset = 80; // Navbar height offset
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleNavClick = (section: string) => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      // Wait for navigation and rendering
+      setTimeout(() => scrollToSection(section), 100);
+    } else {
+      scrollToSection(section);
+    }
   };
 
   return (
@@ -75,8 +103,9 @@ export default function Navbar() {
             fontWeight="bold"
             fontSize="lg"
             letterSpacing="tighter"
-            as="a"
-            href="#"
+            as={Link}
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="Atif Moin Home"
             title="Atif Moin | Home"
           >
@@ -91,8 +120,7 @@ export default function Navbar() {
                 size="sm"
                 fontWeight="medium"
                 _hover={{ bg: "whiteAlpha.200", transform: "scale(1.05)" }}
-                as="a"
-                href={`#${item.toLowerCase()}`}
+                onClick={() => handleNavClick(item)}
               >
                 {item}
               </Button>
