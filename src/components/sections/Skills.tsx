@@ -8,8 +8,9 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 
-import { portfolioData } from "store/../data/content";
 import {
   FaReact,
   FaNodeJs,
@@ -32,7 +33,7 @@ import {
 } from "react-icons/si";
 import { TbBrandNextjs } from "react-icons/tb";
 
-const iconMap: any = {
+const iconMap: Record<string, React.ElementType> = {
   FaReact,
   FaNodeJs,
   FaFigma,
@@ -53,9 +54,10 @@ const iconMap: any = {
 };
 
 export default function Skills() {
+  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Removed commented out GSAP code
+  if (!portfolioData) return null;
 
   return (
     <Box ref={containerRef} w="100%" id="skills" p={"5rem"}>

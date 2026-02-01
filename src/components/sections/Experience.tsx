@@ -11,17 +11,22 @@ import {
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { portfolioData } from "store/../data/content";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Experience() {
+  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      const items = gsap.utils.toArray(".experience-item");
-      items.forEach((item: any) => {
+      // The early return for portfolioData inside useGSAP is fine,
+      // as it prevents GSAP animations from running if data isn't available.
+      if (!portfolioData) return;
+      const items = gsap.utils.toArray<HTMLElement>(".experience-item");
+      items.forEach((item) => {
         gsap.from(item, {
           scrollTrigger: {
             trigger: item,
@@ -36,6 +41,8 @@ export default function Experience() {
     },
     { scope: containerRef },
   );
+
+  if (!portfolioData) return null;
 
   return (
     <Box

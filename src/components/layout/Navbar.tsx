@@ -13,6 +13,7 @@ import { FaSun, FaMoon } from "react-icons/fa";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -96,6 +97,16 @@ export default function Navbar() {
                 {item}
               </Button>
             ))}
+            <Button
+              variant="ghost"
+              size="sm"
+              fontWeight="medium"
+              _hover={{ bg: "whiteAlpha.200", transform: "scale(1.05)" }}
+              as={Link}
+              to="/admin"
+            >
+              Admin
+            </Button>
           </HStack>
 
           <IconButton

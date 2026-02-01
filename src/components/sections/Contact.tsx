@@ -17,7 +17,8 @@ import {
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { portfolioData } from "store/../data/content";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 import { useForm } from "react-hook-form";
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/index";
@@ -34,6 +35,7 @@ interface FormData {
 }
 
 export default function Contact() {
+  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const inputBg = useColorModeValue("gray.100", "whiteAlpha.100");
@@ -48,6 +50,7 @@ export default function Contact() {
 
   useGSAP(
     () => {
+      if (!portfolioData) return;
       gsap.from(".contact-content", {
         scrollTrigger: {
           trigger: containerRef.current,
@@ -61,6 +64,8 @@ export default function Contact() {
     },
     { scope: containerRef },
   );
+
+  if (!portfolioData) return null;
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
@@ -76,7 +81,6 @@ export default function Contact() {
       });
 
       // 2. Send Auto-Reply via EmailJS
-      // Replace these strings with your actual EmailJS keys
       const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;

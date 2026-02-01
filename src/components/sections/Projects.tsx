@@ -3,7 +3,7 @@ import {
   Box,
   Container,
   Heading,
-  SimpleGrid, // Restore SimpleGrid
+  SimpleGrid,
   Text,
   Image,
   VStack,
@@ -12,10 +12,23 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
-import { portfolioData } from "store/../data/content";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
-const ProjectCard = ({ project }: { project: any; index: number }) => {
+interface ProjectLink {
+  code: string;
+  project: string;
+}
+
+interface Project {
+  projectName: string;
+  projectType: string;
+  link: ProjectLink;
+  image: string;
+}
+
+const ProjectCard = ({ project }: { project: Project; index: number }) => {
   return (
     <Box
       className="project-card-container"
@@ -33,9 +46,7 @@ const ProjectCard = ({ project }: { project: any; index: number }) => {
         bg: "whiteAlpha.100",
       }}
       role="group"
-      // Removed fixed dimensions for responsive grid
     >
-      {/* Image Section */}
       <Box h="220px" overflow="hidden" position="relative">
         <Image
           src={project.image}
@@ -55,7 +66,6 @@ const ProjectCard = ({ project }: { project: any; index: number }) => {
         />
       </Box>
 
-      {/* Content Section */}
       <VStack p={6} align="start" spacing={4}>
         <VStack align="start" spacing={1}>
           <Heading as="h3" size="md" color="white" fontWeight="bold">
@@ -112,10 +122,10 @@ const ProjectCard = ({ project }: { project: any; index: number }) => {
 };
 
 export default function Projects() {
+  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // No internal ScrollTrigger logic needed for simple grid.
-  // Parent StackSection handles the "card entry" animation.
+  if (!portfolioData) return null;
 
   return (
     <Box ref={containerRef} w="100%" id="projects" p={"5rem"}>
@@ -135,7 +145,7 @@ export default function Projects() {
         </Flex>
 
         <SimpleGrid columns={[1, 2, 3]} spacing={8}>
-          {portfolioData.projects.map((project: any, index: number) => (
+          {portfolioData.projects.map((project: Project, index: number) => (
             <ProjectCard key={index} project={project} index={index} />
           ))}
         </SimpleGrid>

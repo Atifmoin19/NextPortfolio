@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { portfolioData } from "store/../data/content";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
 
 export default function Hero() {
+  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -24,7 +26,8 @@ export default function Hero() {
 
   useGSAP(
     () => {
-      const tl = gsap.timeline(); // Start immediately
+      if (!portfolioData) return;
+      const tl = gsap.timeline();
 
       tl.from(titleRef.current, {
         y: 100,
@@ -76,6 +79,8 @@ export default function Hero() {
     },
     { scope: containerRef },
   );
+
+  if (!portfolioData) return null;
 
   return (
     <Box
@@ -161,9 +166,7 @@ export default function Hero() {
               fontWeight="500"
               textAlign="center"
             >
-              Motivated and detail-oriented Software Engineer specializing in
-              building responsive, user-centric web applications with React,
-              Next.js, and modern UI libraries.
+              {portfolioData.hero.description}
             </Text>
 
             <HStack
@@ -213,7 +216,7 @@ export default function Hero() {
                 }}
                 transition="all 0.3s"
               >
-                View Projects
+                {portfolioData.hero.primaryAction}
               </Button>
               <Button
                 as="a"
@@ -230,7 +233,7 @@ export default function Hero() {
                   transform: "translateY(-2px)",
                 }}
               >
-                Contact Me
+                {portfolioData.hero.secondaryAction}
               </Button>
             </HStack>
           </VStack>
