@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPortfolioData } from "../store/slices/portfolioSlice";
 import type { RootState, AppDispatch } from "../store";
 import { portfolioService } from "../services/portfolioService";
+import StructuredData from "../components/SEO/StructuredData";
 
 const Hero = lazy(() => import("store/../components/sections/Hero"));
 const Skills = lazy(() => import("store/../components/sections/Skills"));
@@ -46,6 +47,7 @@ export default function Home() {
 
       {!isCompleteLoading && (
         <SmoothScroll>
+          <StructuredData />
           <Box minH="100vh" bg="black">
             {" "}
             {/* Set generic background to black */}

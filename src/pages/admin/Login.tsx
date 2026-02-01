@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaArrowLeft, FaShieldAlt } from "react-icons/fa";
-
 const AdminLogin = () => {
   const [adminId, setAdminId] = useState("");
   const [password, setPassword] = useState("");
