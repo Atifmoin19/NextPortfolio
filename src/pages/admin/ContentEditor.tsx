@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
-  Heading,
   VStack,
   FormControl,
   FormLabel,
@@ -20,10 +19,11 @@ import {
   SimpleGrid,
   Text,
   Divider,
+  Tooltip,
 } from "@chakra-ui/react";
 import { FaTrash, FaPlus, FaSave, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { portfolioService } from "../../services/portfolioService";
+import { apiClient, getAdminToken, clearAdminToken, ApiError } from "../../services/apiClient";
 import { portfolioData as initialData } from "../../data/content";
 
 type PortfolioData = typeof initialData;
@@ -35,45 +35,64 @@ const ContentEditor = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const loadData = useCallback(async () => {
-    try {
-      const result = await portfolioService.getPortfolioData();
-      setData(result as PortfolioData);
-    } catch (err) {
-      console.error(err);
-      toast({
-        title: "Error loading data",
-        status: "error",
-        duration: 3000,
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
-
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAdminAuthenticated");
-    if (isAuthenticated !== "true") {
+    if (!getAdminToken()) {
       navigate("/admin/login");
       return;
     }
-    loadData();
-  }, [navigate, loadData]);
+
+    // Guard against React StrictMode's double-invoked effect in dev: if this
+    // effect re-runs before the first fetch resolves, the stale response
+    // must not overwrite state after the newer effect run has taken over.
+    let isCurrent = true;
+
+    (async () => {
+      try {
+        const result = await apiClient.getContent<PortfolioData>();
+        if (isCurrent) setData(result);
+      } catch (err) {
+        if (!isCurrent) return;
+        if (err instanceof ApiError && err.status === 401) {
+          clearAdminToken();
+          navigate("/admin/login");
+          return;
+        }
+        console.error(err);
+        toast({
+          title: "Error loading data",
+          status: "error",
+          duration: 3000,
+        });
+      } finally {
+        if (isCurrent) setLoading(false);
+      }
+    })();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [navigate, toast]);
 
   const handleSave = async () => {
     if (!data) return;
     setSaving(true);
     try {
-      await portfolioService.savePortfolioData(data);
+      await apiClient.saveContent(data);
       toast({
         title: "Portfolio updated successfully",
         status: "success",
         duration: 3000,
       });
     } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        clearAdminToken();
+        navigate("/admin/login");
+        return;
+      }
       console.error(err);
       toast({
         title: "Error saving data",
+        description: err instanceof ApiError ? err.message : undefined,
         status: "error",
         duration: 3000,
       });
@@ -198,18 +217,23 @@ const ContentEditor = () => {
   return (
     <Container maxW="container.lg" py={10}>
       <VStack spacing={8} align="stretch">
-        <HStack justify="space-between">
+        <HStack justify="space-between" flexWrap="wrap" gap={3}>
           <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
+            color="var(--ink-soft)"
             onClick={() => navigate("/admin/dashboard")}
           >
             Back to Dashboard
           </Button>
-          <Heading size="lg">Content Management</Heading>
+          <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="2xl" color="var(--ink)">
+            Content Management
+          </Text>
           <HStack>
             <Button
               variant="outline"
+              borderColor="var(--line-strong)"
+              color="var(--ink)"
               onClick={() => {
                 if (
                   window.confirm(
@@ -224,7 +248,9 @@ const ContentEditor = () => {
             </Button>
             <Button
               leftIcon={<FaSave />}
-              colorScheme="blue"
+              bg="var(--ink)"
+              color="var(--paper)"
+              _hover={{ bg: "var(--ink-soft)" }}
               isLoading={saving}
               onClick={handleSave}
             >
@@ -236,16 +262,17 @@ const ContentEditor = () => {
         <Accordion allowMultiple defaultIndex={[0]}>
           {/* HERO SECTION */}
           <AccordionItem
-            borderRadius="md"
+            borderRadius="var(--radius-bento)"
             mb={4}
             border="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="var(--line)"
+            overflow="hidden"
           >
-            <AccordionButton py={4}>
-              <Box flex="1" textAlign="left" fontWeight="bold">
+            <AccordionButton className="bento-mint" py={4} _hover={{ filter: "brightness(0.97)" }}>
+              <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Hero Section
               </Box>
-              <AccordionIcon />
+              <AccordionIcon color="currentColor" />
             </AccordionButton>
             <AccordionPanel pb={6}>
               <SimpleGrid columns={[1, 2]} spacing={4}>
@@ -301,16 +328,17 @@ const ContentEditor = () => {
 
           {/* SKILLS SECTION */}
           <AccordionItem
-            borderRadius="md"
+            borderRadius="var(--radius-bento)"
             mb={4}
             border="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="var(--line)"
+            overflow="hidden"
           >
-            <AccordionButton py={4}>
-              <Box flex="1" textAlign="left" fontWeight="bold">
+            <AccordionButton className="bento-lavender" py={4} _hover={{ filter: "brightness(0.97)" }}>
+              <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Skills ({data.skills.length})
               </Box>
-              <AccordionIcon />
+              <AccordionIcon color="currentColor" />
             </AccordionButton>
             <AccordionPanel pb={6}>
               <VStack spacing={4} align="stretch">
@@ -318,9 +346,10 @@ const ContentEditor = () => {
                   <HStack
                     key={index}
                     spacing={4}
-                    bg="whiteAlpha.50"
+                    bg="var(--paper-raised)"
+                    border="1px solid var(--line)"
                     p={3}
-                    borderRadius="md"
+                    borderRadius="var(--radius-md)"
                   >
                     <FormControl size="sm">
                       <FormLabel fontSize="xs">Name</FormLabel>
@@ -353,15 +382,17 @@ const ContentEditor = () => {
                         }
                       />
                     </FormControl>
-                    <IconButton
-                      aria-label="Remove"
-                      icon={<FaTrash />}
-                      colorScheme="red"
-                      variant="ghost"
-                      size="sm"
-                      alignSelf="flex-end"
-                      onClick={() => removeSkill(index)}
-                    />
+                    <Tooltip label="Remove skill">
+                      <IconButton
+                        aria-label="Remove skill"
+                        icon={<FaTrash />}
+                        colorScheme="red"
+                        variant="outline"
+                        size="sm"
+                        alignSelf="flex-end"
+                        onClick={() => removeSkill(index)}
+                      />
+                    </Tooltip>
                   </HStack>
                 ))}
                 <Button
@@ -378,16 +409,17 @@ const ContentEditor = () => {
 
           {/* EXPERIENCE SECTION */}
           <AccordionItem
-            borderRadius="md"
+            borderRadius="var(--radius-bento)"
             mb={4}
             border="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="var(--line)"
+            overflow="hidden"
           >
-            <AccordionButton py={4}>
-              <Box flex="1" textAlign="left" fontWeight="bold">
+            <AccordionButton className="bento-orange" py={4} _hover={{ filter: "brightness(0.97)" }}>
+              <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Experience ({data.experience.length})
               </Box>
-              <AccordionIcon />
+              <AccordionIcon color="currentColor" />
             </AccordionButton>
             <AccordionPanel pb={6}>
               <VStack spacing={6} align="stretch">
@@ -395,21 +427,24 @@ const ContentEditor = () => {
                   <Box
                     key={index}
                     p={4}
-                    bg="whiteAlpha.50"
-                    borderRadius="md"
+                    bg="var(--paper-raised)"
+                    border="1px solid var(--line)"
+                    borderRadius="var(--radius-md)"
                     position="relative"
                   >
-                    <IconButton
-                      position="absolute"
-                      top={2}
-                      right={2}
-                      aria-label="Remove"
-                      icon={<FaTrash />}
-                      colorScheme="red"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeExperience(index)}
-                    />
+                    <Tooltip label="Remove experience entry">
+                      <IconButton
+                        position="absolute"
+                        top={2}
+                        right={2}
+                        aria-label="Remove experience entry"
+                        icon={<FaTrash />}
+                        colorScheme="red"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeExperience(index)}
+                      />
+                    </Tooltip>
                     <SimpleGrid columns={[1, 2]} spacing={4}>
                       <FormControl>
                         <FormLabel fontSize="sm">Company</FormLabel>
@@ -472,16 +507,17 @@ const ContentEditor = () => {
 
           {/* PROJECTS SECTION */}
           <AccordionItem
-            borderRadius="md"
+            borderRadius="var(--radius-bento)"
             mb={4}
             border="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="var(--line)"
+            overflow="hidden"
           >
-            <AccordionButton py={4}>
-              <Box flex="1" textAlign="left" fontWeight="bold">
+            <AccordionButton className="bento-black" py={4} _hover={{ filter: "brightness(1.15)" }}>
+              <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Projects ({data.projects.length})
               </Box>
-              <AccordionIcon />
+              <AccordionIcon color="currentColor" />
             </AccordionButton>
             <AccordionPanel pb={6}>
               <VStack spacing={6} align="stretch">
@@ -489,21 +525,24 @@ const ContentEditor = () => {
                   <Box
                     key={index}
                     p={4}
-                    bg="whiteAlpha.50"
-                    borderRadius="md"
+                    bg="var(--paper-raised)"
+                    border="1px solid var(--line)"
+                    borderRadius="var(--radius-md)"
                     position="relative"
                   >
-                    <IconButton
-                      position="absolute"
-                      top={2}
-                      right={2}
-                      aria-label="Remove"
-                      icon={<FaTrash />}
-                      colorScheme="red"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeProject(index)}
-                    />
+                    <Tooltip label="Remove project">
+                      <IconButton
+                        position="absolute"
+                        top={2}
+                        right={2}
+                        aria-label="Remove project"
+                        icon={<FaTrash />}
+                        colorScheme="red"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeProject(index)}
+                      />
+                    </Tooltip>
                     <SimpleGrid columns={[1, 2]} spacing={4}>
                       <FormControl>
                         <FormLabel fontSize="sm">Project Name</FormLabel>
@@ -562,16 +601,17 @@ const ContentEditor = () => {
 
           {/* CONTACT SECTION */}
           <AccordionItem
-            borderRadius="md"
+            borderRadius="var(--radius-bento)"
             mb={4}
             border="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor="var(--line)"
+            overflow="hidden"
           >
-            <AccordionButton py={4}>
-              <Box flex="1" textAlign="left" fontWeight="bold">
+            <AccordionButton className="bento-mint" py={4} _hover={{ filter: "brightness(0.97)" }}>
+              <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Contact & Socials
               </Box>
-              <AccordionIcon />
+              <AccordionIcon color="currentColor" />
             </AccordionButton>
             <AccordionPanel pb={6}>
               <VStack spacing={4} align="stretch">
@@ -652,11 +692,13 @@ const ContentEditor = () => {
         <Button
           size="lg"
           leftIcon={<FaSave />}
-          colorScheme="blue"
+          bg="var(--accent)"
+          color="var(--accent-ink)"
+          _hover={{ bg: "var(--accent-strong)" }}
           isLoading={saving}
           onClick={handleSave}
           width="full"
-          borderRadius="xl"
+          borderRadius="var(--radius-md)"
           mt={4}
         >
           Save All Portfolio Changes

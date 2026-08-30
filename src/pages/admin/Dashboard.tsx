@@ -22,10 +22,10 @@ import {
   Center,
   Flex,
   HStack,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
 import { useFirebasePagination } from "../../hooks/useFirebasePagination";
+import { getAdminToken, clearAdminToken } from "../../services/apiClient";
 import {
   BarChart,
   Bar,
@@ -46,6 +46,13 @@ interface Todo {
   date: string;
 }
 
+const cardProps = {
+  p: 6,
+  bg: "var(--paper-raised)",
+  borderRadius: "var(--radius-bento)",
+  border: "1px solid var(--line)",
+};
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const {
@@ -57,12 +64,8 @@ const AdminDashboard = () => {
   } = useFirebasePagination<Todo>("todos", 5);
   const [isStatsLoading] = useState(false);
 
-  const cardBg = useColorModeValue("white", "whiteAlpha.50");
-  const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
-
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("isAdminAuthenticated");
-    if (isAuthenticated !== "true") {
+    if (!getAdminToken()) {
       navigate("/admin/login");
       return;
     }
@@ -73,37 +76,26 @@ const AdminDashboard = () => {
   }, [navigate, fetchInitialPage]);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdminAuthenticated");
+    clearAdminToken();
     navigate("/admin/login");
   };
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.50", "black")}>
+    <Box minH="100vh" bg="var(--paper)">
       <Container maxW="container.xl" py={10}>
         <VStack spacing={8} align="stretch">
           {/* Header */}
-          <Flex justify="space-between" align="center">
+          <Flex justify="space-between" align="center" flexWrap="wrap" gap={4}>
             <VStack align="start" spacing={1}>
-              <Heading
-                size="lg"
-                bgGradient="linear(to-r, blue.400, purple.500, cyan.400)"
-                bgClip="text"
-                fontWeight="800"
-              >
-                ADMIN DASHBOARD
-              </Heading>
-              <Text color="gray.500" fontSize="sm">
+              <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="3xl" color="var(--ink)">
+                Admin Dashboard
+              </Text>
+              <Text color="var(--ink-muted)" fontSize="sm">
                 Overview of your portfolio performance
               </Text>
             </VStack>
-            <HStack spacing={4}>
-              <Button
-                as={Link}
-                to="/"
-                variant="ghost"
-                size="sm"
-                borderRadius="full"
-              >
+            <HStack spacing={3}>
+              <Button as={Link} to="/" variant="ghost" size="sm" borderRadius="full" color="var(--ink-soft)">
                 View Portfolio
               </Button>
               <Button
@@ -111,95 +103,64 @@ const AdminDashboard = () => {
                 href="https://analytics.google.com/"
                 target="_blank"
                 variant="outline"
-                colorScheme="orange"
                 size="sm"
                 borderRadius="full"
+                borderColor="var(--line-strong)"
+                color="var(--ink)"
               >
                 Open Google Analytics
               </Button>
               <Button
-                colorScheme="red"
-                variant="solid"
                 onClick={handleLogout}
                 borderRadius="full"
                 size="sm"
                 px={6}
+                bg="var(--ink)"
+                color="var(--paper)"
+                _hover={{ bg: "var(--ink-soft)" }}
               >
                 Logout
               </Button>
             </HStack>
           </Flex>
 
-          <Divider borderColor={borderColor} />
+          <Divider borderColor="var(--line)" />
 
           {/* Quick Stats */}
           <SimpleGrid columns={[1, 2, 3]} spacing={6}>
-            <Stat
-              p={6}
-              bg={cardBg}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor={borderColor}
-              shadow="sm"
-            >
-              <StatLabel color="gray.500">Total Leads</StatLabel>
-              <StatNumber fontSize="3xl" fontWeight="bold">
+            <Stat {...cardProps}>
+              <StatLabel color="var(--ink-muted)">Total Leads</StatLabel>
+              <StatNumber fontFamily="var(--font-mono)" fontSize="3xl" fontWeight="600" color="var(--ink)">
                 {isStatsLoading ? <Spinner size="sm" /> : todos.length}
               </StatNumber>
-              <StatHelpText>From contact form</StatHelpText>
+              <StatHelpText color="var(--ink-muted)">From contact form</StatHelpText>
             </Stat>
-            <Stat
-              p={6}
-              bg={cardBg}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor={borderColor}
-              shadow="sm"
-            >
-              <StatLabel color="gray.500">Live Traffic</StatLabel>
-              <StatNumber fontSize="lg" fontWeight="bold">
+            <Stat {...cardProps}>
+              <StatLabel color="var(--ink-muted)">Live Traffic</StatLabel>
+              <StatNumber fontSize="lg" fontWeight="700" color="var(--ink)">
                 See Google Analytics
               </StatNumber>
-              <StatHelpText>Internal counter disabled</StatHelpText>
+              <StatHelpText color="var(--ink-muted)">Internal counter disabled</StatHelpText>
             </Stat>
-            <Stat
-              p={6}
-              bg={cardBg}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor={borderColor}
-              shadow="sm"
-            >
-              <StatLabel color="gray.500">Response Rate</StatLabel>
-              <StatNumber fontSize="3xl" fontWeight="bold">
+            <Stat {...cardProps}>
+              <StatLabel color="var(--ink-muted)">Response Rate</StatLabel>
+              <StatNumber fontFamily="var(--font-mono)" fontSize="3xl" fontWeight="600" color="var(--ink)">
                 100%
               </StatNumber>
-              <StatHelpText>All messages logged</StatHelpText>
+              <StatHelpText color="var(--ink-muted)">All messages logged</StatHelpText>
             </Stat>
           </SimpleGrid>
 
           {/* Charts Row */}
           <SimpleGrid columns={[1, 1, 2]} spacing={6}>
-            <Box
-              p={6}
-              bg={cardBg}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor={borderColor}
-              shadow="sm"
-            >
-              <Heading size="sm" mb={6}>
+            <Box {...cardProps}>
+              <Heading size="sm" mb={6} fontFamily="var(--font-display)" color="var(--ink)">
                 Traffic Sources
               </Heading>
               <Box h="300px">
                 <Center h="full">
                   <VStack spacing={4}>
-                    <Text
-                      fontSize="sm"
-                      color="gray.500"
-                      fontWeight="medium"
-                      textAlign="center"
-                    >
+                    <Text fontSize="sm" color="var(--ink-muted)" fontWeight="500" textAlign="center">
                       Detailed traffic analytics are available in your Google
                       Analytics dashboard.
                     </Text>
@@ -208,8 +169,10 @@ const AdminDashboard = () => {
                       href="https://analytics.google.com/"
                       target="_blank"
                       size="xs"
-                      colorScheme="orange"
                       variant="outline"
+                      borderColor="var(--line-strong)"
+                      color="var(--ink)"
+                      borderRadius="full"
                     >
                       View Official Reports
                     </Button>
@@ -218,27 +181,18 @@ const AdminDashboard = () => {
               </Box>
             </Box>
 
-            <Box
-              p={6}
-              bg={cardBg}
-              borderRadius="2xl"
-              borderWidth={1}
-              borderColor={borderColor}
-              shadow="sm"
-            >
-              <Heading size="sm" mb={6}>
+            <Box {...cardProps}>
+              <Heading size="sm" mb={6} fontFamily="var(--font-display)" color="var(--ink)">
                 Leads Performance
               </Heading>
               <Box h="300px">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={[{ name: "Total Inquiries", value: todos.length }]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" />
-                    <YAxis />
+                  <BarChart data={[{ name: "Total Inquiries", value: todos.length }]}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--line)" />
+                    <XAxis dataKey="name" stroke="var(--ink-muted)" />
+                    <YAxis stroke="var(--ink-muted)" />
                     <Tooltip />
-                    <Bar dataKey="value" fill="#4299E1" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="value" fill="#f3a53d" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </Box>
@@ -246,23 +200,12 @@ const AdminDashboard = () => {
           </SimpleGrid>
 
           {/* Leads Table */}
-          <Box
-            p={6}
-            bg={cardBg}
-            borderRadius="2xl"
-            borderWidth={1}
-            borderColor={borderColor}
-            shadow="sm"
-          >
+          <Box {...cardProps}>
             <Flex justify="space-between" align="center" mb={6}>
-              <Heading size="sm">Recent Inquiries</Heading>
-              <Button
-                colorScheme="blue"
-                variant="link"
-                size="sm"
-                as={Link}
-                to="/admin/content"
-              >
+              <Heading size="sm" fontFamily="var(--font-display)" color="var(--ink)">
+                Recent Inquiries
+              </Heading>
+              <Button variant="link" size="sm" as={Link} to="/admin/content" color="var(--accent)">
                 Manage Content
               </Button>
             </Flex>
@@ -270,39 +213,32 @@ const AdminDashboard = () => {
               <Table variant="simple" size="sm">
                 <Thead>
                   <Tr>
-                    <Th color="gray.400">Visitor</Th>
-                    <Th color="gray.400">Email/Mobile</Th>
-                    <Th color="gray.400">Message</Th>
-                    <Th color="gray.400">Date</Th>
+                    <Th color="var(--ink-muted)">Visitor</Th>
+                    <Th color="var(--ink-muted)">Email/Mobile</Th>
+                    <Th color="var(--ink-muted)">Message</Th>
+                    <Th color="var(--ink-muted)">Date</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {todos.map((todo) => (
-                    <Tr
-                      key={todo.id}
-                      _hover={{ bg: "blackAlpha.50" }}
-                      transition="0.2s"
-                    >
+                    <Tr key={todo.id} _hover={{ bg: "var(--paper)" }} transition="0.2s">
                       <Td py={4}>
-                        <Text
-                          fontWeight="bold"
-                          color="blue.400"
-                        >{`${todo.fname} ${todo.lname}`}</Text>
+                        <Text fontWeight="700" color="var(--ink)">{`${todo.fname} ${todo.lname}`}</Text>
                       </Td>
                       <Td>
                         <VStack align="start" spacing={0}>
-                          <Text fontSize="xs">{todo.email}</Text>
-                          <Text fontSize="xs" color="gray.500">
+                          <Text fontSize="xs" color="var(--ink)">{todo.email}</Text>
+                          <Text fontSize="xs" color="var(--ink-muted)">
                             {todo.mobile}
                           </Text>
                         </VStack>
                       </Td>
                       <Td maxW="300px">
-                        <Text isTruncated fontSize="sm">
+                        <Text isTruncated fontSize="sm" color="var(--ink)">
                           {todo.message}
                         </Text>
                       </Td>
-                      <Td fontSize="xs" color="gray.500">
+                      <Td fontSize="xs" color="var(--ink-muted)">
                         {todo.date}
                       </Td>
                     </Tr>
@@ -313,7 +249,7 @@ const AdminDashboard = () => {
 
             {loading && (
               <Center py={10}>
-                <Spinner color="blue.500" />
+                <Spinner color="var(--accent)" />
               </Center>
             )}
 
@@ -324,6 +260,8 @@ const AdminDashboard = () => {
                   size="sm"
                   onClick={fetchNextPage}
                   borderRadius="full"
+                  borderColor="var(--line-strong)"
+                  color="var(--ink)"
                 >
                   Load More Leads
                 </Button>

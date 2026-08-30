@@ -76,8 +76,26 @@ export const portfolioData = {
         {
             company: "Zopper, Noida",
             role: "Senior Software Engineer (Frontend)",
-            duration: "2023 - Present",
+            duration: "Apr 2026 - Present",
             description: "Led end-to-end development of scalable React applications for fintech platforms, from requirement gathering to production deployment, increasing development speed by 30%. Designed reusable component systems, reducing duplicate effort by 40%. Optimized large data rendering, reducing UI lag by 25%. Defined component architecture and design patterns improving the scalability and maintainability of frontend systems. Built and integrated REST APIs using FastAPI, and managed backend data using SQL. Improved performance on low-end devices, reducing latency by 20%. Collaborated with cross-functional teams to drive architectural and product decisions."
+        },
+        {
+            company: "Zopper, Noida",
+            role: "Software Engineer",
+            duration: "Jun 2024 - May 2026",
+            description: "Focused on code refactoring and UI responsiveness improvements across production fintech applications, working full-time as a Software Engineer."
+        },
+        {
+            company: "Zopper, Noida",
+            role: "Associate Software Engineer",
+            duration: "Jul 2023 - Jun 2024",
+            description: "Worked on UI responsiveness and DOM-focused frontend development, contributing to production applications as an Associate Software Engineer."
+        },
+        {
+            company: "Zopper, Noida",
+            role: "Front-End Intern",
+            duration: "Jan 2023 - Jun 2023",
+            description: "Appointed as a Front-End Intern at Zopper, working with TypeScript and focusing on UI responsiveness."
         }
     ],
     projects: [

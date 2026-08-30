@@ -28,6 +28,44 @@ const theme = extendTheme({
         bg: "#f4f1ea",
         color: "#16140f",
       },
+      "input:-webkit-autofill, textarea:-webkit-autofill": {
+        WebkitBoxShadow: "0 0 0 1000px var(--paper-raised) inset",
+        WebkitTextFillColor: "var(--ink)",
+        caretColor: "var(--ink)",
+        transition: "background-color 5000s ease-in-out 0s",
+      },
+    },
+  },
+  components: {
+    Input: {
+      variants: {
+        outline: {
+          field: {
+            bg: "var(--paper-raised)",
+            border: "1px solid var(--line)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--ink)",
+            _placeholder: { color: "var(--ink-muted)" },
+            _hover: { borderColor: "var(--line-strong)" },
+            _focusVisible: { borderColor: "var(--accent)", boxShadow: "0 0 0 1px var(--accent)" },
+          },
+        },
+      },
+      defaultProps: { variant: "outline" },
+    },
+    Textarea: {
+      variants: {
+        outline: {
+          bg: "var(--paper-raised)",
+          border: "1px solid var(--line)",
+          borderRadius: "var(--radius-sm)",
+          color: "var(--ink)",
+          _placeholder: { color: "var(--ink-muted)" },
+          _hover: { borderColor: "var(--line-strong)" },
+          _focusVisible: { borderColor: "var(--accent)", boxShadow: "0 0 0 1px var(--accent)" },
+        },
+      },
+      defaultProps: { variant: "outline" },
     },
   },
 });

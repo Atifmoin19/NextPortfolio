@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import type { ReactNode, PointerEvent } from "react";
-import { Box, Container, Text, VStack, Grid, Icon, Link as ChakraLink } from "@chakra-ui/react";
+import { Box, Container, Text, VStack, HStack, Grid, Icon, Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { motion, useInView, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -159,17 +159,28 @@ export default function Projects() {
                         zIndex={1}
                       />
 
-                      {project.link.code && (
-                        <ChakraLink
-                          href={project.link.code}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View source for ${project.projectName}`}
-                          onClick={(e) => e.stopPropagation()}
-                          position="absolute"
-                          top={4}
-                          right={4}
-                          zIndex={2}
+                      <HStack position="absolute" top={4} right={4} zIndex={2} spacing={2}>
+                        {project.link.code && (
+                          <ChakraLink
+                            href={project.link.code}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View source for ${project.projectName}`}
+                            onClick={(e) => e.stopPropagation()}
+                            w="36px"
+                            h="36px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            borderRadius="var(--radius-sm)"
+                            bg={isDark ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.5)"}
+                            _hover={{ bg: isDark ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.8)" }}
+                          >
+                            <Icon as={FaGithub} boxSize={4} />
+                          </ChakraLink>
+                        )}
+
+                        <Box
                           w="36px"
                           h="36px"
                           display="flex"
@@ -177,20 +188,10 @@ export default function Projects() {
                           justifyContent="center"
                           borderRadius="var(--radius-sm)"
                           bg={isDark ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.5)"}
-                          _hover={{ bg: isDark ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.8)" }}
                         >
-                          <Icon as={FaGithub} boxSize={4} />
-                        </ChakraLink>
-                      )}
-
-                      <Icon
-                        as={FaArrowUpRightFromSquare}
-                        position="absolute"
-                        top={5}
-                        right={project.link.code ? 14 : 5}
-                        boxSize={3.5}
-                        opacity={0.5}
-                      />
+                          <Icon as={FaArrowUpRightFromSquare} boxSize={3.5} />
+                        </Box>
+                      </HStack>
                     </Box>
                   </motion.div>
                 </TiltCard>

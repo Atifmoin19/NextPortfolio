@@ -23,10 +23,12 @@ const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
   Portfolio: FaGlobe,
 };
 
-function yearsSince(duration: string) {
-  const match = duration.match(/\d{4}/);
-  if (!match) return 1;
-  return Math.max(1, new Date().getFullYear() - parseInt(match[0], 10));
+function earliestYear(durations: string[]) {
+  const years = durations
+    .map((d) => d.match(/\d{4}/)?.[0])
+    .filter((y): y is string => Boolean(y))
+    .map((y) => parseInt(y, 10));
+  return years.length ? Math.min(...years) : new Date().getFullYear();
 }
 
 export default function Hero() {
@@ -49,9 +51,10 @@ export default function Hero() {
 
   if (!portfolioData) return null;
 
-  const yearsExperience = portfolioData.experience[0]
-    ? yearsSince(portfolioData.experience[0].duration)
-    : 1;
+  const yearsExperience = Math.max(
+    1,
+    new Date().getFullYear() - earliestYear(portfolioData.experience.map((job) => job.duration)),
+  );
 
   const taglineWords = portfolioData.hero.tagline.trim().split(/\s+/);
   const taglineLines =
@@ -97,7 +100,7 @@ export default function Hero() {
         />
       )}
       <Container maxW="container.xl" position="relative" zIndex={1}>
-        <VStack align="start" spacing={6} maxW="900px">
+        <VStack align="start" spacing={7} maxW="900px">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -151,7 +154,7 @@ export default function Hero() {
             </Text>
           </motion.div>
 
-          <VStack align="start" spacing={0} w="full">
+          <VStack align="start" spacing={0} w="full" mt={1}>
             {taglineLines.map((line, i) => (
               <motion.div
                 key={line}
@@ -161,9 +164,9 @@ export default function Hero() {
               >
                 <Text
                   fontFamily="var(--font-display)"
-                  fontSize={{ base: "5xl", md: "7xl", lg: "8xl" }}
+                  fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
                   fontWeight="800"
-                  lineHeight="0.88"
+                  lineHeight="0.95"
                   letterSpacing="-0.04em"
                   color="var(--ink)"
                 >
@@ -178,7 +181,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Text fontSize={{ base: "lg", md: "xl" }} color="var(--ink-soft)" lineHeight="1.6" maxW="560px">
+            <Text fontSize={{ base: "lg", md: "xl" }} color="var(--ink-soft)" lineHeight="1.6" maxW="640px">
               {portfolioData.hero.description}
             </Text>
           </motion.div>

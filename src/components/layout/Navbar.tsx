@@ -141,17 +141,19 @@ export default function Navbar() {
                   onClick={() => window.dispatchEvent(new CustomEvent("toggle-command-palette"))}
                   variant="outline"
                   h="40px"
+                  minW="64px"
                   px={4}
                   borderRadius="full"
                   borderColor="var(--line-strong)"
                   fontSize="xs"
                   fontFamily="var(--font-mono)"
                   fontWeight="600"
+                  letterSpacing="0.04em"
                   color="var(--ink-soft)"
                   _hover={{ bg: "var(--paper)", color: "var(--ink)" }}
                   aria-label="Open command palette"
                 >
-                  &#8984;K
+                  &#8984;&nbsp;K
                 </Button>
 
               <Box display={{ base: "none", md: "block" }}>

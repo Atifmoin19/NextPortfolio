@@ -22,6 +22,7 @@ import {
   FaDownload,
   FaRegCopy,
   FaFolderOpen,
+  FaLock,
 } from "react-icons/fa6";
 import type { RootState } from "../../store";
 import { slugify } from "../../utils/slugify";
@@ -38,6 +39,7 @@ interface Command {
   hint?: string;
   icon: typeof FaArrowRight;
   run: () => void;
+  hidden?: boolean;
 }
 
 export default function CommandPalette() {
@@ -145,11 +147,27 @@ export default function CommandPalette() {
       },
     });
 
+    // Hidden: only surfaces once the query matches, never in the default/empty list.
+    list.push({
+      id: "admin-login",
+      label: "Admin login",
+      hint: "Owner only",
+      icon: FaLock,
+      hidden: true,
+      run: () => {
+        close();
+        navigate("/admin/login");
+      },
+    });
+
     return list;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [portfolioData, location.pathname]);
 
-  const filtered = commands.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()));
+  const filtered = commands.filter((c) => {
+    if (c.hidden && query.trim() === "") return false;
+    return c.label.toLowerCase().includes(query.toLowerCase());
+  });
 
   useEffect(() => {
     setHighlighted(0);

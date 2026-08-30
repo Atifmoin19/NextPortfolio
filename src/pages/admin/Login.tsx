@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import {
   Box,
   Button,
@@ -6,135 +7,87 @@ import {
   FormLabel,
   Input,
   VStack,
-  Heading,
-  useToast,
   Container,
   Text,
-  useColorModeValue,
   Flex,
   HStack,
   Icon,
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft, FaShieldAlt } from "react-icons/fa";
+import { FaArrowLeft, FaLock } from "react-icons/fa6";
+import { apiClient, setAdminToken, ApiError } from "../../services/apiClient";
+
 const AdminLogin = () => {
   const [adminId, setAdminId] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const toast = useToast();
 
-  const bgColor = useColorModeValue("gray.50", "black");
-  const cardBg = useColorModeValue("white", "whiteAlpha.50");
-  const borderColor = useColorModeValue("gray.200", "whiteAlpha.200");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    const envAdminId = import.meta.env.VITE_ADMIN_ID;
-    const envAdminPass = import.meta.env.VITE_ADMIN_PASS;
-
-    if (adminId === envAdminId && password === envAdminPass) {
-      localStorage.setItem("isAdminAuthenticated", "true");
-      toast({
-        title: "Login Successful",
-        description: "Welcome back, Administrator.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+    setError("");
+    setIsLoading(true);
+    try {
+      const { access_token } = await apiClient.login(adminId, password);
+      setAdminToken(access_token);
       navigate("/admin/dashboard");
-    } else {
-      toast({
-        title: "Access Denied",
-        description: "Invalid credentials provided.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Invalid credentials provided.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const inputStyle = {
+    height: "56px",
+    bg: "var(--paper)",
+    border: "1px solid var(--line)",
+    borderRadius: "var(--radius-md)",
+    color: "var(--ink)",
+    _placeholder: { color: "var(--ink-muted)" },
+    _hover: { borderColor: "var(--line-strong)" },
+    _focus: { borderColor: "var(--accent)", boxShadow: "0 0 0 1px var(--accent)" },
+  };
+
   return (
-    <Box minH="100vh" bg={bgColor} position="relative" overflow="hidden">
-      {/* Header for Back Navigation */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        p={6}
-        zIndex={10}
-        borderBottom="1px solid"
-        borderColor={borderColor}
-        bg={useColorModeValue("whiteAlpha.800", "blackAlpha.800")}
-        backdropFilter="blur(10px)"
-      >
+    <Box minH="100vh" bg="var(--paper)" position="relative">
+      <Box position="absolute" top={0} left={0} right={0} p={6} zIndex={10} borderBottom="1px solid var(--line)">
         <Container maxW="container.xl">
           <Flex justify="space-between" align="center">
-            <HStack spacing={2} as={Link} to="/" _hover={{ opacity: 0.8 }}>
-              <Icon as={FaArrowLeft} size="12px" />
-              <Text fontWeight="bold" fontSize="sm">
+            <HStack spacing={2} as={Link} to="/" color="var(--ink-soft)" _hover={{ color: "var(--ink)" }}>
+              <Icon as={FaArrowLeft} boxSize={3} />
+              <Text fontWeight="700" fontSize="sm">
                 Back to Portfolio
               </Text>
             </HStack>
-            <HStack spacing={2}>
-              <Icon as={FaShieldAlt} color="blue.400" />
-              <Text
-                fontWeight="bold"
-                fontSize="xs"
-                letterSpacing="widest"
-                textTransform="uppercase"
-              >
-                Secure Access
-              </Text>
-            </HStack>
+            <Text className="label-mono" color="var(--ink-muted)">
+              Secure Access
+            </Text>
           </Flex>
         </Container>
       </Box>
 
-      {/* Login Form Container */}
-      <Flex minH="100vh" alignItems="center" justifyContent="center" pt={20}>
+      <Flex minH="100vh" alignItems="center" justifyContent="center" pt={20} px={4}>
         <Container maxW="md">
-          <Box
-            p={10}
-            bg={cardBg}
-            backdropFilter="blur(10px)"
-            borderRadius="3xl"
-            borderWidth={1}
-            borderColor={borderColor}
-            boxShadow="2xl"
-          >
+          <Box bg="var(--paper-raised)" border="1px solid var(--line)" borderRadius="var(--radius-bento)" p={{ base: 6, md: 10 }}>
             <VStack spacing={8} as="form" onSubmit={handleLogin}>
-              <VStack spacing={2} textAlign="center">
-                <Box
-                  p={4}
-                  borderRadius="2xl"
-                  bg="blue.400"
-                  mb={2}
-                  boxShadow="0 0 20px rgba(66, 153, 225, 0.4)"
-                >
-                  <Icon as={FaShieldAlt} boxSize={8} color="white" />
-                </Box>
-                <Heading
-                  size="xl"
-                  bgGradient="linear(to-r, blue.400, purple.500)"
-                  bgClip="text"
-                  fontWeight="800"
-                >
-                  ADMIN LOGIN
-                </Heading>
-                <Text color="gray.500" fontSize="sm">
+              <VStack spacing={3} textAlign="center">
+                <Flex w="56px" h="56px" borderRadius="var(--radius-md)" bg="var(--ink)" align="center" justify="center">
+                  <Icon as={FaLock} boxSize={5} color="var(--paper)" />
+                </Flex>
+                <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="2xl" letterSpacing="-0.02em" color="var(--ink)">
+                  Admin Login
+                </Text>
+                <Text color="var(--ink-muted)" fontSize="sm">
                   Authorized access only. Use your credentials to sign in.
                 </Text>
               </VStack>
 
               <VStack spacing={4} width="full">
                 <FormControl isRequired>
-                  <FormLabel
-                    fontSize="xs"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                    letterSpacing="widest"
-                  >
+                  <FormLabel className="label-mono" color="var(--ink-muted)">
                     Admin ID
                   </FormLabel>
                   <Input
@@ -142,48 +95,42 @@ const AdminLogin = () => {
                     value={adminId}
                     onChange={(e) => setAdminId(e.target.value)}
                     placeholder="Enter your ID"
-                    variant="filled"
-                    h={14}
-                    borderRadius="2xl"
+                    {...inputStyle}
                   />
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel
-                    fontSize="xs"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                    letterSpacing="widest"
-                  >
+                  <FormLabel className="label-mono" color="var(--ink-muted)">
                     Password
                   </FormLabel>
                   <Input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    variant="filled"
-                    h={14}
-                    borderRadius="2xl"
+                    placeholder="********"
+                    {...inputStyle}
                   />
                 </FormControl>
               </VStack>
 
+              {error && (
+                <Text w="full" fontSize="sm" color="var(--orange-ink)" bg="var(--orange)" px={4} py={2} borderRadius="var(--radius-sm)">
+                  {error}
+                </Text>
+              )}
+
               <Button
                 type="submit"
-                colorScheme="blue"
-                width="full"
+                w="full"
                 h={14}
-                borderRadius="2xl"
+                borderRadius="full"
                 fontSize="md"
-                fontWeight="bold"
-                bgGradient="linear(to-r, blue.400, blue.600)"
-                _hover={{
-                  bgGradient: "linear(to-r, blue.500, blue.700)",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 10px 20px -10px rgba(66, 153, 225, 0.5)",
-                }}
-                _active={{ transform: "translateY(0)" }}
-                transition="all 0.2s"
+                fontWeight="700"
+                bg="var(--ink)"
+                color="var(--paper)"
+                isLoading={isLoading}
+                loadingText="Signing in"
+                _hover={{ bg: "var(--ink-soft)" }}
+                _active={{ transform: "scale(0.98)" }}
               >
                 Sign In to Dashboard
               </Button>

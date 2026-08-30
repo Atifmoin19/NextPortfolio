@@ -13,6 +13,7 @@ import AdminLogin from "pages/admin/Login";
 import AdminDashboard from "pages/admin/Dashboard";
 import ContentEditor from "pages/admin/ContentEditor";
 import CommandPalette from "./components/shared/CommandPalette";
+import ChatWidget from "./components/shared/ChatWidget";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
 import type { AppDispatch } from "store";
 
@@ -40,6 +41,7 @@ function App() {
     <Router>
       <PageTracker />
       <CommandPalette />
+      <ChatWidget />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/project/:slug" element={<ProjectDetail />} />
