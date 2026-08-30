@@ -29,7 +29,8 @@ export const portfolioData = {
         tagline: "Senior Frontend Engineer.",
         description: "Senior Software Engineer with 3 years building scalable fintech and AI-driven applications using React, Next.js, and TypeScript, from performance optimization and reusable component architecture to LLM integration and full-stack delivery with FastAPI, PostgreSQL, and WebSockets.",
         primaryAction: "View Projects",
-        secondaryAction: "Contact Me"
+        secondaryAction: "Contact Me",
+        resumeUrl: "/SSEFE.pdf"
     },
     skills: [
         { name: "JavaScript", level: 98, icon: "SiJavascript", category: "Languages" },

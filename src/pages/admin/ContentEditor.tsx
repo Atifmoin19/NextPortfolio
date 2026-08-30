@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   VStack,
@@ -20,8 +20,10 @@ import {
   Text,
   Divider,
   Tooltip,
+  Link,
+  Spinner,
 } from "@chakra-ui/react";
-import { FaTrash, FaPlus, FaSave, FaArrowLeft } from "react-icons/fa";
+import { FaTrash, FaPlus, FaSave, FaArrowLeft, FaUpload } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { apiClient, getAdminToken, clearAdminToken, ApiError } from "../../services/apiClient";
 import { portfolioData as initialData } from "../../data/content";
@@ -32,6 +34,8 @@ const ContentEditor = () => {
   const [data, setData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const resumeInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -98,6 +102,36 @@ const ContentEditor = () => {
       });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !data) return;
+
+    setUploadingResume(true);
+    try {
+      const { url } = await apiClient.uploadResume(file);
+      const updated = { ...data, hero: { ...data.hero, resumeUrl: url } };
+      setData(updated);
+      await apiClient.saveContent(updated);
+      toast({ title: "Resume updated", status: "success", duration: 3000 });
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        clearAdminToken();
+        navigate("/admin/login");
+        return;
+      }
+      console.error(err);
+      toast({
+        title: "Error uploading resume",
+        description: err instanceof ApiError ? err.message : undefined,
+        status: "error",
+        duration: 3000,
+      });
+    } finally {
+      setUploadingResume(false);
+      if (resumeInputRef.current) resumeInputRef.current.value = "";
     }
   };
 
@@ -321,6 +355,38 @@ const ContentEditor = () => {
                       updateHero("secondaryAction", e.target.value)
                     }
                   />
+                </FormControl>
+                <FormControl gridColumn="span 2">
+                  <FormLabel>Resume (PDF)</FormLabel>
+                  <HStack spacing={4}>
+                    {data.hero.resumeUrl && (
+                      <Link
+                        href={data.hero.resumeUrl}
+                        isExternal
+                        fontSize="sm"
+                        color="var(--accent)"
+                        isTruncated
+                        maxW="320px"
+                      >
+                        {data.hero.resumeUrl}
+                      </Link>
+                    )}
+                    <Button
+                      size="sm"
+                      leftIcon={uploadingResume ? <Spinner size="xs" /> : <FaUpload />}
+                      isDisabled={uploadingResume}
+                      onClick={() => resumeInputRef.current?.click()}
+                    >
+                      {uploadingResume ? "Uploading..." : "Upload new resume"}
+                    </Button>
+                    <input
+                      ref={resumeInputRef}
+                      type="file"
+                      accept="application/pdf"
+                      hidden
+                      onChange={handleResumeUpload}
+                    />
+                  </HStack>
                 </FormControl>
               </SimpleGrid>
             </AccordionPanel>

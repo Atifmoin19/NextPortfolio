@@ -81,4 +81,44 @@ export const apiClient = {
             body: JSON.stringify(data),
         });
     },
+
+    async uploadResume(file: File) {
+        const token = getAdminToken();
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch(`${API_BASE_URL}/content/resume`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+        });
+
+        if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            throw new ApiError(res.status, body.detail ?? `Request failed with ${res.status}`);
+        }
+
+        return res.json() as Promise<{ url: string }>;
+    },
+
+    getInquiries(afterId?: string, pageSize = 5) {
+        const token = getAdminToken();
+        const params = new URLSearchParams({ page_size: String(pageSize) });
+        if (afterId) params.set("after_id", afterId);
+
+        return request<{
+            items: {
+                id: string;
+                fname: string;
+                lname: string;
+                email: string;
+                mobile: string;
+                message: string;
+                date: string;
+            }[];
+            has_next: boolean;
+        }>(`/content/inquiries?${params.toString()}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+    },
 };

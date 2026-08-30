@@ -140,7 +140,7 @@ export default function CommandPalette() {
       run: () => {
         close();
         const link = document.createElement("a");
-        link.href = "/SSEFE.pdf";
+        link.href = portfolioData?.hero.resumeUrl || "/SSEFE.pdf";
         link.download = "Atif_Moin_Resume.pdf";
         link.click();
       },

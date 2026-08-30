@@ -396,7 +396,7 @@ export default function Hero({ revealSignature = true }: { revealSignature?: boo
                       );
                     })}
                     <Link
-                      href="/SSEFE.pdf"
+                      href={portfolioData.hero.resumeUrl || "/SSEFE.pdf"}
                       download="Atif_Moin_Resume.pdf"
                       display="flex"
                       alignItems="center"

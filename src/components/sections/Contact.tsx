@@ -19,8 +19,6 @@ import { motion, useInView } from "framer-motion";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import { useForm } from "react-hook-form";
-import { collection, addDoc } from "firebase/firestore";
-import { firestore } from "../../firebase/index";
 import { apiClient } from "../../services/apiClient";
 import { FaEnvelope, FaGithub, FaLinkedin, FaGlobe, FaPaperPlane } from "react-icons/fa";
 import type { IconType } from "react-icons";
@@ -61,29 +59,16 @@ export default function Contact() {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      await addDoc(collection(firestore, "todos"), {
-        fname: data.firstName,
-        lname: data.lastName,
+      // The backend saves the inquiry and attempts the email notification -
+      // an email-delivery hiccup there is handled server-side and still
+      // reports success, since the message itself is guaranteed saved.
+      await apiClient.sendContactMessage({
+        first_name: data.firstName,
+        last_name: data.lastName,
         email: data.email,
         mobile: data.mobile,
         message: data.message,
-        date: new Date().toLocaleString(),
       });
-
-      // The inquiry is already saved above - fire the email notification without
-      // waiting on it, so a slow/unreachable email backend never leaves the
-      // visitor staring at a stuck "Sending..." button.
-      apiClient
-        .sendContactMessage({
-          first_name: data.firstName,
-          last_name: data.lastName,
-          email: data.email,
-          mobile: data.mobile,
-          message: data.message,
-        })
-        .catch((emailError) => {
-          console.error("Email notification failed (inquiry was still saved):", emailError);
-        });
 
       toast({
         title: "Message sent",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Heading,
@@ -24,8 +24,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
-import { useFirebasePagination } from "../../hooks/useFirebasePagination";
-import { getAdminToken, clearAdminToken } from "../../services/apiClient";
+import { apiClient, getAdminToken, clearAdminToken, ApiError } from "../../services/apiClient";
 import {
   BarChart,
   Bar,
@@ -55,14 +54,47 @@ const cardProps = {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const {
-    data: todos,
-    loading,
-    fetchNextPage,
-    fetchInitialPage,
-    hasNextPage,
-  } = useFirebasePagination<Todo>("todos", 5);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(true);
   const [isStatsLoading] = useState(false);
+
+  const fetchInitialPage = useCallback(async () => {
+    setLoading(true);
+    try {
+      const page = await apiClient.getInquiries(undefined, 5);
+      setTodos(page.items);
+      setHasNextPage(page.has_next);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        clearAdminToken();
+        navigate("/admin/login");
+        return;
+      }
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [navigate]);
+
+  const fetchNextPage = useCallback(async () => {
+    if (!hasNextPage || loading || todos.length === 0) return;
+    setLoading(true);
+    try {
+      const page = await apiClient.getInquiries(todos[todos.length - 1].id, 5);
+      setTodos((prev) => [...prev, ...page.items]);
+      setHasNextPage(page.has_next);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        clearAdminToken();
+        navigate("/admin/login");
+        return;
+      }
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [navigate, hasNextPage, loading, todos]);
 
   useEffect(() => {
     if (!getAdminToken()) {
