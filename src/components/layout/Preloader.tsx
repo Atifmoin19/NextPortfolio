@@ -21,7 +21,25 @@ const TARGET_POLL_TIMEOUT_MS = 2000;
 export default function Preloader({ ready, onDone }: { ready: boolean; onDone: () => void }) {
   const [phase, setPhase] = useState<Phase>("writing");
   const [flyTo, setFlyTo] = useState<{ x: number; y: number; scale: number } | null>(null);
+  const [fontsReady, setFontsReady] = useState(false);
   const textRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    // Without this, the signature can start its write-in using a fallback
+    // system font (Caveat/Bricolage still downloading) and visibly swap
+    // fonts mid-animation - wait until fonts are actually active first.
+    if (typeof document === "undefined" || !("fonts" in document)) {
+      setFontsReady(true);
+      return;
+    }
+    let cancelled = false;
+    document.fonts.ready.then(() => {
+      if (!cancelled) setFontsReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (phase !== "waiting" || !ready) return;
@@ -84,52 +102,54 @@ export default function Preloader({ ready, onDone }: { ready: boolean; onDone: (
         style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "#fdfdfc", pointerEvents: "none" }}
       />
 
-      <motion.div
-        initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 0, y: 0, scale: 1 }}
-        animate={
-          flying
-            ? { opacity: 1, clipPath: "inset(0 0% 0 0)", x: flyTo.x, y: flyTo.y, scale: flyTo.scale }
-            : { opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, y: 0, scale: 1 }
-        }
-        transition={
-          phase === "flying"
-            ? { duration: 0.9, ease: EASE_OUT }
-            : {
-                opacity: { duration: 0.3 },
-                clipPath: { duration: 1.3, ease: [0.65, 0, 0.35, 1] },
-              }
-        }
-        onAnimationComplete={() => {
-          if (phase === "writing") {
-            window.setTimeout(() => setPhase("waiting"), 350);
-          } else if (phase === "flying") {
-            setPhase("gone");
-            onDone();
+      {fontsReady && (
+        <motion.div
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", x: 0, y: 0, scale: 1 }}
+          animate={
+            flying
+              ? { opacity: 1, clipPath: "inset(0 0% 0 0)", x: flyTo.x, y: flyTo.y, scale: flyTo.scale }
+              : { opacity: 1, clipPath: "inset(0 0% 0 0)", x: 0, y: 0, scale: 1 }
           }
-        }}
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          translateX: "-50%",
-          translateY: "-50%",
-          zIndex: 10000,
-          pointerEvents: "none",
-        }}
-      >
-        <span
-          ref={textRef}
+          transition={
+            phase === "flying"
+              ? { duration: 0.9, ease: EASE_OUT }
+              : {
+                  opacity: { duration: 0.3 },
+                  clipPath: { duration: 1.3, ease: [0.65, 0, 0.35, 1] },
+                }
+          }
+          onAnimationComplete={() => {
+            if (phase === "writing") {
+              window.setTimeout(() => setPhase("waiting"), 350);
+            } else if (phase === "flying") {
+              setPhase("gone");
+              onDone();
+            }
+          }}
           style={{
-            fontFamily: "var(--font-script)",
-            fontSize: "clamp(2.75rem, 9vw, 5.5rem)",
-            color: "var(--ink-muted)",
-            lineHeight: 1,
-            display: "inline-block",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            translateX: "-50%",
+            translateY: "-50%",
+            zIndex: 10000,
+            pointerEvents: "none",
           }}
         >
-          Atif Moin
-        </span>
-      </motion.div>
+          <span
+            ref={textRef}
+            style={{
+              fontFamily: "var(--font-script)",
+              fontSize: "clamp(2.75rem, 9vw, 5.5rem)",
+              color: "var(--ink-muted)",
+              lineHeight: 1,
+              display: "inline-block",
+            }}
+          >
+            Atif Moin
+          </span>
+        </motion.div>
+      )}
     </>
   );
 }
