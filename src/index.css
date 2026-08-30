@@ -209,4 +209,12 @@ button {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* A loading spinner communicates real async state, not decorative motion -
+     the blanket override above was capping it at one rotation, so it froze
+     mid-spin instead of indicating "still working" for as long as it's shown. */
+  .chakra-spinner {
+    animation-duration: 0.6s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
