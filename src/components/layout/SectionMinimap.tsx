@@ -87,9 +87,14 @@ export default function SectionMinimap() {
       alignItems="center"
       gap={3}
       sx={{
-        background: "rgba(0, 0, 0, 0.13)",
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
+        // This sits in the page's plain right margin, where there's rarely
+        // any colorful content behind it to actually blur - a strong tint
+        // does the visual work here, blur is just a secondary touch.
+        background: "rgba(22, 20, 15, 0.32)",
+        border: "1px solid rgba(255, 255, 255, 0.14)",
+        boxShadow: "0 8px 24px -12px rgba(22, 20, 15, 0.35)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
         // Fully transparent at the top/bottom edges, the tinted blur only
         // shows through in a band around the center where the bars live.
         maskImage:
