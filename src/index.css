@@ -116,36 +116,46 @@ button {
   border-radius: 4px;
 }
 
-/* --- Bento card fills, used across stat tiles / skill groups / project cards --- */
+/* --- Bento card fills, used across stat tiles / skill groups / project cards ---
+   A soft top-left sheen sits over the base gradient (glossy, not flat), plus an inset
+   top rim highlight for a glass-like edge. */
 .bento-mint {
-  background: linear-gradient(155deg, var(--mint) 0%, var(--mint-deep) 100%);
+  background:
+    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(155deg, var(--mint) 0%, var(--mint-deep) 100%);
   color: var(--mint-ink);
-  box-shadow: 0 10px 24px -12px var(--mint-shadow);
+  box-shadow: 0 10px 24px -12px var(--mint-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .bento-lavender {
-  background: linear-gradient(155deg, var(--lavender) 0%, var(--lavender-deep) 100%);
+  background:
+    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(155deg, var(--lavender) 0%, var(--lavender-deep) 100%);
   color: var(--lavender-ink);
-  box-shadow: 0 10px 24px -12px var(--lavender-shadow);
+  box-shadow: 0 10px 24px -12px var(--lavender-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 .bento-orange {
-  background: linear-gradient(155deg, var(--orange) 0%, var(--orange-deep) 100%);
+  background:
+    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(155deg, var(--orange) 0%, var(--orange-deep) 100%);
   color: var(--orange-ink);
-  box-shadow: 0 10px 24px -12px var(--orange-shadow);
+  box-shadow: 0 10px 24px -12px var(--orange-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 .bento-black {
-  background: linear-gradient(155deg, var(--black-card-deep) 0%, var(--black-card) 100%);
+  background:
+    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(155deg, var(--black-card-deep) 0%, var(--black-card) 100%);
   color: var(--black-card-ink);
-  box-shadow: 0 10px 24px -12px var(--black-shadow);
+  box-shadow: 0 10px 24px -12px var(--black-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 .bento-paper { background: var(--paper-raised); color: var(--ink); border: 1px solid var(--line); }
 
 .bento-mint, .bento-lavender, .bento-orange, .bento-black {
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
-.bento-mint:hover { box-shadow: 0 16px 32px -12px var(--mint-shadow); }
-.bento-lavender:hover { box-shadow: 0 16px 32px -12px var(--lavender-shadow); }
-.bento-orange:hover { box-shadow: 0 16px 32px -12px var(--orange-shadow); }
-.bento-black:hover { box-shadow: 0 16px 32px -12px var(--black-shadow); }
+.bento-mint:hover { box-shadow: 0 16px 32px -12px var(--mint-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+.bento-lavender:hover { box-shadow: 0 16px 32px -12px var(--lavender-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.bento-orange:hover { box-shadow: 0 16px 32px -12px var(--orange-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.45); }
+.bento-black:hover { box-shadow: 0 16px 32px -12px var(--black-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.14); }
 
 /* --- Signature blob shape reserved for one hero visual, not every card --- */
 .hero-blob {

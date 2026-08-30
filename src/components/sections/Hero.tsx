@@ -91,15 +91,15 @@ export default function Hero() {
       position="relative"
       overflow="hidden"
     >
-      {/* One vivid ambient gradient (zIndex 0) - the grid pattern (zIndex 1) paints on top of it
-          so the lines read crisply over the color instead of the color hiding behind them. */}
+      {/* One ambient gradient (zIndex 0) - the grid pattern (zIndex 1) paints on top of it so the
+          lines read crisply over the color instead of the color hiding behind them. */}
       <Box
         aria-hidden
         position="absolute"
         top="-15%"
         right="-10%"
-        width={{ base: "560px", md: "820px" }}
-        height={{ base: "560px", md: "820px" }}
+        width={{ base: "420px", md: "620px" }}
+        height={{ base: "420px", md: "620px" }}
         pointerEvents="none"
         zIndex={0}
         style={{
@@ -332,7 +332,7 @@ export default function Hero() {
               }}
             >
               <Box
-                bg="rgba(255, 255, 255, 0.55)"
+                bg="rgba(255, 255, 255, 0.78)"
                 border="1px solid rgba(255, 255, 255, 0.6)"
                 borderRadius="var(--radius-bento)"
                 boxShadow="0 12px 32px -16px rgba(22, 20, 15, 0.18)"
