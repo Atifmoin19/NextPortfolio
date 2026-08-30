@@ -21,7 +21,7 @@ import type { RootState } from "../../store";
 import { useForm } from "react-hook-form";
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/index";
-import emailjs from "@emailjs/browser";
+import { apiClient } from "../../services/apiClient";
 import { FaEnvelope, FaGithub, FaLinkedin, FaGlobe, FaPaperPlane } from "react-icons/fa";
 import type { IconType } from "react-icons";
 import Magnetic from "../shared/Magnetic";
@@ -70,16 +70,19 @@ export default function Contact() {
         date: new Date().toLocaleString(),
       });
 
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      await emailjs.send(
-        serviceId,
-        templateId,
-        { to_name: data.firstName, to_email: data.email, from_name: portfolioData.hero.name, message: data.message },
-        publicKey,
-      );
+      // The inquiry is already saved above - an email-notification failure
+      // shouldn't make the visitor think their message never went through.
+      try {
+        await apiClient.sendContactMessage({
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          mobile: data.mobile,
+          message: data.message,
+        });
+      } catch (emailError) {
+        console.error("Email notification failed (inquiry was still saved):", emailError);
+      }
 
       toast({
         title: "Message sent",

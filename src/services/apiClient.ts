@@ -68,4 +68,17 @@ export const apiClient = {
             body: JSON.stringify({ message, history }),
         });
     },
+
+    sendContactMessage(data: {
+        first_name: string;
+        last_name: string;
+        email: string;
+        mobile: string;
+        message: string;
+    }) {
+        return request<{ sent: boolean }>("/contact", {
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+    },
 };
