@@ -70,19 +70,20 @@ export default function Contact() {
         date: new Date().toLocaleString(),
       });
 
-      // The inquiry is already saved above - an email-notification failure
-      // shouldn't make the visitor think their message never went through.
-      try {
-        await apiClient.sendContactMessage({
+      // The inquiry is already saved above - fire the email notification without
+      // waiting on it, so a slow/unreachable email backend never leaves the
+      // visitor staring at a stuck "Sending..." button.
+      apiClient
+        .sendContactMessage({
           first_name: data.firstName,
           last_name: data.lastName,
           email: data.email,
           mobile: data.mobile,
           message: data.message,
+        })
+        .catch((emailError) => {
+          console.error("Email notification failed (inquiry was still saved):", emailError);
         });
-      } catch (emailError) {
-        console.error("Email notification failed (inquiry was still saved):", emailError);
-      }
 
       toast({
         title: "Message sent",
