@@ -317,7 +317,7 @@ export default function Hero() {
             </motion.div>
           </VStack>
 
-          <VStack align={{ base: "start", lg: "end" }} w="full">
+          <VStack align={{ base: "stretch", lg: "end" }} w="full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
