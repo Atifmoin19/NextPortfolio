@@ -187,8 +187,7 @@ export const portfolioData = {
         email: "atifmoin19@gmail.com",
         socials: [
             { network: "GitHub", url: "https://github.com/Atifmoin19", icon: "FaGithub" },
-            { network: "LinkedIn", url: "https://www.linkedin.com/in/atif-moin-858167179/", icon: "FaLinkedin" },
-            { network: "Portfolio", url: "https://atifmoin19.github.io/three-portfolio/", icon: "FaGlobe" }
+            { network: "LinkedIn", url: "https://www.linkedin.com/in/atif-moin-858167179/", icon: "FaLinkedin" }
         ]
     }
 };

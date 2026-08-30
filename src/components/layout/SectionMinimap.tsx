@@ -90,9 +90,9 @@ export default function SectionMinimap() {
         // This sits in the page's plain right margin, where there's rarely
         // any colorful content behind it to actually blur - a strong tint
         // does the visual work here, blur is just a secondary touch.
-        background: "rgba(22, 20, 15, 0.32)",
+        background: "rgba(193, 193, 193, 0.17)",
         border: "1px solid rgba(255, 255, 255, 0.14)",
-        boxShadow: "0 8px 24px -12px rgba(22, 20, 15, 0.35)",
+        boxShadow: "0 8px 24px -12px rgba(22, 20, 15, 0.22)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         // Fully transparent at the top/bottom edges, the tinted blur only
