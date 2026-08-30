@@ -62,7 +62,7 @@ export default function Home() {
             <Navbar />
             <main>
               <Suspense fallback={<Box minH="100vh" />}>
-                <Hero />
+                <Hero revealSignature={handoffDone} />
                 <Skills />
                 <Experience />
                 <GitHubActivity />

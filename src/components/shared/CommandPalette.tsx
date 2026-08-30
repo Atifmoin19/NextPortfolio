@@ -140,8 +140,8 @@ export default function CommandPalette() {
       run: () => {
         close();
         const link = document.createElement("a");
-        link.href = "/NextPortfolio/atif_Resume.pdf";
-        link.download = "";
+        link.href = "/SSEFE.pdf";
+        link.download = "Atif_Moin_Resume.pdf";
         link.click();
       },
     });

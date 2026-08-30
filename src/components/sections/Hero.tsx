@@ -45,7 +45,7 @@ function earliestYear(durations: string[]) {
   return years.length ? Math.min(...years) : new Date().getFullYear();
 }
 
-export default function Hero() {
+export default function Hero({ revealSignature = true }: { revealSignature?: boolean }) {
   const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const [badgeOpen, setBadgeOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -199,8 +199,13 @@ export default function Hero() {
             </AnimatePresence>
 
             {/* id is the landing target the preloader measures to compute its fly-in
-                transform - see PreloaderHandoff.tsx. */}
-            <motion.div id="hero-signature-target" style={{ display: "inline-block" }}>
+                transform - see Preloader.tsx. Stays invisible (but still measurable,
+                opacity doesn't affect layout) until the fly-in actually lands here, so
+                there's never a static copy showing underneath the one still traveling. */}
+            <motion.div
+              id="hero-signature-target"
+              style={{ display: "inline-block", opacity: revealSignature ? 1 : 0 }}
+            >
               <Text
                 fontFamily="var(--font-script)"
                 fontSize="3xl"
@@ -391,8 +396,8 @@ export default function Hero() {
                       );
                     })}
                     <Link
-                      href="/NextPortfolio/atif_Resume.pdf"
-                      download
+                      href="/SSEFE.pdf"
+                      download="Atif_Moin_Resume.pdf"
                       display="flex"
                       alignItems="center"
                       gap={2}
