@@ -4,6 +4,7 @@ import Navbar from "../components/layout/Navbar";
 import Preloader from "../components/layout/Preloader";
 import FloatingBackground from "../components/layout/FloatingBackground";
 import ScrollProgress from "../components/layout/ScrollProgress";
+import SectionMinimap from "../components/layout/SectionMinimap";
 import Footer from "../components/layout/Footer";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
@@ -57,6 +58,7 @@ export default function Home() {
           <StructuredData />
           <FloatingBackground />
           <ScrollProgress />
+          <SectionMinimap />
 
           <Box minH="100vh" position="relative" overflow="hidden">
             <Navbar />
