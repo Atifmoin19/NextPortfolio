@@ -25,7 +25,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "#f4f1ea",
+        bg: "#fdfdfc",
         color: "#16140f",
       },
       "input:-webkit-autofill, textarea:-webkit-autofill": {

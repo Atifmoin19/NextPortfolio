@@ -6,9 +6,9 @@
 @import "@fontsource/caveat/600.css";
 
 :root {
-  /* --- Warm paper base, near-black ink (never pure white/black) --- */
-  --paper: #f4f1ea;
-  --paper-raised: #ffffff;
+  /* --- Clean white base, near-black ink --- */
+  --paper: #fdfdfc;
+  --paper-raised: #f6f5f2;
   --ink: #16140f;
   --ink-soft: #4a4539;
   --ink-muted: #8a8371;

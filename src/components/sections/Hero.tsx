@@ -1,19 +1,31 @@
 import { useRef, useState } from "react";
 import type { PointerEvent } from "react";
-import { Box, Container, Text, HStack, VStack, Icon, Button, Grid, Link } from "@chakra-ui/react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import {
+  Box,
+  Container,
+  Text,
+  HStack,
+  VStack,
+  Icon,
+  Button,
+  Grid,
+  Link,
+} from "@chakra-ui/react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useReducedMotion,
+} from "framer-motion";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import {
   FaArrowRight,
-  FaArrowUpRightFromSquare,
   FaDownload,
   FaGithub,
   FaLinkedin,
   FaGlobe,
-  FaClock,
-  FaLayerGroup,
-  FaCode,
 } from "react-icons/fa6";
 import Magnetic from "../shared/Magnetic";
 
@@ -53,7 +65,8 @@ export default function Hero() {
 
   const yearsExperience = Math.max(
     1,
-    new Date().getFullYear() - earliestYear(portfolioData.experience.map((job) => job.duration)),
+    new Date().getFullYear() -
+      earliestYear(portfolioData.experience.map((job) => job.duration)),
   );
 
   const taglineWords = portfolioData.hero.tagline.trim().split(/\s+/);
@@ -63,9 +76,9 @@ export default function Hero() {
       : taglineWords;
 
   const statCards = [
-    { className: "bento-mint", value: `${yearsExperience}+`, label: "Years experience", icon: FaClock },
-    { className: "bento-lavender", value: `${portfolioData.projects.length}+`, label: "Projects shipped", icon: FaLayerGroup },
-    { className: "bento-black", value: `${portfolioData.skills.length}+`, label: "Technologies", icon: FaCode },
+    { value: `${yearsExperience}+`, label: "Years experience" },
+    { value: `${portfolioData.projects.length}+`, label: "Projects shipped" },
+    { value: `${portfolioData.skills.length}+`, label: "Technologies" },
   ];
 
   return (
@@ -78,6 +91,39 @@ export default function Hero() {
       position="relative"
       overflow="hidden"
     >
+      {/* One vivid ambient gradient (zIndex 0) - the grid pattern (zIndex 1) paints on top of it
+          so the lines read crisply over the color instead of the color hiding behind them. */}
+      <Box
+        aria-hidden
+        position="absolute"
+        top="-15%"
+        right="-10%"
+        width={{ base: "560px", md: "820px" }}
+        height={{ base: "560px", md: "820px" }}
+        pointerEvents="none"
+        zIndex={0}
+        style={{
+          background:
+            "radial-gradient(circle, rgba(155, 147, 242, 0.42) 0%, rgba(127, 118, 239, 0.28) 42%, rgba(195, 233, 215, 0.16) 66%, transparent 80%)",
+          filter: "blur(45px)",
+        }}
+      />
+      <Box
+        aria-hidden
+        position="absolute"
+        inset={0}
+        pointerEvents="none"
+        zIndex={1}
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(22,20,15,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(22,20,15,0.07) 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage:
+            "linear-gradient(to bottom, black 0%, black 55%, transparent 92%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, black 55%, transparent 92%)",
+        }}
+      />
       {!reduce && (
         <motion.div
           aria-hidden
@@ -93,250 +139,275 @@ export default function Hero() {
             translateY: "-50%",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(155, 147, 242, 0.35) 0%, rgba(243, 165, 61, 0.18) 55%, transparent 75%)",
+              "radial-gradient(circle, rgba(155, 147, 242, 0.35) 0%, rgba(127, 118, 239, 0.16) 55%, transparent 75%)",
             filter: "blur(10px)",
             pointerEvents: "none",
+            zIndex: 0,
           }}
         />
       )}
       <Container maxW="container.xl" position="relative" zIndex={1}>
-        <VStack align="start" spacing={7} maxW="900px">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Box
-              as="button"
-              onClick={() => setBadgeOpen((v) => !v)}
-              aria-expanded={badgeOpen}
-              display="flex"
-              alignItems="center"
-              gap={3}
-              px={4}
-              h="40px"
-              borderRadius="full"
-              bg="var(--paper-raised)"
-              border="1px solid var(--line)"
-              _hover={{ borderColor: "var(--ink)" }}
-              transition="border-color 0.2s ease"
-            >
-              <Box w="7px" h="7px" borderRadius="full" bg="var(--orange)" />
-              <Text className="label-mono" color="var(--ink-soft)">
-                Open for new opportunities
-              </Text>
-            </Box>
-          </motion.div>
-
-          <AnimatePresence initial={false}>
-            {badgeOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                style={{ overflow: "hidden", marginTop: "-0.75rem" }}
-              >
-                <Text fontSize="sm" color="var(--ink-muted)">
-                  Based in India, usually replies within a day.
-                </Text>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Text fontFamily="var(--font-script)" fontSize="3xl" color="var(--ink-muted)" lineHeight="1" transform="rotate(-3deg)" display="inline-block">
-              {portfolioData.hero.name}
-            </Text>
-          </motion.div>
-
-          <VStack align="start" spacing={0} w="full" mt={1}>
-            {taglineLines.map((line, i) => (
-              <motion.div
-                key={line}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.16 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Text
-                  fontFamily="var(--font-display)"
-                  fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
-                  fontWeight="800"
-                  lineHeight="0.95"
-                  letterSpacing="-0.04em"
-                  color="var(--ink)"
-                >
-                  {line}
-                </Text>
-              </motion.div>
-            ))}
-          </VStack>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.36, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Text fontSize={{ base: "lg", md: "xl" }} color="var(--ink-soft)" lineHeight="1.6" maxW="640px">
-              {portfolioData.hero.description}
-            </Text>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <HStack spacing={4} flexWrap="wrap">
-              <Magnetic>
-                <Button
-                  h="56px"
-                  px={8}
-                  borderRadius="full"
-                  bg="var(--orange)"
-                  color="var(--orange-ink)"
-                  fontSize="md"
-                  fontWeight="700"
-                  _hover={{ bg: "var(--accent-strong)" }}
-                  _active={{ transform: "scale(0.97)" }}
-                  rightIcon={<Icon as={FaArrowRight} />}
-                  onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  {portfolioData.hero.primaryAction}
-                </Button>
-              </Magnetic>
-              <Magnetic>
-                <Button
-                  h="56px"
-                  px={8}
-                  borderRadius="full"
-                  variant="outline"
-                  borderColor="var(--line-strong)"
-                  color="var(--ink)"
-                  fontSize="md"
-                  fontWeight="700"
-                  _hover={{ bg: "var(--paper-raised)", borderColor: "var(--ink)" }}
-                  _active={{ transform: "scale(0.97)" }}
-                  onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                >
-                  {portfolioData.hero.secondaryAction}
-                </Button>
-              </Magnetic>
-            </HStack>
-          </motion.div>
-        </VStack>
-
         <Grid
-          templateColumns={{ base: "1fr 1fr", md: "repeat(4, 1fr)" }}
-          gap={5}
-          w="full"
-          mt={{ base: 12, md: 16 }}
+          templateColumns={{ base: "1fr", lg: "1.4fr 1fr" }}
+          gap={{ base: 12, lg: 8 }}
+          alignItems="end"
         >
-          {statCards.map((card, i) => (
+          <VStack align="start" spacing={7} maxW="900px">
             <motion.div
-              key={card.label}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              style={{ height: "100%" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               <Box
-                className={card.className}
-                position="relative"
-                borderRadius="var(--radius-bento)"
-                p={6}
-                h="full"
-                minH="140px"
-                transition="transform 0.25s ease"
-                _hover={{ transform: "translateY(-4px)" }}
+                as="button"
+                onClick={() => setBadgeOpen((v) => !v)}
+                aria-expanded={badgeOpen}
+                display="flex"
+                alignItems="center"
+                gap={3}
+                px={4}
+                h="40px"
+                borderRadius="full"
+                bg="var(--paper-raised)"
+                border="1px solid var(--line)"
+                _hover={{ borderColor: "var(--ink)" }}
+                transition="border-color 0.2s ease"
               >
-                <Text fontFamily="var(--font-mono)" fontSize="3xl" fontWeight="600">
-                  {card.value}
+                <Box w="7px" h="7px" borderRadius="full" bg="var(--orange)" />
+                <Text className="label-mono" color="var(--ink-soft)">
+                  Open for new opportunities
                 </Text>
-                <Text fontSize="sm" fontWeight="600" mt={1}>
-                  {card.label}
-                </Text>
-                <Icon as={card.icon} position="absolute" top={5} right={5} boxSize={4} opacity={0.4} />
               </Box>
             </motion.div>
-          ))}
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.79, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: "100%" }}
-          >
-            <Box
-              as="a"
-              href="#contact"
-              onClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="bento-orange"
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-              borderRadius="var(--radius-bento)"
-              p={6}
-              h="full"
-              minH="140px"
-              transition="transform 0.25s ease"
-              _hover={{ transform: "translateY(-4px)" }}
-            >
-              <Text fontSize="sm" fontWeight="700">
-                Let&apos;s talk
-              </Text>
-              <Icon as={FaArrowUpRightFromSquare} boxSize={5} />
-            </Box>
-          </motion.div>
-        </Grid>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.95 }}
-        >
-          <HStack spacing={5} pt={8}>
-            {portfolioData.contact.socials.map((social) => {
-              const IconComponent = SOCIAL_ICONS[social.network];
-              if (!IconComponent) return null;
-              return (
-                <Box
-                  key={social.network}
-                  as="a"
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.network}
-                  color="var(--ink-muted)"
-                  _hover={{ color: "var(--ink)" }}
-                  transition="color 0.2s ease"
+            <AnimatePresence initial={false}>
+              {badgeOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ overflow: "hidden", marginTop: "-0.75rem" }}
                 >
-                  <Icon as={IconComponent} boxSize={5} />
-                </Box>
-              );
-            })}
-            <Link
-              href="/NextPortfolio/atif_Resume.pdf"
-              download
-              display="flex"
-              alignItems="center"
-              gap={2}
-              color="var(--ink-muted)"
-              fontSize="sm"
-              _hover={{ color: "var(--ink)" }}
+                  <Text fontSize="sm" color="var(--ink-muted)">
+                    Based in India, usually replies within a day.
+                  </Text>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
-              <Icon as={FaDownload} boxSize={3.5} />
-              Resume
-            </Link>
-          </HStack>
-        </motion.div>
+              <Text
+                fontFamily="var(--font-script)"
+                fontSize="3xl"
+                color="var(--ink-muted)"
+                lineHeight="1"
+                transform="rotate(-3deg)"
+                display="inline-block"
+              >
+                {portfolioData.hero.name}
+              </Text>
+            </motion.div>
+
+            <VStack align="start" spacing={0} w="full" mt={1}>
+              {taglineLines.map((line, i) => (
+                <motion.div
+                  key={line}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.16 + i * 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <Text
+                    fontFamily="var(--font-display)"
+                    fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
+                    fontWeight="800"
+                    lineHeight="0.95"
+                    letterSpacing="-0.04em"
+                    color="var(--ink)"
+                  >
+                    {line}
+                  </Text>
+                </motion.div>
+              ))}
+            </VStack>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.36,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              <Text
+                fontSize={{ base: "lg", md: "xl" }}
+                color="var(--ink-soft)"
+                lineHeight="1.6"
+                maxW="640px"
+              >
+                {portfolioData.hero.description}
+              </Text>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.48,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              <HStack spacing={4} flexWrap="wrap">
+                <Magnetic>
+                  <Button
+                    h="56px"
+                    px={8}
+                    borderRadius="full"
+                    bg="var(--orange)"
+                    color="var(--orange-ink)"
+                    fontSize="md"
+                    fontWeight="700"
+                    _hover={{ bg: "var(--accent-strong)" }}
+                    _active={{ transform: "scale(0.97)" }}
+                    rightIcon={<Icon as={FaArrowRight} />}
+                    onClick={() =>
+                      document
+                        .getElementById("projects")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                  >
+                    {portfolioData.hero.primaryAction}
+                  </Button>
+                </Magnetic>
+                <Magnetic>
+                  <Button
+                    h="56px"
+                    px={8}
+                    borderRadius="full"
+                    variant="outline"
+                    borderColor="var(--line-strong)"
+                    color="var(--ink)"
+                    fontSize="md"
+                    fontWeight="700"
+                    _hover={{
+                      bg: "var(--paper-raised)",
+                      borderColor: "var(--ink)",
+                    }}
+                    _active={{ transform: "scale(0.97)" }}
+                    onClick={() =>
+                      document
+                        .getElementById("contact")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                  >
+                    {portfolioData.hero.secondaryAction}
+                  </Button>
+                </Magnetic>
+              </HStack>
+            </motion.div>
+          </VStack>
+
+          <VStack align={{ base: "start", lg: "end" }} w="full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.5,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              <Box
+                bg="rgba(255, 255, 255, 0.55)"
+                border="1px solid rgba(255, 255, 255, 0.6)"
+                borderRadius="var(--radius-bento)"
+                boxShadow="0 12px 32px -16px rgba(22, 20, 15, 0.18)"
+                px={{ base: 6, md: 8 }}
+                py={{ base: 6, md: 7 }}
+                sx={{
+                  backdropFilter: "blur(18px) saturate(160%)",
+                  WebkitBackdropFilter: "blur(18px) saturate(160%)",
+                }}
+              >
+                <VStack align={{ base: "start", lg: "end" }} spacing={6}>
+                  {statCards.map((stat) => (
+                    <VStack
+                      key={stat.label}
+                      align={{ base: "start", lg: "end" }}
+                      spacing={1}
+                    >
+                      <Text
+                        fontSize="sm"
+                        color="var(--ink-muted)"
+                        textAlign={{ base: "left", lg: "right" }}
+                        maxW="220px"
+                      >
+                        {stat.label}
+                      </Text>
+                      <Text
+                        fontFamily="var(--font-mono)"
+                        fontSize="4xl"
+                        fontWeight="600"
+                        color="var(--ink)"
+                      >
+                        {stat.value}
+                      </Text>
+                    </VStack>
+                  ))}
+
+                  <HStack spacing={5} pt={2}>
+                    {portfolioData.contact.socials.map((social) => {
+                      const IconComponent = SOCIAL_ICONS[social.network];
+                      if (!IconComponent) return null;
+                      return (
+                        <Box
+                          key={social.network}
+                          as="a"
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={social.network}
+                          color="var(--ink-muted)"
+                          _hover={{ color: "var(--ink)" }}
+                          transition="color 0.2s ease"
+                        >
+                          <Icon as={IconComponent} boxSize={5} />
+                        </Box>
+                      );
+                    })}
+                    <Link
+                      href="/NextPortfolio/atif_Resume.pdf"
+                      download
+                      display="flex"
+                      alignItems="center"
+                      gap={2}
+                      color="var(--ink-muted)"
+                      fontSize="sm"
+                      _hover={{ color: "var(--ink)" }}
+                    >
+                      <Icon as={FaDownload} boxSize={3.5} />
+                      Resume
+                    </Link>
+                  </HStack>
+                </VStack>
+              </Box>
+            </motion.div>
+          </VStack>
+        </Grid>
       </Container>
     </Box>
   );

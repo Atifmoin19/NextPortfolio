@@ -123,20 +123,31 @@ export default function Skills() {
             </Text>
           </motion.div>
 
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={5} w="full">
+          <Grid
+            templateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+            autoFlow={{ base: "row", md: "row dense" }}
+            gap={5}
+            w="full"
+          >
             {orderedCategories.map((category, groupIndex) => {
               const skills = groups.get(category)!;
               const className = CATEGORY_CLASS[category] || "bento-paper";
               const FallbackIcon = CATEGORY_FALLBACK_ICON[category] || FaCode;
+              const isWide = skills.length >= 5;
 
               return (
-                <motion.div
-                  key={category}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                  transition={{ duration: 0.6, delay: 0.06 * groupIndex, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Box className={className} borderRadius="var(--radius-bento)" p={7} h="full">
+                <Box key={category} gridColumn={{ base: "auto", md: isWide ? "span 2" : "span 1" }}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                    transition={{ duration: 0.6, delay: 0.06 * groupIndex, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ height: "100%" }}
+                  >
+                  <Box
+                    className={className}
+                    borderRadius="var(--radius-bento)"
+                    p={7}
+                    h="full">
                     <Text className="label-mono" mb={4} opacity={0.7}>
                       {category}
                     </Text>
@@ -167,7 +178,8 @@ export default function Skills() {
                       })}
                     </Wrap>
                   </Box>
-                </motion.div>
+                  </motion.div>
+                </Box>
               );
             })}
           </Grid>

@@ -10,7 +10,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         position: "fixed",
         inset: 0,
         zIndex: 10000,
-        backgroundColor: "#f4f1ea",
+        backgroundColor: "#fdfdfc",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

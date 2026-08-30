@@ -2,9 +2,9 @@ import { Box } from "@chakra-ui/react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const BLOBS = [
-  { color: "var(--mint)", size: 420, top: "-6%", left: "8%", duration: 26, delay: 0 },
-  { color: "var(--lavender)", size: 380, top: "18%", left: "72%", duration: 32, delay: 2 },
-  { color: "var(--orange)", size: 340, top: "62%", left: "12%", duration: 28, delay: 4 },
+  { color: "var(--lavender)", size: 420, top: "-6%", left: "8%", duration: 26, delay: 0 },
+  { color: "var(--lavender-deep)", size: 380, top: "18%", left: "72%", duration: 32, delay: 2 },
+  { color: "var(--lavender-deep)", size: 340, top: "62%", left: "12%", duration: 28, delay: 4 },
   { color: "var(--lavender)", size: 300, top: "78%", left: "68%", duration: 24, delay: 1 },
 ];
 
