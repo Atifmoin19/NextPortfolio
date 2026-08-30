@@ -164,7 +164,7 @@ export default function Contact() {
                     className={CARD_CLASSES[i % CARD_CLASSES.length]}
                     borderRadius="var(--radius-bento)"
                     p={5}
-                    transition="transform 0.2s ease"
+                    transition="transform 0.25s var(--ease-out)"
                     _hover={{ transform: "translateY(-3px)" }}
                   >
                     <HStack spacing={4}>

@@ -2,9 +2,10 @@ import { useRef } from "react";
 import type { ReactNode, PointerEvent } from "react";
 import { Box, Container, Text, VStack, HStack, Grid, Icon, Link as ChakraLink } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { motion, useInView, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useInView, useMotionValue, useReducedMotion } from "framer-motion";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
+import { useLerpMotionValue } from "../../hooks/useLerpMotionValue";
 import {
   FaArrowUpRightFromSquare,
   FaGithub,
@@ -39,14 +40,20 @@ function iconFor(project: { projectName: string; projectType: string }) {
 
 function TiltCard({ children, colSpan }: { children: ReactNode; colSpan: { base: number; md: number } }) {
   const reduce = useReducedMotion();
+  const rectRef = useRef<DOMRect | null>(null);
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-  const springX = useSpring(rotateX, { stiffness: 250, damping: 20 });
-  const springY = useSpring(rotateY, { stiffness: 250, damping: 20 });
+  const smoothRotateX = useLerpMotionValue(rotateX, 0.12);
+  const smoothRotateY = useLerpMotionValue(rotateY, 0.12);
+
+  const handlePointerEnter = (e: PointerEvent<HTMLDivElement>) => {
+    if (reduce || e.pointerType !== "mouse") return;
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+  };
 
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (reduce || e.pointerType !== "mouse") return;
-    const rect = e.currentTarget.getBoundingClientRect();
+    if (reduce || e.pointerType !== "mouse" || !rectRef.current) return;
+    const rect = rectRef.current;
     const relX = (e.clientX - rect.left) / rect.width - 0.5;
     const relY = (e.clientY - rect.top) / rect.height - 0.5;
     rotateY.set(relX * 8);
@@ -54,6 +61,7 @@ function TiltCard({ children, colSpan }: { children: ReactNode; colSpan: { base:
   };
 
   const handlePointerLeave = () => {
+    rectRef.current = null;
     rotateX.set(0);
     rotateY.set(0);
   };
@@ -61,9 +69,10 @@ function TiltCard({ children, colSpan }: { children: ReactNode; colSpan: { base:
   return (
     <Box gridColumn={{ base: `span ${colSpan.base}`, md: `span ${colSpan.md}` }} style={{ perspective: "1000px" }}>
       <motion.div
+        onPointerEnter={handlePointerEnter}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
-        style={{ rotateX: springX, rotateY: springY, height: "100%" }}
+        style={{ rotateX: smoothRotateX, rotateY: smoothRotateY, height: "100%" }}
       >
         {children}
       </motion.div>
@@ -127,7 +136,7 @@ export default function Projects() {
                       borderRadius="var(--radius-bento)"
                       overflow="hidden"
                       p={5}
-                      transition="transform 0.2s ease"
+                      transition="transform 0.25s var(--ease-out)"
                       _hover={{ transform: "translateY(-3px)" }}
                     >
                       <Icon

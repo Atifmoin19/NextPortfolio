@@ -9,6 +9,7 @@ import {
   Icon,
   Button,
   Grid,
+  SimpleGrid,
   Link,
 } from "@chakra-ui/react";
 import {
@@ -28,6 +29,7 @@ import {
   FaGlobe,
 } from "react-icons/fa6";
 import Magnetic from "../shared/Magnetic";
+import { scrollToId } from "../../lib/smoothScroll";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
   GitHub: FaGithub,
@@ -196,14 +198,16 @@ export default function Hero() {
               )}
             </AnimatePresence>
 
+            {/* Signature reveal: a left-to-right clip-path wipe with an eased, hand-drawn pace -
+                reads like the name is being signed rather than just fading in. */}
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
+              animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
               transition={{
-                duration: 0.6,
-                delay: 0.08,
-                ease: [0.16, 1, 0.3, 1],
+                opacity: { duration: 0.25, delay: 0.08 },
+                clipPath: { duration: 1.1, delay: 0.1, ease: [0.65, 0, 0.35, 1] },
               }}
+              style={{ display: "inline-block" }}
             >
               <Text
                 fontFamily="var(--font-script)"
@@ -284,11 +288,7 @@ export default function Hero() {
                     _hover={{ bg: "var(--accent-strong)" }}
                     _active={{ transform: "scale(0.97)" }}
                     rightIcon={<Icon as={FaArrowRight} />}
-                    onClick={() =>
-                      document
-                        .getElementById("projects")
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
+                    onClick={() => scrollToId("projects", -88)}
                   >
                     {portfolioData.hero.primaryAction}
                   </Button>
@@ -308,11 +308,7 @@ export default function Hero() {
                       borderColor: "var(--ink)",
                     }}
                     _active={{ transform: "scale(0.97)" }}
-                    onClick={() =>
-                      document
-                        .getElementById("contact")
-                        ?.scrollIntoView({ behavior: "smooth" })
-                    }
+                    onClick={() => scrollToId("contact", -88)}
                   >
                     {portfolioData.hero.secondaryAction}
                   </Button>
@@ -341,35 +337,41 @@ export default function Hero() {
                 sx={{
                   backdropFilter: "blur(18px) saturate(160%)",
                   WebkitBackdropFilter: "blur(18px) saturate(160%)",
+                  transform: "translateZ(0)",
+                  willChange: "backdrop-filter",
                 }}
               >
-                <VStack align={{ base: "start", lg: "end" }} spacing={6}>
-                  {statCards.map((stat) => (
-                    <VStack
-                      key={stat.label}
-                      align={{ base: "start", lg: "end" }}
-                      spacing={1}
-                    >
-                      <Text
-                        fontSize="sm"
-                        color="var(--ink-muted)"
-                        textAlign={{ base: "left", lg: "right" }}
-                        maxW="220px"
+                <VStack spacing={{ base: 5, lg: 6 }} w="full">
+                  <SimpleGrid columns={{ base: 3, lg: 1 }} spacing={{ base: 2, lg: 6 }} w="full">
+                    {statCards.map((stat) => (
+                      <VStack
+                        key={stat.label}
+                        align={{ base: "center", lg: "end" }}
+                        spacing={1}
                       >
-                        {stat.label}
-                      </Text>
-                      <Text
-                        fontFamily="var(--font-mono)"
-                        fontSize="4xl"
-                        fontWeight="600"
-                        color="var(--ink)"
-                      >
-                        {stat.value}
-                      </Text>
-                    </VStack>
-                  ))}
+                        <Text
+                          fontSize={{ base: "xs", lg: "sm" }}
+                          color="var(--ink-muted)"
+                          textAlign={{ base: "center", lg: "right" }}
+                          maxW="220px"
+                        >
+                          {stat.label}
+                        </Text>
+                        <Text
+                          fontFamily="var(--font-mono)"
+                          fontSize={{ base: "2xl", lg: "4xl" }}
+                          fontWeight="600"
+                          color="var(--ink)"
+                        >
+                          {stat.value}
+                        </Text>
+                      </VStack>
+                    ))}
+                  </SimpleGrid>
 
-                  <HStack spacing={5} pt={2}>
+                  <Box w="full" h="1px" bg="var(--line)" />
+
+                  <HStack spacing={3} w="full" justify={{ base: "center", lg: "flex-end" }} flexWrap="wrap">
                     {portfolioData.contact.socials.map((social) => {
                       const IconComponent = SOCIAL_ICONS[social.network];
                       if (!IconComponent) return null;
@@ -381,9 +383,16 @@ export default function Hero() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={social.network}
-                          color="var(--ink-muted)"
-                          _hover={{ color: "var(--ink)" }}
-                          transition="color 0.2s ease"
+                          w="44px"
+                          h="44px"
+                          borderRadius="full"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          bg="rgba(255, 255, 255, 0.5)"
+                          color="var(--ink-soft)"
+                          _hover={{ bg: "rgba(255, 255, 255, 0.85)", color: "var(--ink)" }}
+                          transition="background 0.2s var(--ease-out), color 0.2s var(--ease-out)"
                         >
                           <Icon as={IconComponent} boxSize={5} />
                         </Box>
@@ -395,9 +404,15 @@ export default function Hero() {
                       display="flex"
                       alignItems="center"
                       gap={2}
-                      color="var(--ink-muted)"
+                      h="44px"
+                      px={5}
+                      borderRadius="full"
+                      bg="var(--ink)"
+                      color="var(--paper)"
                       fontSize="sm"
-                      _hover={{ color: "var(--ink)" }}
+                      fontWeight="600"
+                      _hover={{ bg: "var(--ink-soft)" }}
+                      transition="background 0.2s var(--ease-out)"
                     >
                       <Icon as={FaDownload} boxSize={3.5} />
                       Resume

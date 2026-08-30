@@ -1,7 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { Box } from "@chakra-ui/react";
 import Navbar from "../components/layout/Navbar";
-import SmoothScroll from "../components/layout/SmoothScroll";
 import Preloader from "../components/layout/Preloader";
 import FloatingBackground from "../components/layout/FloatingBackground";
 import ScrollProgress from "../components/layout/ScrollProgress";
@@ -36,7 +35,7 @@ export default function Home() {
       </AnimatePresence>
 
       {!isCompleteLoading && (
-        <SmoothScroll>
+        <>
           <StructuredData />
           <FloatingBackground />
           <ScrollProgress />
@@ -56,7 +55,7 @@ export default function Home() {
             </main>
             <Footer />
           </Box>
-        </SmoothScroll>
+        </>
       )}
     </>
   );

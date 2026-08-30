@@ -14,6 +14,7 @@ import AdminDashboard from "pages/admin/Dashboard";
 import ContentEditor from "pages/admin/ContentEditor";
 import CommandPalette from "./components/shared/CommandPalette";
 import ChatWidget from "./components/shared/ChatWidget";
+import SmoothScroll from "./components/layout/SmoothScroll";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
 import type { AppDispatch } from "store";
 
@@ -42,14 +43,16 @@ function App() {
       <PageTracker />
       <CommandPalette />
       <ChatWidget />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:slug" element={<ProjectDetail />} />
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/content" element={<ContentEditor />} />
-      </Routes>
+      <SmoothScroll>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/project/:slug" element={<ProjectDetail />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/content" element={<ContentEditor />} />
+        </Routes>
+      </SmoothScroll>
     </Router>
   );
 }

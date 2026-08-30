@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import Magnetic from "../shared/Magnetic";
+import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
 
 const NAV_LINKS = ["Skills", "Experience", "Projects", "Contact"];
 
@@ -35,10 +36,7 @@ export default function Navbar() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId.toLowerCase());
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 88;
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToId(sectionId.toLowerCase(), -88);
   };
 
   const handleNavClick = (section: string) => {
@@ -76,7 +74,12 @@ export default function Navbar() {
           border="1px solid"
           borderColor={scrolled ? "var(--line-strong)" : "rgba(255, 255, 255, 0.6)"}
           boxShadow={scrolled ? "0 12px 32px -16px rgba(22, 20, 15, 0.25)" : "none"}
-          sx={{ backdropFilter: "blur(18px) saturate(160%)", WebkitBackdropFilter: "blur(18px) saturate(160%)" }}
+          sx={{
+            backdropFilter: "blur(18px) saturate(160%)",
+            WebkitBackdropFilter: "blur(18px) saturate(160%)",
+            transform: "translateZ(0)",
+            willChange: "backdrop-filter",
+          }}
           transition="background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease"
         >
           <Container maxW="container.xl" px={{ base: 4, md: 6 }}>
@@ -84,7 +87,7 @@ export default function Navbar() {
               <HStack
                 as="button"
                 spacing={3}
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                onClick={() => scrollToTop()}
               >
                 <Flex
                   w="36px"

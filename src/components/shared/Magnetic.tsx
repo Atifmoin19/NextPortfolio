@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import type { ReactNode, PointerEvent } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion } from "framer-motion";
+import { useLerpMotionValue } from "../../hooks/useLerpMotionValue";
 
 export default function Magnetic({
   children,
@@ -12,17 +13,22 @@ export default function Magnetic({
   range?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const reduce = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 300, damping: 20, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 300, damping: 20, mass: 0.5 });
+  const smoothX = useLerpMotionValue(x, 0.14);
+  const smoothY = useLerpMotionValue(y, 0.14);
 
   if (reduce) return <>{children}</>;
 
+  const handlePointerEnter = () => {
+    rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+  };
+
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== "mouse" || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (e.pointerType !== "mouse" || !rectRef.current) return;
+    const rect = rectRef.current;
     const relX = e.clientX - (rect.left + rect.width / 2);
     const relY = e.clientY - (rect.top + rect.height / 2);
     const dist = Math.hypot(relX, relY);
@@ -32,6 +38,7 @@ export default function Magnetic({
   };
 
   const handlePointerLeave = () => {
+    rectRef.current = null;
     x.set(0);
     y.set(0);
   };
@@ -39,9 +46,10 @@ export default function Magnetic({
   return (
     <motion.div
       ref={ref}
+      onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      style={{ x: springX, y: springY, display: "inline-flex" }}
+      style={{ x: smoothX, y: smoothY, display: "inline-flex" }}
     >
       {children}
     </motion.div>

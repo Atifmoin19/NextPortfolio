@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { scrollToId } from "../../lib/smoothScroll";
 import {
   FaMagnifyingGlass,
   FaArrowRight,
@@ -61,11 +62,9 @@ export default function CommandPalette() {
     close();
     if (location.pathname !== "/") {
       navigate("/");
-      setTimeout(() => {
-        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
-      }, 200);
+      setTimeout(() => scrollToId(section, -88), 200);
     } else {
-      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+      scrollToId(section, -88);
     }
   };
 
