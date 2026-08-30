@@ -1,0 +1,197 @@
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/geist";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/600.css";
+@import "@fontsource/caveat/400.css";
+@import "@fontsource/caveat/600.css";
+
+:root {
+  /* --- Warm paper base, near-black ink (never pure white/black) --- */
+  --paper: #f4f1ea;
+  --paper-raised: #ffffff;
+  --ink: #16140f;
+  --ink-soft: #4a4539;
+  --ink-muted: #8a8371;
+  --line: rgba(22, 20, 15, 0.12);
+  --line-strong: rgba(22, 20, 15, 0.22);
+
+  /* --- Colorful bento palette (decorative card fills) --- */
+  --mint: #c3e9d7;
+  --mint-deep: #a3d9bf;
+  --mint-ink: #12352a;
+  --mint-shadow: rgba(18, 53, 42, 0.18);
+  --lavender: #9b93f2;
+  --lavender-deep: #7f76ef;
+  --lavender-ink: #fbfaf7;
+  --lavender-shadow: rgba(66, 55, 200, 0.25);
+  --orange: #f3a53d;
+  --orange-deep: #e2901f;
+  --orange-ink: #241300;
+  --orange-shadow: rgba(190, 106, 10, 0.28);
+  --black-card: #16140f;
+  --black-card-deep: #211e17;
+  --black-card-ink: #f4f1ea;
+  --black-shadow: rgba(22, 20, 15, 0.3);
+
+  /* --- One locked interactive accent (buttons, links, focus) --- */
+  --accent: #f3a53d;
+  --accent-strong: #e08a1a;
+  --accent-ink: #241300;
+  --accent-soft: rgba(243, 165, 61, 0.16);
+  --accent-border: rgba(243, 165, 61, 0.45);
+
+  --font-display: "Bricolage Grotesque Variable", system-ui, sans-serif;
+  --font-body: "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
+  --font-script: "Caveat", cursive;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-bento: 28px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--paper);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle, rgba(22, 20, 15, 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--paper);
+  color: var(--ink);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --- Bento card fills, used across stat tiles / skill groups / project cards --- */
+.bento-mint {
+  background: linear-gradient(155deg, var(--mint) 0%, var(--mint-deep) 100%);
+  color: var(--mint-ink);
+  box-shadow: 0 10px 24px -12px var(--mint-shadow);
+}
+.bento-lavender {
+  background: linear-gradient(155deg, var(--lavender) 0%, var(--lavender-deep) 100%);
+  color: var(--lavender-ink);
+  box-shadow: 0 10px 24px -12px var(--lavender-shadow);
+}
+.bento-orange {
+  background: linear-gradient(155deg, var(--orange) 0%, var(--orange-deep) 100%);
+  color: var(--orange-ink);
+  box-shadow: 0 10px 24px -12px var(--orange-shadow);
+}
+.bento-black {
+  background: linear-gradient(155deg, var(--black-card-deep) 0%, var(--black-card) 100%);
+  color: var(--black-card-ink);
+  box-shadow: 0 10px 24px -12px var(--black-shadow);
+}
+.bento-paper { background: var(--paper-raised); color: var(--ink); border: 1px solid var(--line); }
+
+.bento-mint, .bento-lavender, .bento-orange, .bento-black {
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+.bento-mint:hover { box-shadow: 0 16px 32px -12px var(--mint-shadow); }
+.bento-lavender:hover { box-shadow: 0 16px 32px -12px var(--lavender-shadow); }
+.bento-orange:hover { box-shadow: 0 16px 32px -12px var(--orange-shadow); }
+.bento-black:hover { box-shadow: 0 16px 32px -12px var(--black-shadow); }
+
+/* --- Signature blob shape reserved for one hero visual, not every card --- */
+.hero-blob {
+  position: relative;
+  border-radius: var(--radius-bento) var(--radius-bento) var(--radius-bento) 6px;
+}
+.hero-blob::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--paper);
+  border-radius: 0 0 0 100%;
+  pointer-events: none;
+}
+
+/* --- Mono label style: small tracked caps used for meta/labels/tags --- */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* --- Custom scrollbar --- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 2px solid var(--paper);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+#hero, #skills, #experience, #projects, #contact {
+  scroll-margin-top: 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
