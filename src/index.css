@@ -73,6 +73,11 @@
 
 html {
   color-scheme: light;
+  /* Reserves the vertical scrollbar's width up front - without this, the page is too
+     short to scroll while the preloader covers it, then gains a scrollbar the instant
+     the real (taller) content mounts, shifting everything left by the scrollbar's width. */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 
 body {

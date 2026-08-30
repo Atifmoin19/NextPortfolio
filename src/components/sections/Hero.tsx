@@ -198,17 +198,9 @@ export default function Hero() {
               )}
             </AnimatePresence>
 
-            {/* Signature reveal: a left-to-right clip-path wipe with an eased, hand-drawn pace -
-                reads like the name is being signed rather than just fading in. */}
-            <motion.div
-              initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-              animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
-              transition={{
-                opacity: { duration: 0.25, delay: 0.08 },
-                clipPath: { duration: 1.1, delay: 0.1, ease: [0.65, 0, 0.35, 1] },
-              }}
-              style={{ display: "inline-block" }}
-            >
+            {/* id is the landing target the preloader measures to compute its fly-in
+                transform - see PreloaderHandoff.tsx. */}
+            <motion.div id="hero-signature-target" style={{ display: "inline-block" }}>
               <Text
                 fontFamily="var(--font-script)"
                 fontSize="3xl"
