@@ -14,7 +14,9 @@ import AdminDashboard from "pages/admin/Dashboard";
 import ContentEditor from "pages/admin/ContentEditor";
 import CommandPalette from "./components/shared/CommandPalette";
 import ChatWidget from "./components/shared/ChatWidget";
+import MotionOptInPill from "./components/shared/MotionOptInPill";
 import SmoothScroll from "./components/layout/SmoothScroll";
+import { MotionPreferenceProvider } from "./lib/motionPreference";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
 import type { AppDispatch } from "store";
 
@@ -39,21 +41,24 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Router>
-      <PageTracker />
-      <CommandPalette />
-      <ChatWidget />
-      <SmoothScroll>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/project/:slug" element={<ProjectDetail />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/content" element={<ContentEditor />} />
-        </Routes>
-      </SmoothScroll>
-    </Router>
+    <MotionPreferenceProvider>
+      <Router>
+        <PageTracker />
+        <CommandPalette />
+        <ChatWidget />
+        <MotionOptInPill />
+        <SmoothScroll>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/project/:slug" element={<ProjectDetail />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/content" element={<ContentEditor />} />
+          </Routes>
+        </SmoothScroll>
+      </Router>
+    </MotionPreferenceProvider>
   );
 }
 

@@ -18,7 +18,15 @@ const TARGET_POLL_TIMEOUT_MS = 2000;
  * or parallax effect), so it intentionally always plays at full speed rather than
  * fast-forwarding under prefers-reduced-motion.
  */
-export default function Preloader({ ready, onDone }: { ready: boolean; onDone: () => void }) {
+export default function Preloader({
+  ready,
+  onDone,
+  onFlyStart,
+}: {
+  ready: boolean;
+  onDone: () => void;
+  onFlyStart?: () => void;
+}) {
   const [phase, setPhase] = useState<Phase>("writing");
   const [flyTo, setFlyTo] = useState<{ x: number; y: number; scale: number } | null>(null);
   const [fontsReady, setFontsReady] = useState(false);
@@ -68,6 +76,7 @@ export default function Preloader({ ready, onDone }: { ready: boolean; onDone: (
           scale,
         });
         setPhase("flying");
+        onFlyStart?.();
         return;
       }
 
@@ -87,7 +96,7 @@ export default function Preloader({ ready, onDone }: { ready: boolean; onDone: (
       cancelled = true;
       cancelAnimationFrame(frame);
     };
-  }, [phase, ready, onDone]);
+  }, [phase, ready, onDone, onFlyStart]);
 
   if (phase === "gone") return null;
 

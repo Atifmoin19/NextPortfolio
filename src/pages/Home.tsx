@@ -32,6 +32,7 @@ export default function Home() {
   );
   const dataReady = !dataLoading && !!data;
   const [handoffDone, setHandoffDone] = useState(false);
+  const [flyStarted, setFlyStarted] = useState(false);
 
   // Prefetch every below-the-fold chunk while the preloader is still playing, so the
   // page is ready to mount (and its signature target measurable) the instant data loads.
@@ -50,7 +51,11 @@ export default function Home() {
   return (
     <>
       {!handoffDone && (
-        <Preloader ready={dataReady} onDone={() => setHandoffDone(true)} />
+        <Preloader
+          ready={dataReady}
+          onDone={() => setHandoffDone(true)}
+          onFlyStart={() => setFlyStarted(true)}
+        />
       )}
 
       {dataReady && (
@@ -64,7 +69,7 @@ export default function Home() {
             <Navbar />
             <main>
               <Suspense fallback={<Box minH="100vh" />}>
-                <Hero revealSignature={handoffDone} />
+                <Hero revealSignature={handoffDone} particlesActive={flyStarted} />
                 <Skills />
                 <Experience />
                 <GitHubActivity />

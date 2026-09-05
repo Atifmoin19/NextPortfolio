@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import type { PointerEvent } from "react";
+import { useState } from "react";
 import {
   Box,
   Container,
@@ -12,13 +11,7 @@ import {
   SimpleGrid,
   Link,
 } from "@chakra-ui/react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import {
@@ -29,6 +22,7 @@ import {
   FaGlobe,
 } from "react-icons/fa6";
 import Magnetic from "../shared/Magnetic";
+import ParticleText from "../webgl/ParticleText";
 import { scrollToId } from "../../lib/smoothScroll";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
@@ -45,23 +39,15 @@ function earliestYear(durations: string[]) {
   return years.length ? Math.min(...years) : new Date().getFullYear();
 }
 
-export default function Hero({ revealSignature = true }: { revealSignature?: boolean }) {
+export default function Hero({
+  revealSignature = true,
+  particlesActive = true,
+}: {
+  revealSignature?: boolean;
+  particlesActive?: boolean;
+}) {
   const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const [badgeOpen, setBadgeOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-
-  const blobX = useMotionValue(0);
-  const blobY = useMotionValue(0);
-  const springX = useSpring(blobX, { stiffness: 90, damping: 22 });
-  const springY = useSpring(blobY, { stiffness: 90, damping: 22 });
-
-  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (reduce || e.pointerType !== "mouse" || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    blobX.set(e.clientX - rect.left);
-    blobY.set(e.clientY - rect.top);
-  };
 
   if (!portfolioData) return null;
 
@@ -85,8 +71,6 @@ export default function Hero({ revealSignature = true }: { revealSignature?: boo
 
   return (
     <Box
-      ref={containerRef}
-      onPointerMove={handlePointerMove}
       id="hero"
       pt={{ base: "120px", md: "160px" }}
       pb={{ base: 16, md: 24 }}
@@ -126,28 +110,6 @@ export default function Hero({ revealSignature = true }: { revealSignature?: boo
             "linear-gradient(to bottom, black 0%, black 55%, transparent 92%)",
         }}
       />
-      {!reduce && (
-        <motion.div
-          aria-hidden
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "460px",
-            height: "460px",
-            x: springX,
-            y: springY,
-            translateX: "-50%",
-            translateY: "-50%",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(155, 147, 242, 0.35) 0%, rgba(127, 118, 239, 0.16) 55%, transparent 75%)",
-            filter: "blur(10px)",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        />
-      )}
       <Container maxW="container.xl" position="relative" zIndex={1}>
         <Grid
           templateColumns={{ base: "1fr", lg: "1.4fr 1fr" }}
@@ -230,16 +192,18 @@ export default function Hero({ revealSignature = true }: { revealSignature?: boo
                     ease: [0.16, 1, 0.3, 1],
                   }}
                 >
-                  <Text
-                    fontFamily="var(--font-display)"
-                    fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
-                    fontWeight="800"
-                    lineHeight="0.95"
-                    letterSpacing="-0.04em"
-                    color="var(--ink)"
-                  >
-                    {line}
-                  </Text>
+                  <ParticleText active={particlesActive}>
+                    <Text
+                      fontFamily="var(--font-display)"
+                      fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
+                      fontWeight="800"
+                      lineHeight="0.95"
+                      letterSpacing="-0.04em"
+                      color="var(--ink)"
+                    >
+                      {line}
+                    </Text>
+                  </ParticleText>
                 </motion.div>
               ))}
             </VStack>

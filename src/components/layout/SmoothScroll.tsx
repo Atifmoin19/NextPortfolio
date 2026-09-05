@@ -3,18 +3,21 @@ import { Box } from "@chakra-ui/react";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "../../lib/motionPreference";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const reduce = useReducedMotion();
+
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
+    if (reduce) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.85,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      wheelMultiplier: 1.15,
       touchMultiplier: 2,
     });
 
@@ -30,7 +33,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       lenis.destroy();
       window.__lenis = undefined;
     };
-  }, []);
+  }, [reduce]);
 
   return <Box>{children}</Box>;
 }

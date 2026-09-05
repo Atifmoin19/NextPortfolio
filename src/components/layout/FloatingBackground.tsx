@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useReducedMotion } from "../../lib/motionPreference";
 
 const BLOBS = [
   { color: "var(--lavender)", size: 420, top: "-6%", left: "8%", duration: 26, delay: 0 },

@@ -19,8 +19,8 @@ export const portfolioService = {
                 return initialData;
             }
         } catch (error) {
-            console.error("Error fetching portfolio data:", error);
-            throw error;
+            console.error("Error fetching portfolio data, falling back to local content:", error);
+            return initialData;
         }
     },
 
