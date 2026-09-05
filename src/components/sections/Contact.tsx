@@ -23,6 +23,8 @@ import { apiClient } from "../../services/apiClient";
 import { FaEnvelope, FaGithub, FaLinkedin, FaGlobe, FaPaperPlane } from "react-icons/fa";
 import type { IconType } from "react-icons";
 import Magnetic from "../shared/Magnetic";
+import ParticleBurst from "../webgl/ParticleBurst";
+import type { ParticleBurstHandle } from "../webgl/ParticleBurst";
 
 interface FormData {
   firstName: string;
@@ -46,6 +48,9 @@ export default function Contact() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const sectionBoxRef = useRef<HTMLDivElement>(null);
+  const submitBtnRef = useRef<HTMLButtonElement>(null);
+  const burstRef = useRef<ParticleBurstHandle>(null);
 
   const {
     register,
@@ -78,6 +83,15 @@ export default function Contact() {
         isClosable: true,
       });
       reset();
+
+      const btnRect = submitBtnRef.current?.getBoundingClientRect();
+      const sectionRect = sectionBoxRef.current?.getBoundingClientRect();
+      if (btnRect && sectionRect) {
+        burstRef.current?.burst(
+          btnRect.left + btnRect.width / 2 - sectionRect.left,
+          btnRect.top + btnRect.height / 2 - sectionRect.top,
+        );
+      }
     } catch (e) {
       console.error("Submission error:", e);
       toast({
@@ -110,8 +124,16 @@ export default function Contact() {
   ];
 
   return (
-    <Box id="contact" py={{ base: 16, md: 24 }} px={{ base: 6, md: 12, lg: 24 }} position="relative">
-      <Container maxW="container.xl">
+    <Box
+      ref={sectionBoxRef}
+      id="contact"
+      py={{ base: 16, md: 24 }}
+      px={{ base: 6, md: 12, lg: 24 }}
+      position="relative"
+      overflow="hidden"
+    >
+      <ParticleBurst ref={burstRef} />
+      <Container maxW="container.xl" position="relative" zIndex={1}>
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={12}>
           <VStack align="start" spacing={8}>
             <motion.div
@@ -231,6 +253,7 @@ export default function Contact() {
 
                 <Magnetic>
                   <Button
+                    ref={submitBtnRef}
                     type="submit"
                     w="full"
                     h="56px"
