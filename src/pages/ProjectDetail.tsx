@@ -11,6 +11,7 @@ import FloatingBackground from "../components/layout/FloatingBackground";
 import ScrollProgress from "../components/layout/ScrollProgress";
 import { slugify } from "../utils/slugify";
 import { backendCity } from "../data/featured";
+import ScreenGallery from "../components/shared/ScreenGallery";
 
 const CARD_CLASSES = ["bento-mint", "bento-lavender", "bento-orange", "bento-black"];
 
@@ -146,39 +147,8 @@ export default function ProjectDetail() {
 
           {gallery.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}>
-              <Box as="section" aria-label="Screens" mb={12}>
-                <Box display="grid" gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={5}>
-                  {gallery.map((g, i) => (
-                    <Box as="figure" key={g.src} gridColumn={i === 0 ? { md: "span 2" } : undefined} m={0}>
-                      <ChakraLink
-                        href={g.src}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        display="block"
-                        borderRadius="var(--radius-md)"
-                        overflow="hidden"
-                        border="1px solid var(--line)"
-                        bg="#0b1124"
-                        boxShadow="0 24px 48px -28px rgba(22,20,15,0.45)"
-                        transition="transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out)"
-                        _hover={{ transform: "translateY(-3px)", boxShadow: "0 30px 56px -28px rgba(22,20,15,0.55)" }}
-                        aria-label={`Open full-size screenshot: ${g.label}`}
-                      >
-                        <img
-                          src={g.src}
-                          alt={`${project.projectName}: ${g.label}`}
-                          loading={i === 0 ? "eager" : "lazy"}
-                          decoding="async"
-                          style={{ display: "block", width: "100%", aspectRatio: "16 / 10", objectFit: "cover", objectPosition: "top left" }}
-                        />
-                      </ChakraLink>
-                      <Box as="figcaption" mt={3}>
-                        <Text fontWeight="700" fontSize="sm" color="var(--ink)">{g.label}</Text>
-                        <Text fontSize="sm" color="var(--ink-soft)" lineHeight="1.6">{g.caption}</Text>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
+              <Box mb={12}>
+                <ScreenGallery shots={gallery} title={project.projectName} />
               </Box>
             </motion.div>
           )}
