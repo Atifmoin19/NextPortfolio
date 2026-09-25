@@ -218,3 +218,28 @@ button {
     animation-iteration-count: infinite !important;
   }
 }
+
+/* --- Featured project (Backend City) --- */
+.fp-ping {
+  animation: fp-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes fp-ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.fp-spin {
+  animation: fp-spin 0.9s linear infinite;
+}
+@keyframes fp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fp-ping {
+    animation: none;
+  }
+}

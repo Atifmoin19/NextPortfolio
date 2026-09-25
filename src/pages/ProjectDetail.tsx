@@ -10,6 +10,7 @@ import Footer from "../components/layout/Footer";
 import FloatingBackground from "../components/layout/FloatingBackground";
 import ScrollProgress from "../components/layout/ScrollProgress";
 import { slugify } from "../utils/slugify";
+import { backendCity } from "../data/featured";
 
 const CARD_CLASSES = ["bento-mint", "bento-lavender", "bento-orange", "bento-black"];
 
@@ -19,8 +20,10 @@ export default function ProjectDetail() {
   const loading = useSelector((state: RootState) => state.portfolio.loading);
 
   const index = portfolioData?.projects.findIndex((p) => slugify(p.projectName) === slug) ?? -1;
-  const project = index >= 0 ? portfolioData!.projects[index] : null;
-  const className = index >= 0 ? CARD_CLASSES[index % CARD_CLASSES.length] : "bento-mint";
+  // The featured build lives in code, so its case study works even if the CMS doesn't list it
+  const featured = slug === slugify(backendCity.projectName) ? backendCity : null;
+  const project = index >= 0 ? portfolioData!.projects[index] : featured;
+  const className = featured && index < 0 ? "bento-black" : index >= 0 ? CARD_CLASSES[index % CARD_CLASSES.length] : "bento-mint";
 
   useEffect(() => {
     document.title = project
@@ -28,7 +31,7 @@ export default function ProjectDetail() {
       : "Atif Moin";
   }, [project]);
 
-  if (!portfolioData && loading) {
+  if (!portfolioData && loading && !featured) {
     return (
       <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
         <Text color="var(--ink-muted)">Loading...</Text>
@@ -55,6 +58,8 @@ export default function ProjectDetail() {
   const highlights = (project as { highlights?: string[] }).highlights ?? [];
   const problem = (project as { problem?: string }).problem ?? "";
   const approach = (project as { approach?: string }).approach ?? "";
+  const gallery =
+    (project as { gallery?: { src: string; label: string; caption: string }[] }).gallery ?? [];
 
   return (
     <>
@@ -138,6 +143,45 @@ export default function ProjectDetail() {
               )}
             </Box>
           </motion.div>
+
+          {gallery.length > 0 && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}>
+              <Box as="section" aria-label="Screens" mb={12}>
+                <Box display="grid" gridTemplateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={5}>
+                  {gallery.map((g, i) => (
+                    <Box as="figure" key={g.src} gridColumn={i === 0 ? { md: "span 2" } : undefined} m={0}>
+                      <ChakraLink
+                        href={g.src}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        display="block"
+                        borderRadius="var(--radius-md)"
+                        overflow="hidden"
+                        border="1px solid var(--line)"
+                        bg="#0b1124"
+                        boxShadow="0 24px 48px -28px rgba(22,20,15,0.45)"
+                        transition="transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out)"
+                        _hover={{ transform: "translateY(-3px)", boxShadow: "0 30px 56px -28px rgba(22,20,15,0.55)" }}
+                        aria-label={`Open full-size screenshot: ${g.label}`}
+                      >
+                        <img
+                          src={g.src}
+                          alt={`${project.projectName}: ${g.label}`}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                          style={{ display: "block", width: "100%", aspectRatio: "16 / 10", objectFit: "cover", objectPosition: "top left" }}
+                        />
+                      </ChakraLink>
+                      <Box as="figcaption" mt={3}>
+                        <Text fontWeight="700" fontSize="sm" color="var(--ink)">{g.label}</Text>
+                        <Text fontSize="sm" color="var(--ink-soft)" lineHeight="1.6">{g.caption}</Text>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            </motion.div>
+          )}
 
           <VStack align="start" spacing={10} w="full">
             {problem && (

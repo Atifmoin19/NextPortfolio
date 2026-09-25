@@ -19,6 +19,7 @@ import {
 } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 import { slugify } from "../../utils/slugify";
+import FeaturedProject from "./FeaturedProject";
 
 const CARD_CLASSES = ["bento-mint", "bento-lavender", "bento-orange", "bento-black"];
 
@@ -108,6 +109,8 @@ export default function Projects() {
               Selected work
             </Text>
           </motion.div>
+
+          <FeaturedProject />
 
           <Grid
             templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}

@@ -24,6 +24,7 @@ import {
 import Magnetic from "../shared/Magnetic";
 import ParticleText from "../webgl/ParticleText";
 import { scrollToId } from "../../lib/smoothScroll";
+import { resolveResumeUrl } from "../../utils/resumeUrl";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
   GitHub: FaGithub,
@@ -360,7 +361,7 @@ export default function Hero({
                       );
                     })}
                     <Link
-                      href={portfolioData.hero.resumeUrl || "/SSEFE.pdf"}
+                      href={resolveResumeUrl(portfolioData.hero.resumeUrl)}
                       download="Atif_Moin_Resume.pdf"
                       display="flex"
                       alignItems="center"

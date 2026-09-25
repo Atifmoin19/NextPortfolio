@@ -20,7 +20,7 @@ import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import Magnetic from "../shared/Magnetic";
 import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
 
-const NAV_LINKS = ["Skills", "Experience", "Projects", "Contact"];
+const NAV_LINKS = ["Projects", "Skills", "Experience", "Contact"];
 
 export default function Navbar() {
   const navigate = useNavigate();

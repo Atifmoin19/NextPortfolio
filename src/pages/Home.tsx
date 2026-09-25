@@ -70,10 +70,10 @@ export default function Home() {
             <main>
               <Suspense fallback={<Box minH="100vh" />}>
                 <Hero revealSignature={handoffDone} particlesActive={flyStarted} />
+                <Projects />
                 <Skills />
                 <Experience />
                 <GitHubActivity />
-                <Projects />
                 <Testimonials />
                 <Contact />
               </Suspense>

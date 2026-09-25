@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { scrollToId } from "../../lib/smoothScroll";
 
-const SECTION_IDS = ["hero", "skills", "experience", "projects", "contact"];
+const SECTION_IDS = ["hero", "projects", "skills", "experience", "contact"];
 
 const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const THRESHOLDS = Array.from({ length: 11 }, (_, i) => i / 10);

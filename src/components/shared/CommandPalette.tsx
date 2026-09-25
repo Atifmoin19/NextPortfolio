@@ -27,6 +27,8 @@ import {
 } from "react-icons/fa6";
 import type { RootState } from "../../store";
 import { slugify } from "../../utils/slugify";
+import { backendCity } from "../../data/featured";
+import { resolveResumeUrl } from "../../utils/resumeUrl";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
   GitHub: FaGithub,
@@ -94,7 +96,10 @@ export default function CommandPalette() {
     ];
 
     if (portfolioData) {
-      for (const project of portfolioData.projects) {
+      const projects = portfolioData.projects.some((p) => p.projectName === backendCity.projectName)
+        ? portfolioData.projects
+        : [backendCity, ...portfolioData.projects];
+      for (const project of projects) {
         list.push({
           id: `project-${project.projectName}`,
           label: project.projectName,
@@ -140,7 +145,7 @@ export default function CommandPalette() {
       run: () => {
         close();
         const link = document.createElement("a");
-        link.href = portfolioData?.hero.resumeUrl || "/SSEFE.pdf";
+        link.href = resolveResumeUrl(portfolioData?.hero.resumeUrl);
         link.download = "Atif_Moin_Resume.pdf";
         link.click();
       },
