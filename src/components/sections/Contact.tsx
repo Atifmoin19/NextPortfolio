@@ -19,7 +19,8 @@ import { motion, useInView } from "framer-motion";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import { useForm } from "react-hook-form";
-import { apiClient } from "../../services/apiClient";
+import { apiClient, ApiError } from "../../services/apiClient";
+import { useSlowHint } from "../../hooks/useSlowHint";
 import { FaEnvelope, FaGithub, FaLinkedin, FaGlobe, FaPaperPlane } from "react-icons/fa";
 import type { IconType } from "react-icons";
 import Magnetic from "../shared/Magnetic";
@@ -32,6 +33,7 @@ interface FormData {
   email: string;
   mobile: string;
   message: string;
+  website: string; // honeypot, hidden from people
 }
 
 const SOCIAL_ICONS: Record<string, IconType> = {
@@ -47,6 +49,7 @@ export default function Contact() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isLoading, setIsLoading] = useState(false);
+  const isSlow = useSlowHint(isLoading);
   const toast = useToast();
   const sectionBoxRef = useRef<HTMLDivElement>(null);
   const submitBtnRef = useRef<HTMLButtonElement>(null);
@@ -73,6 +76,7 @@ export default function Contact() {
         email: data.email,
         mobile: data.mobile,
         message: data.message,
+        website: data.website,
       });
 
       toast({
@@ -94,9 +98,12 @@ export default function Contact() {
       }
     } catch (e) {
       console.error("Submission error:", e);
+      const limited = e instanceof ApiError && e.status === 429;
       toast({
-        title: "Something went wrong",
-        description: "Please try again in a moment.",
+        title: limited ? "Easy there" : "Something went wrong",
+        description: limited
+          ? "Too many messages in a minute. Please wait a moment and send again."
+          : "Please try again in a moment.",
         status: "error",
         duration: 5000,
       });
@@ -212,6 +219,11 @@ export default function Contact() {
           >
             <Box bg="var(--paper-raised)" border="1px solid var(--line)" borderRadius="var(--radius-bento)" p={{ base: 6, md: 8 }}>
               <VStack spacing={5} as="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                {/* Honeypot: off-screen and skipped by keyboard and screen readers; bots fill it. */}
+                <Box as="label" position="absolute" left="-10000px" w="1px" h="1px" overflow="hidden" aria-hidden="true">
+                  Website
+                  <input type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+                </Box>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} w="full">
                   <FormControl isInvalid={!!errors.firstName}>
                     <Input placeholder="First name" {...inputStyle} {...register("firstName", { required: "Required" })} />
@@ -263,7 +275,7 @@ export default function Contact() {
                     fontSize="sm"
                     fontWeight="700"
                     isLoading={isLoading}
-                    loadingText="Sending"
+                    loadingText={isSlow ? "Waking the server, ~30 s" : "Sending"}
                     _hover={{ bg: "var(--accent-strong)" }}
                     _active={{ transform: "scale(0.98)" }}
                     rightIcon={<Icon as={FaPaperPlane} />}

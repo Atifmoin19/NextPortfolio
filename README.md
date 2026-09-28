@@ -15,10 +15,11 @@ The old GitHub Pages build (`gh-pages` branch, base `/NextPortfolio/`) is retire
 - **react-router-dom** (`HashRouter`) — kept from the GitHub Pages days (no server-side
   rewrites there); `vercel.json` also rewrites everything to `index.html`, so switching to
   `BrowserRouter` is possible later. Routes are hash-based (`/#/project/foo`, `/#/admin/login`, etc.)
-- **Firebase** (client SDK) — public, read-only fetch of portfolio content from Firestore
+- **Firestore REST API** (plain `fetch`, no Firebase SDK) — public, read-only fetch of the
+  portfolio content document; all writes go through the backend
 - **Lenis** (`@studio-freight/lenis`) + **GSAP ScrollTrigger** — smooth scrolling
 - **react-hook-form** — Contact form
-- **EmailJS** — Contact form submission
+- **Contact form** → backend `POST /contact` (saves to Firestore, emails via Resend)
 - **react-ga4** — pageview tracking
 - **recharts** — admin dashboard analytics charts
 
@@ -90,7 +91,7 @@ Frontend/src/
 4. **Experience** — vertical timeline (not cards), current role gets an accent dot + pill
 5. **GitHubActivity** — live GitHub contribution graph
 6. **Testimonials** — carousel, currently **empty** (seeded with `[]`, waiting on real quotes)
-7. **Contact** — info cards (email/socials) + a react-hook-form + EmailJS contact form
+7. **Contact** — info cards (email/socials) + a react-hook-form contact form (posts to the backend; hidden `website` honeypot field)
 
 Navbar links, the section minimap and the ⌘K palette follow the same order
 (Projects, Skills, Experience, Contact).
@@ -102,7 +103,7 @@ preloader so there's no blank gap when it hands off.
 
 - **Public read path**: `Home.tsx` dispatches `fetchPortfolioData()` on mount →
   `portfolioSlice` thunk → `portfolioService.getPortfolioData()` reads the Firestore doc
-  `content/portfolio` directly from the browser (public, read-only, no auth needed).
+  `content/portfolio` over Firestore's REST API (public, read-only, no auth, no SDK).
 - **Admin write path**: Admin pages call `apiClient` → the FastAPI backend (see
   `BACKEND.md`) → the backend is the only thing that ever writes to Firestore. The
   frontend never writes to Firestore directly anymore.
@@ -193,6 +194,16 @@ CSS custom properties in `index.css`:
   animation loop and render one static, fully-settled frame (`ParticleText`), or skip
   mounting Lenis and fall back to native scroll (`SmoothScroll`) — never a frozen
   in-between state.
+
+## Performance and cold starts
+
+- Only `Home` is in the first bundle; `ProjectDetail` and the admin pages (recharts, the
+  editor) are `React.lazy` routes in `App.tsx`. The Firebase SDK is gone (REST read instead).
+  Main bundle went 1.55 MB → 0.81 MB (275 KB gzipped).
+- The API sleeps on Render's free tier (30-50 s to wake). `apiClient.warmUp()` pings `/health`
+  (no-cors) on page load so it is usually awake by the time someone chats or sends the form;
+  `hooks/useSlowHint.ts` swaps the chat's "Thinking..." and the form's "Sending" for a
+  "waking the server" message when a request takes over 4 s.
 
 ## Deployment
 

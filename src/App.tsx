@@ -5,13 +5,9 @@ import {
   useLocation,
 } from "react-router-dom";
 import ReactGA from "react-ga4";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Home from "pages/Home";
-import ProjectDetail from "pages/ProjectDetail";
-import AdminLogin from "pages/admin/Login";
-import AdminDashboard from "pages/admin/Dashboard";
-import ContentEditor from "pages/admin/ContentEditor";
 import CommandPalette from "./components/shared/CommandPalette";
 import ChatWidget from "./components/shared/ChatWidget";
 import MotionOptInPill from "./components/shared/MotionOptInPill";
@@ -19,6 +15,14 @@ import SmoothScroll from "./components/layout/SmoothScroll";
 import { MotionPreferenceProvider } from "./lib/motionPreference";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
 import type { AppDispatch } from "store";
+import { apiClient } from "./services/apiClient";
+
+// Only Home ships in the first bundle. Case studies and the admin (recharts, the content
+// editor) load when visited, so a first-time visitor doesn't download them.
+const ProjectDetail = lazy(() => import("pages/ProjectDetail"));
+const AdminLogin = lazy(() => import("pages/admin/Login"));
+const AdminDashboard = lazy(() => import("pages/admin/Dashboard"));
+const ContentEditor = lazy(() => import("pages/admin/ContentEditor"));
 
 const PageTracker = () => {
   const location = useLocation();
@@ -38,6 +42,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchPortfolioData());
+    apiClient.warmUp(); // start waking the free-tier API before chat/contact need it
   }, [dispatch]);
 
   return (
@@ -48,6 +53,7 @@ function App() {
         <ChatWidget />
         <MotionOptInPill />
         <SmoothScroll>
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/project/:slug" element={<ProjectDetail />} />
@@ -56,6 +62,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/content" element={<ContentEditor />} />
           </Routes>
+          </Suspense>
         </SmoothScroll>
       </Router>
     </MotionPreferenceProvider>

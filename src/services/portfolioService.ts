@@ -1,165 +1,50 @@
-import { doc, getDoc, setDoc, updateDoc, increment, collection, addDoc, onSnapshot } from "firebase/firestore";
-import { firestore } from "../firebase";
 import { portfolioData as initialData } from "../data/content";
 
-const COLLECTION_NAME = "content";
-const DOCUMENT_ID = "portfolio";
+// The public site only ever reads one document, so it uses Firestore's REST API instead of
+// the Firebase SDK (~300 KB of JavaScript for a single GET). Writes go through the backend.
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID as string;
+const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY as string;
+const DOC_URL =
+    `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}` +
+    `/databases/(default)/documents/content/portfolio?key=${API_KEY}`;
+
+type FirestoreValue = {
+    stringValue?: string;
+    integerValue?: string;
+    doubleValue?: number;
+    booleanValue?: boolean;
+    nullValue?: null;
+    timestampValue?: string;
+    mapValue?: { fields?: Record<string, FirestoreValue> };
+    arrayValue?: { values?: FirestoreValue[] };
+};
+
+/** Firestore REST wraps every value in its type ({ stringValue: "x" }); unwrap to plain JSON. */
+function decode(value: FirestoreValue): unknown {
+    if (value.mapValue) return decodeFields(value.mapValue.fields ?? {});
+    if (value.arrayValue) return (value.arrayValue.values ?? []).map(decode);
+    if (value.integerValue !== undefined) return Number(value.integerValue);
+    if (value.doubleValue !== undefined) return value.doubleValue;
+    if (value.booleanValue !== undefined) return value.booleanValue;
+    if (value.stringValue !== undefined) return value.stringValue;
+    if (value.timestampValue !== undefined) return value.timestampValue;
+    return null;
+}
+
+function decodeFields(fields: Record<string, FirestoreValue>): Record<string, unknown> {
+    return Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, decode(v)]));
+}
 
 export const portfolioService = {
     async getPortfolioData() {
         try {
-            const docRef = doc(firestore, COLLECTION_NAME, DOCUMENT_ID);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                return docSnap.data() as typeof initialData;
-            } else {
-                // If it doesn't exist, seed it with the initial data
-                await this.savePortfolioData(initialData);
-                return initialData;
-            }
+            const res = await fetch(DOC_URL);
+            if (!res.ok) throw new Error(`Firestore read failed with ${res.status}`);
+            const doc = (await res.json()) as { fields?: Record<string, FirestoreValue> };
+            return decodeFields(doc.fields ?? {}) as unknown as typeof initialData;
         } catch (error) {
             console.error("Error fetching portfolio data, falling back to local content:", error);
             return initialData;
         }
     },
-
-    async savePortfolioData(data: typeof initialData) {
-        try {
-            const docRef = doc(firestore, COLLECTION_NAME, DOCUMENT_ID);
-            await setDoc(docRef, data);
-        } catch (error) {
-            console.error("Error saving portfolio data:", error);
-            throw error;
-        }
-    },
-
-    async updateSection(section: string, data: unknown) {
-        try {
-            const docRef = doc(firestore, COLLECTION_NAME, DOCUMENT_ID);
-            await updateDoc(docRef, {
-                [section]: data,
-            });
-        } catch (error) {
-            console.error(`Error updating section ${section}:`, error);
-            throw error;
-        }
-    },
-
-    async incrementViewCount() {
-        try {
-            const docRef = doc(firestore, "stats", "views");
-            const docSnap = await getDoc(docRef);
-
-            if (!docSnap.exists()) {
-                await setDoc(docRef, { count: 1 });
-            } else {
-                await updateDoc(docRef, {
-                    count: increment(1)
-                });
-            }
-        } catch (error) {
-            console.error("Error incrementing view count:", error);
-        }
-    },
-
-    async getViewCount() {
-        try {
-            const docRef = doc(firestore, "stats", "views");
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                return docSnap.data().count;
-            }
-            return 0;
-        } catch (error) {
-            console.error("Error getting view count:", error);
-            return 0;
-        }
-    },
-
-    async addAnalyticsEvent() {
-        try {
-            const userAgent = navigator.userAgent;
-            const referrer = document.referrer || "Direct";
-            const date = new Date().toISOString();
-            const day = new Date().toLocaleDateString();
-
-            // Store event for detailed logs
-            await addDoc(collection(firestore, "analytics"), {
-                userAgent,
-                referrer,
-                date,
-                day
-            });
-
-            // Update aggregated stats for charts
-            const statsRef = doc(firestore, "stats", "sources");
-            const statsSnap = await getDoc(statsRef);
-
-            const sourceKey = this.getCleanSource(referrer);
-
-            if (!statsSnap.exists()) {
-                await setDoc(statsRef, { [sourceKey]: 1 });
-            } else {
-                await updateDoc(statsRef, {
-                    [sourceKey]: increment(1)
-                });
-            }
-        } catch (error) {
-            console.error("Error adding analytics event:", error);
-        }
-    },
-
-    getCleanSource(referrer: string) {
-        const ref = referrer.toLowerCase();
-        if (!referrer || ref === "" || ref.includes("localhost")) return "Direct";
-        if (ref.includes("linkedin")) return "LinkedIn";
-        if (ref.includes("github")) return "GitHub";
-        if (ref.includes("google")) return "Google";
-        if (ref.includes("twitter") || ref.includes("t.co")) return "Twitter";
-        if (ref.includes("whatsapp") || ref.includes("wa.me")) return "WhatsApp";
-        if (ref.includes("facebook") || ref.includes("fb.com")) return "Facebook";
-        if (ref.includes("instagram")) return "Instagram";
-
-        // Check for common mobile app strings
-        if (ref.includes("com.whatsapp")) return "WhatsApp";
-
-        return "Other";
-    },
-
-    async getAnalyticsData() {
-        try {
-            const statsRef = doc(firestore, "stats", "sources");
-            const statsSnap = await getDoc(statsRef);
-            if (statsSnap.exists()) {
-                const data = statsSnap.data();
-                return Object.entries(data).map(([name, value]) => ({ name, value }));
-            }
-            return [];
-        } catch (error) {
-            console.error("Error getting analytics data:", error);
-            return [];
-        }
-    },
-
-    subscribeToViewCount(onUpdate: (count: number) => void) {
-        const docRef = doc(firestore, "stats", "views");
-        return onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                onUpdate(docSnap.data().count);
-            }
-        }, (error) => {
-            console.error("Error listening to view count:", error);
-        });
-    },
-
-    async resetStats() {
-        try {
-            await setDoc(doc(firestore, "stats", "views"), { count: 0 });
-            await setDoc(doc(firestore, "stats", "sources"), {});
-            // Optionally clear the analytics collection too if you want to be thorough
-        } catch (error) {
-            console.error("Error resetting stats:", error);
-        }
-    }
 };

@@ -12,6 +12,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { FaComment, FaXmark, FaPaperPlane } from "react-icons/fa6";
 import { apiClient, ApiError } from "../../services/apiClient";
+import { useSlowHint } from "../../hooks/useSlowHint";
 
 interface Message {
   role: "user" | "assistant";
@@ -29,6 +30,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([GREETING]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const isSlow = useSlowHint(isLoading);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,7 +113,7 @@ export default function ChatWidget() {
                 ))}
                 {isLoading && (
                   <Box alignSelf="flex-start" px={3} py={2} borderRadius="var(--radius-md)" bg="var(--paper)" fontSize="sm" color="var(--ink-muted)">
-                    Thinking...
+                    {isSlow ? "Waking the server up (free hosting naps when idle), about 30 s..." : "Thinking..."}
                   </Box>
                 )}
               </VStack>

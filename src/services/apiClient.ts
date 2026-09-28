@@ -38,7 +38,20 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     return res.json() as Promise<T>;
 }
 
+let warmUpStarted = false;
+
 export const apiClient = {
+    /**
+     * Fire-and-forget ping so a sleeping Render instance starts waking the moment the
+     * page loads, not when the visitor first sends a chat or contact message. no-cors: the
+     * response is never read, so no CORS check (and no console error) is needed.
+     */
+    warmUp() {
+        if (warmUpStarted || !API_BASE_URL) return;
+        warmUpStarted = true;
+        fetch(`${API_BASE_URL}/health`, { mode: "no-cors", keepalive: true }).catch(() => {});
+    },
+
     login(admin_id: string, password: string) {
         return request<{ access_token: string; token_type: string; expires_in: number }>(
             "/auth/login",
@@ -75,6 +88,7 @@ export const apiClient = {
         email: string;
         mobile: string;
         message: string;
+        website?: string;
     }) {
         return request<{ sent: boolean }>("/contact", {
             method: "POST",
