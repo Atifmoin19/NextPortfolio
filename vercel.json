@@ -3,9 +3,9 @@
   "outputDirectory": "dist",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "portfolio-henna-three-70.vercel.app" }],
-      "destination": "https://portfolio.fullstackcity.in/:path*",
+      "destination": "https://portfolio.fullstackcity.in/$1",
       "permanent": true
     }
   ],
