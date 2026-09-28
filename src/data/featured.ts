@@ -19,7 +19,7 @@ export const backendCity: FeaturedProject = {
   projectType: "Gamified backend-learning platform · full-stack, live",
   tagline:
     "A game that teaches backend development. Learners write a few lines inside a real FastAPI server and watch live traffic pass, bounce, or crash it.",
-  liveUrl: "https://backend-city-frontend-two.vercel.app",
+  liveUrl: "https://fullstackcity.in",
   repos: [
     { label: "Frontend", url: "https://github.com/Atifmoin19/backend-city-frontend" },
     { label: "Backend", url: "https://github.com/Atifmoin19/backend-city-backend" },
@@ -98,7 +98,7 @@ export const backendCity: FeaturedProject = {
   ],
   link: {
     code: "https://github.com/Atifmoin19/backend-city-frontend",
-    project: "https://backend-city-frontend-two.vercel.app",
+    project: "https://fullstackcity.in",
   },
   image: "/projects/backend-city/hero-night.webp",
 };

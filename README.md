@@ -2,7 +2,7 @@
 
 React 19 + Vite + TypeScript single-page app. Lives in this `Frontend/` folder (repo
 `Atifmoin19/NextPortfolio`, working branch `new_ui`). Deployed on **Vercel** (project
-`portfolio`) at **https://portfolio-henna-three-70.vercel.app** — see "Deployment" below.
+`portfolio`) at **https://portfolio.fullstackcity.in** (subdomain of `fullstackcity.in`, DNS at GoDaddy; the old `portfolio-henna-three-70.vercel.app` URL 308-redirects there via `vercel.json`) — see "Deployment" below.
 The old GitHub Pages build (`gh-pages` branch, base `/NextPortfolio/`) is retired.
 
 ## Stack
@@ -204,7 +204,7 @@ CSS custom properties in `index.css`:
   (`vercel promote <preview-url>`) or set Settings → Environments → Production → Branch
   Tracking to `new_ui`. `vercel --prod` from `Frontend/` also deploys directly.
 - SEO: canonical, Open Graph/Twitter tags, structured data, `sitemap.xml` and `robots.txt`
-  point at the Vercel domain; `public/og-image.jpg` (1200×630) is the link preview.
+  point at `https://portfolio.fullstackcity.in`; `public/og-image.jpg` (1200×630) is the link preview.
 
 ## Where things currently stand
 
