@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { trackPageview } from "./lib/analytics";
+import { whenIdle } from "./lib/whenIdle";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Home from "pages/Home";
@@ -62,13 +63,11 @@ function DeferredOverlays() {
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("toggle-command-palette", openPalette);
-    const hasIdle = typeof window.requestIdleCallback === "function";
-    const idle = hasIdle ? window.requestIdleCallback(arm, { timeout: 3000 }) : setTimeout(arm, 2000);
+    const cancelIdle = whenIdle(arm, 3000);
     return () => {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("toggle-command-palette", openPalette);
-      if (hasIdle) window.cancelIdleCallback(idle);
-      else clearTimeout(idle);
+      cancelIdle();
     };
   }, [ready]);
 

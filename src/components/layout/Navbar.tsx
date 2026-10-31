@@ -5,6 +5,7 @@ import { HiOutlineMenu } from "react-icons/hi";
 import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
 import { useActiveSection } from "../../lib/activeSection";
 import { NAV_SECTIONS } from "../../data/sections";
+import { whenIdle } from "../../lib/whenIdle";
 
 import OpenToRoles from "./OpenToRoles";
 
@@ -21,8 +22,7 @@ export default function Navbar() {
   const [menuLoaded, setMenuLoaded] = useState(false);
   useEffect(() => {
     if (!window.matchMedia("(max-width: 991px)").matches) return;
-    const t = window.setTimeout(() => void loadMobileMenu(), 3000);
-    return () => window.clearTimeout(t);
+    return whenIdle(() => void loadMobileMenu());
   }, []);
   const openMenu = () => {
     setMenuLoaded(true);

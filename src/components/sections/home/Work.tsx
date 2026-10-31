@@ -11,6 +11,9 @@ const TAPES = ["var(--pink)", "var(--mint)", "var(--sky)", "var(--butter)", "var
 function Peek({ item, index, on }: { item: WorkItem | null; index: number; on: boolean }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
+  // No screenshot is fetched until the first hover, so it never competes with first paint.
+  const [armed, setArmed] = useState(false);
+  if (on && !armed) setArmed(true);
 
   // Follows the pointer with a gentle lerp (a direct jump under reduced motion).
   useEffect(() => {
@@ -62,7 +65,7 @@ function Peek({ item, index, on }: { item: WorkItem | null; index: number; on: b
       style={{ ["--pr" as string]: `${index % 2 ? 2.5 : -3}deg` }}
       aria-hidden="true"
     >
-      {item && (
+      {item && armed && (
         <>
           <span className="tape" style={{ ["--tc" as string]: TAPES[index % TAPES.length] }} />
           <div className="ph" style={{ background: `var(--${item.color})` }}>

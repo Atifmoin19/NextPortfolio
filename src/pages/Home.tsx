@@ -8,6 +8,7 @@ import StructuredData from "../components/SEO/StructuredData";
 import Hero from "../components/sections/home/Hero";
 import StackMarquee from "../components/sections/home/StackMarquee";
 import Work from "../components/sections/home/Work";
+import { whenIdle } from "../lib/whenIdle";
 
 // Above the fold (Hero, marquee, work list) ships in the main chunk and paints straight
 // from the local seed content. Everything below loads in its own chunk, each behind its
@@ -48,12 +49,7 @@ export default function Home() {
       Object.values(loaders).forEach((load) => void load());
       void import("./ProjectDetail");
     };
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(prefetch, { timeout: 2500 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const t = setTimeout(prefetch, 1200);
-    return () => clearTimeout(t);
+    return whenIdle(prefetch);
   }, []);
 
   return (
