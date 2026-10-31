@@ -46,7 +46,7 @@ const CURATED: Curated[] = [
     type: "Live day-timeline for team task scheduling",
     outcome: "Live, everyone's timeline updates over WebSockets",
     color: "sky",
-    img: "/projects/dayline/app-timeline.webp",
+    img: "/projects/dayline/landing.webp",
     live: "https://dayline-alpha-ten.vercel.app",
     repos: [{ label: "Repo", url: gh("dayline") }],
     project: {
