@@ -46,6 +46,7 @@ const CURATED: Curated[] = [
     type: "Live day-timeline for team task scheduling",
     outcome: "Live, everyone's timeline updates over WebSockets",
     color: "sky",
+    img: "/projects/dayline/app-timeline.webp",
     live: "https://dayline-alpha-ten.vercel.app",
     repos: [{ label: "Repo", url: gh("dayline") }],
     project: {
@@ -78,6 +79,7 @@ const CURATED: Curated[] = [
     type: "Group trip expense splitting PWA",
     outcome: "Live, works offline, demo sandbox to try",
     color: "mint",
+    img: "/projects/all-square/demo-dashboard.webp",
     live: "https://expense-tracker-fe-xi.vercel.app",
     repos: [
       { label: "Frontend", url: gh("ExpenseTrackerFE") },
@@ -110,6 +112,7 @@ const CURATED: Curated[] = [
     type: "Drag-and-drop email builder",
     outcome: "Table-based export, autosave, 54 tests",
     color: "pink",
+    img: "/projects/email-template-flow/builder.webp",
     live: "https://atifmoin19.github.io/Email-Template-Builder/",
     repos: [{ label: "Repo", url: gh("Email-Template-Builder") }],
     project: {
@@ -131,6 +134,7 @@ const CURATED: Curated[] = [
     type: "React animation component library",
     outcome: "62 components, about 38 kB gzipped",
     color: "butter",
+    img: "/projects/interesting-ui/home.webp",
     live: "https://intresting-ui.vercel.app",
     // Source repo is private by choice: link the live demo only.
     project: {
