@@ -39,12 +39,16 @@ function Slot({ id, h, children }: { id: string; h: string; children: ReactNode 
 
 export default function Home() {
   useEffect(() => {
+    document.title = "Atif Moin | Frontend Engineer";
+  }, []);
+
+  useEffect(() => {
     // Fetch the below-the-fold chunks once the first paint is done.
     const prefetch = () => {
       Object.values(loaders).forEach((load) => void load());
       void import("./ProjectDetail");
     };
-    if ("requestIdleCallback" in window) {
+    if (typeof window.requestIdleCallback === "function") {
       const id = window.requestIdleCallback(prefetch, { timeout: 2500 });
       return () => window.cancelIdleCallback(id);
     }

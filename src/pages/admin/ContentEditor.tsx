@@ -8,6 +8,7 @@ import {
   Textarea,
   Button,
   useToast,
+  ToastProvider,
   Accordion,
   AccordionItem,
   AccordionButton,
@@ -250,6 +251,9 @@ const ContentEditor = () => {
 
   return (
     <Container maxW="container.lg" py={10}>
+      {/* The app root skips Chakra's toast layer (it pulls framer-motion into the first
+          bundle); the editor is the only page that toasts, so it mounts its own. */}
+      <ToastProvider />
       <VStack spacing={8} align="stretch">
         <HStack justify="space-between" flexWrap="wrap" gap={3}>
           <Button

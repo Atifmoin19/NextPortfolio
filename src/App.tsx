@@ -4,13 +4,10 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import ReactGA from "react-ga4";
-import { lazy, Suspense, useEffect } from "react";
+import { trackPageview } from "./lib/analytics";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Home from "pages/Home";
-import CommandPalette from "./components/shared/CommandPalette";
-import ChatWidget from "./components/shared/ChatWidget";
-import MotionOptInPill from "./components/shared/MotionOptInPill";
 import { MotionPreferenceProvider } from "./lib/motionPreference";
 import { SectionTintProvider } from "./lib/sectionTint";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
@@ -40,14 +37,56 @@ const SkipLink = () => (
   </a>
 );
 
+// Overlays (palette, chat, motion opt-in) use Chakra's modal and framer-motion, so they
+// load once the page is idle, or straight away on ⌘K / the nav's search button.
+const CommandPalette = lazy(() => import("./components/shared/CommandPalette"));
+const ChatWidget = lazy(() => import("./components/shared/ChatWidget"));
+const MotionOptInPill = lazy(() => import("./components/shared/MotionOptInPill"));
+
+function DeferredOverlays() {
+  const [ready, setReady] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
+  useEffect(() => {
+    if (ready) return;
+    const arm = () => setReady(true);
+    const openPalette = () => {
+      setPaletteOpen(true);
+      arm();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        openPalette();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("toggle-command-palette", openPalette);
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    const idle = hasIdle ? window.requestIdleCallback(arm, { timeout: 3000 }) : setTimeout(arm, 2000);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("toggle-command-palette", openPalette);
+      if (hasIdle) window.cancelIdleCallback(idle);
+      else clearTimeout(idle);
+    };
+  }, [ready]);
+
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <CommandPalette initialOpen={paletteOpen} />
+      <ChatWidget />
+      <MotionOptInPill />
+    </Suspense>
+  );
+}
+
 const PageTracker = () => {
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.send({
-      hitType: "pageview",
-      page: location.pathname + location.search,
-    });
+    trackPageview(location.pathname + location.search);
   }, [location]);
 
   return null;
@@ -67,9 +106,7 @@ function App() {
         <PageTracker />
         <SectionTintProvider>
         <SkipLink />
-        <CommandPalette />
-        <ChatWidget />
-        <MotionOptInPill />
+        <DeferredOverlays />
           <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />

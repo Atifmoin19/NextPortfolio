@@ -9,6 +9,7 @@ const StructuredData = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${SITE}#person`,
     name: data.hero.name,
     jobTitle: data.hero.role,
     description: data.hero.description,

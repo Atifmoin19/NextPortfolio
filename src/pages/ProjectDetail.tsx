@@ -206,6 +206,13 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     document.title = c ? `${c.title}: case study | Atif Moin` : "Project not found | Atif Moin";
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!meta || !c) return;
+    const home = meta.content;
+    meta.content = c.pitch;
+    return () => {
+      meta.content = home;
+    };
   }, [c]);
 
   useEffect(() => {

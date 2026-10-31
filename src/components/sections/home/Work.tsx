@@ -87,7 +87,7 @@ export default function Work() {
     <section className="ps-sec ps-wrap" id="work" data-tint="#eef0f2">
       <h2 className="ps-h2">Selected work</h2>
       <p className="ps-lede">
-        Hover a row and a photo of the project slides along with you. Every result is written right in the row.
+        One row per project, with what it shipped. Hover a row to see a screenshot; open it for the full case study.
       </p>
       <div className="ps-idx">
         {items.map((w, i) => (

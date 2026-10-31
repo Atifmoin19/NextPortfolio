@@ -1,38 +1,33 @@
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Flex,
-  HStack,
-  IconButton,
-  Text,
-  VStack,
-  VisuallyHidden,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useRef } from "react";
+import { Box, HStack, IconButton, VisuallyHidden, useDisclosure } from "@chakra-ui/react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { HiOutlineMenu } from "react-icons/hi";
 import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
 import { useActiveSection } from "../../lib/activeSection";
 import { NAV_SECTIONS } from "../../data/sections";
 
-function OpenToRoles() {
-  return (
-    <HStack spacing={2} fontSize="0.9rem" whiteSpace="nowrap">
-      <Box w="10px" h="10px" bg="var(--red)" flexShrink={0} aria-hidden="true" />
-      <Text as="span">Open to senior roles</Text>
-    </HStack>
-  );
-}
+import OpenToRoles from "./OpenToRoles";
+
+// The mobile drawer (and the animation library behind Chakra's Drawer) loads on first
+// open, or once the page is idle, so it stays out of the first paint.
+const loadMobileMenu = () => import("./MobileMenu");
+const MobileMenu = lazy(loadMobileMenu);
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const active = useActiveSection();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [menuLoaded, setMenuLoaded] = useState(false);
+  useEffect(() => {
+    if (!window.matchMedia("(max-width: 991px)").matches) return;
+    const t = window.setTimeout(() => void loadMobileMenu(), 3000);
+    return () => window.clearTimeout(t);
+  }, []);
+  const openMenu = () => {
+    setMenuLoaded(true);
+    onOpen();
+  };
 
   // From the mobile drawer, wait until it has closed: its scroll lock would swallow the jump.
   const pending = useRef<string | null>(null);
@@ -149,74 +144,18 @@ export default function Navbar() {
               display={{ base: "flex", lg: "none" }}
               minW="44px"
               h="44px"
-              onClick={onOpen}
+              onClick={openMenu}
+              onPointerEnter={() => void loadMobileMenu()}
             />
           </HStack>
         </Box>
       </Box>
 
-      <Drawer isOpen={isOpen} placement="top" onClose={onClose} onCloseComplete={afterDrawerClose}>
-        <DrawerOverlay />
-        <DrawerContent borderBottom="2px solid var(--ink)">
-          <DrawerBody className="ps-wrap" w="full" py={4}>
-            <Flex justify="space-between" align="center" mb={6}>
-              <Text fontFamily="var(--font-display)" fontWeight={900} sx={{ fontStretch: "115%" }}>
-                Atif Moin
-              </Text>
-              <IconButton
-                aria-label="Close menu"
-                icon={<HiOutlineX size={22} />}
-                variant="ghost"
-                minW="44px"
-                h="44px"
-                onClick={onClose}
-              />
-            </Flex>
-            <VStack as="nav" aria-label="Sections" align="stretch" spacing={0}>
-              {NAV_SECTIONS.map((s) => (
-                <Box
-                  key={s.id}
-                  as="button"
-                  textAlign="left"
-                  onClick={() => goTo(s.id)}
-                  py={3}
-                  borderTop="2px solid var(--ink)"
-                  fontFamily="var(--font-display)"
-                  fontWeight={900}
-                  fontSize="1.9rem"
-                  letterSpacing="-0.03em"
-                  sx={{ fontStretch: "110%" }}
-                  _hover={{ color: "var(--red)" }}
-                >
-                  {s.label}
-                </Box>
-              ))}
-            </VStack>
-            <Flex
-              borderTop="2px solid var(--ink)"
-              pt={4}
-              mt={0}
-              justify="space-between"
-              align="center"
-              gap={4}
-              wrap="wrap"
-            >
-              <OpenToRoles />
-              <Box
-                as="button"
-                className="mono"
-                onClick={() => {
-                  onClose();
-                  window.dispatchEvent(new CustomEvent("toggle-command-palette"));
-                }}
-                textDecoration="underline"
-              >
-                Search (&#8984;K)
-              </Box>
-            </Flex>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+      {menuLoaded && (
+        <Suspense fallback={null}>
+          <MobileMenu isOpen={isOpen} onClose={onClose} onCloseComplete={afterDrawerClose} goTo={goTo} />
+        </Suspense>
+      )}
     </>
   );
 }

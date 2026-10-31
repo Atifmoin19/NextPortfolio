@@ -1,9 +1,21 @@
-import { useMemo, useState, type ReactNode } from "react";
-import { useReducedMotion as useOSReducedMotion } from "framer-motion";
+import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import { MotionPreferenceContext, type MotionPreferenceValue } from "./useMotionPreference";
 
 const STORAGE_KEY = "motion-override";
 
+
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribe(onChange: () => void) {
+  const mq = window.matchMedia(QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+/** Live OS prefers-reduced-motion (no animation library needed for this). */
+function useOSReducedMotion() {
+  return useSyncExternalStore(subscribe, () => window.matchMedia(QUERY).matches, () => false);
+}
 
 function readOverride(): boolean {
   if (typeof window === "undefined") return false;

@@ -1,17 +1,12 @@
 import React from "react";
-import ReactGA from "react-ga4";
 import ReactDOM from "react-dom/client";
-import { ChakraProvider } from "@chakra-ui/react";
+// Chakra's base provider: theme, reset and colour mode, without the toast layer.
+import { Provider as ChakraProvider } from "@chakra-ui/react/provider";
 import { Provider } from "react-redux";
 import { store } from "store";
 import App from "./App";
 import { theme } from "./theme";
 import "./index.css";
-
-const GA_MEASUREMENT_ID = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
-if (GA_MEASUREMENT_ID) {
-  ReactGA.initialize(GA_MEASUREMENT_ID);
-}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
