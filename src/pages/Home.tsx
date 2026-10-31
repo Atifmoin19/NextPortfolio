@@ -10,11 +10,12 @@ import type { RootState } from "../store";
 const Hero = lazy(() => import("../components/sections/home/Hero"));
 const StackMarquee = lazy(() => import("../components/sections/home/StackMarquee"));
 const Work = lazy(() => import("../components/sections/home/Work"));
-const Skills = lazy(() => import("../components/sections/Skills"));
-const Experience = lazy(() => import("../components/sections/Experience"));
-const GitHubActivity = lazy(() => import("../components/sections/GitHubActivity"));
-const Testimonials = lazy(() => import("../components/sections/Testimonials"));
-const Contact = lazy(() => import("../components/sections/Contact"));
+const SkillsPit = lazy(() => import("../components/sections/ps/SkillsPit"));
+const CareerNotes = lazy(() => import("../components/sections/ps/CareerNotes"));
+const NowHowIWork = lazy(() => import("../components/sections/ps/NowHowIWork"));
+const OpenSource = lazy(() => import("../components/sections/ps/OpenSource"));
+const Breather = lazy(() => import("../components/sections/ps/Breather"));
+const ContactPostcard = lazy(() => import("../components/sections/ps/ContactPostcard"));
 
 export default function Home() {
   const dataReady = useSelector((state: RootState) => !!state.portfolio.data);
@@ -31,11 +32,12 @@ export default function Home() {
               <Hero />
               <StackMarquee />
               <Work />
-              <Skills />
-              <Experience />
-              <GitHubActivity />
-              <Testimonials />
-              <Contact />
+              <SkillsPit />
+              <CareerNotes />
+              <NowHowIWork />
+              <OpenSource />
+              <Breather />
+              <ContactPostcard />
             </Suspense>
           )}
         </Box>
