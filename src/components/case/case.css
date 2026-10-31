@@ -1,0 +1,396 @@
+/* Case-study page (Paper Studio). Prefix: cs-. */
+
+.cs-main { padding-block: clamp(20px, 4vw, 40px) clamp(64px, 9vw, 112px); }
+
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  padding: 0.3rem 0.7rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.cs-back:hover { border-color: var(--ink); background: var(--paper); color: var(--ink); }
+
+/* --- Hero sheet --- */
+.cs-sheet {
+  position: relative;
+  margin-top: 28px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  padding: clamp(22px, 4vw, 48px) clamp(18px, 4vw, 48px) clamp(20px, 3vw, 36px);
+  transform: rotate(-0.4deg);
+}
+.cs-sheet .tape.a { top: -12px; left: 7%; transform: rotate(-4deg); }
+.cs-sheet .tape.b { top: -12px; right: 8%; transform: rotate(5deg); --tc: var(--mint); }
+.cs-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; color: var(--ink-2); }
+.cs-chip {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.78rem;
+  padding: 0.25rem 0.7rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--c, var(--paper));
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.cs-chip i { width: 8px; height: 8px; background: var(--red); display: inline-block; }
+.cs-title {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 112%;
+  font-size: clamp(2.3rem, 7vw, 5.4rem);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  overflow-wrap: anywhere;
+}
+.cs-pitch { margin-top: 18px; font-size: clamp(1.05rem, 1.7vw, 1.3rem); color: var(--ink-2); max-width: 62ch; }
+.cs-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.cs-btn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-size: 0.95rem;
+  padding: 0.68rem 1.1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-btn);
+  background: var(--bc, var(--butter));
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
+}
+.cs-btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.cs-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+.cs-btn.paper { --bc: var(--paper); }
+.cs-btn.pink { --bc: var(--pink); }
+.cs-disclaimer { margin-top: 18px; font-family: var(--font-hand); font-size: 1.15rem; color: var(--ink-2); }
+
+/* --- Key facts strip --- */
+.cs-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 2fr);
+  gap: 16px 24px;
+  margin-top: clamp(28px, 4vw, 40px);
+}
+.cs-facts > div { border-top: 1px solid var(--rule); padding-top: 8px; font-size: 0.95rem; }
+.cs-facts small { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); margin-bottom: 4px; }
+.cs-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+.cs-stack span {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  padding: 0.18rem 0.6rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+}
+
+/* --- Body: sticky index + sections --- */
+.cs-body {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  margin-top: clamp(40px, 6vw, 72px);
+  align-items: start;
+}
+.cs-index { position: sticky; top: calc(var(--nav-h) + 24px); }
+.cs-index ol { list-style: none; display: grid; gap: 2px; }
+.cs-index a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  border-radius: 8px;
+  transition: color 0.2s, background-color 0.2s;
+}
+.cs-index a i { width: 8px; height: 8px; border: 1.5px solid var(--ink-3); flex-shrink: 0; transition: background-color 0.2s, border-color 0.2s; }
+.cs-index a:hover { color: var(--ink); background: rgba(17, 17, 17, 0.05); }
+.cs-index a[aria-current="true"] { color: var(--ink); font-weight: 700; }
+.cs-index a[aria-current="true"] i { background: var(--red); border-color: var(--red); }
+.cs-index .lbl { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); padding: 0 0.5rem 8px; }
+
+.cs-sec { border-top: 2px solid var(--rule); padding-block: clamp(28px, 4vw, 44px) clamp(36px, 5vw, 60px); min-width: 0; }
+.cs-sec:first-child { border-top: 0; padding-top: 0; }
+.cs-h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 112%;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.cs-num { font-family: var(--font-mono); font-size: 0.78rem; color: var(--red); display: block; margin-bottom: 8px; }
+.cs-lede { color: var(--ink-2); font-size: 1.05rem; max-width: 62ch; margin-top: 12px; }
+
+.cs-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); margin-top: 24px; }
+.cs-two h3 { font-family: var(--font-display); font-weight: 800; font-stretch: 108%; font-size: 1.2rem; margin-bottom: 10px; }
+.cs-prose p + p { margin-top: 12px; }
+.cs-prose p { color: var(--ink); line-height: 1.65; }
+.cs-steps { list-style: none; counter-reset: s; display: grid; gap: 14px; }
+.cs-steps li { counter-increment: s; position: relative; padding-left: 40px; line-height: 1.6; }
+.cs-steps li::before {
+  content: counter(s);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* Sticky note for "try it" */
+.cs-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; margin-top: 34px; }
+.cs-sticky {
+  position: relative;
+  background: var(--butter);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow);
+  padding: 24px 20px 18px;
+  transform: rotate(-0.8deg);
+}
+.cs-sticky .tape { top: -13px; left: 50%; margin-left: -46px; --tc: rgba(255, 255, 255, 0.75); }
+.cs-sticky h3 { font-family: var(--font-hand); font-weight: 700; font-size: 1.4rem; line-height: 1.1; margin-bottom: 8px; }
+.cs-sticky ul { list-style: none; display: grid; gap: 8px; }
+.cs-sticky li { font-family: var(--font-hand); font-size: 1.05rem; line-height: 1.35; color: #2c2c28; padding-left: 18px; position: relative; }
+.cs-sticky li::before { content: "\2192"; position: absolute; left: 0; }
+.cs-host {
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background: var(--sky);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.cs-host h3 { font-family: var(--font-display); font-weight: 800; font-stretch: 108%; font-size: 1.15rem; margin-bottom: 10px; }
+.cs-host p { font-size: 0.95rem; line-height: 1.55; }
+.cs-host p + p { margin-top: 6px; }
+.cs-host code { font-family: var(--font-mono); font-size: 0.85em; }
+
+/* --- Architecture --- */
+.cs-diagram {
+  position: relative;
+  margin-top: 26px;
+  padding: clamp(16px, 3vw, 28px);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(circle, var(--hair) 1.2px, transparent 1.3px) 0 0 / 22px 22px,
+    var(--paper);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.cs-dgrid { position: relative; display: grid; gap: clamp(40px, 6vw, 64px) clamp(36px, 6vw, 72px); z-index: 1; }
+.cs-node {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: var(--nc, var(--paper));
+  padding: 10px 12px;
+  min-width: 0;
+  align-self: center;
+}
+.cs-node b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 0.98rem; line-height: 1.15; overflow-wrap: anywhere; }
+.cs-node span { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); margin-top: 3px; overflow-wrap: anywhere; }
+.cs-node.ink { background: var(--ink); color: var(--paper); }
+.cs-node.ink span { color: rgba(251, 251, 248, 0.7); }
+.cs-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+.cs-wires text { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); paint-order: stroke; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
+.cs-comps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0 28px; margin-top: 26px; }
+.cs-comps div { border-top: 1px solid var(--hair); padding: 12px 0; }
+.cs-comps dt { font-weight: 700; }
+.cs-comps dd { color: var(--ink-2); font-size: 0.95rem; margin-top: 2px; }
+
+/* --- Decisions: handwritten notes --- */
+.cs-decisions { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 30px 24px; margin-top: 34px; }
+.cs-dec {
+  position: relative;
+  background: var(--nc);
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow);
+  padding: 26px 20px 20px;
+  transform: rotate(var(--r));
+  transition: transform 0.4s var(--ease);
+}
+.cs-dec:hover { transform: rotate(0deg) translateY(-4px); }
+.cs-dec .tape { top: -13px; left: 50%; margin-left: -46px; --tc: rgba(255, 255, 255, 0.75); }
+.cs-dec small { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); }
+.cs-dec h3 { font-family: var(--font-hand); font-weight: 700; font-size: 1.45rem; line-height: 1.1; margin: 4px 0 10px; }
+.cs-dec p { font-family: var(--font-hand); font-size: 1.06rem; line-height: 1.38; color: #2c2c28; }
+.cs-dec .to {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1.5px dashed rgba(17, 17, 17, 0.45);
+}
+.cs-dec .to b { font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem; color: var(--red-strong); display: block; margin-bottom: 2px; }
+
+/* --- Results --- */
+.cs-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-top: 28px; }
+.cs-res {
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  padding: 18px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cs-res b {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 115%;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.cs-res b.long { font-size: clamp(1.15rem, 1.8vw, 1.4rem); letter-spacing: -0.02em; }
+.cs-res p { font-size: 0.95rem; }
+.cs-res small { margin-top: auto; padding-top: 8px; font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-3); }
+.cs-note { margin-top: 16px; font-family: var(--font-hand); font-size: 1.1rem; color: var(--ink-2); max-width: 70ch; }
+
+.cs-code {
+  margin-top: 24px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  box-shadow: 6px 6px 0 var(--butter);
+}
+.cs-code figcaption { font-family: var(--font-mono); font-size: 0.74rem; padding: 10px 16px; border-bottom: 1px solid rgba(251, 251, 248, 0.2); color: rgba(251, 251, 248, 0.75); }
+.cs-code pre { margin: 0; padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; }
+
+/* --- Gallery: taped polaroids --- */
+.cs-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 40px 28px; margin-top: 36px; align-items: start; }
+.cs-pol {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--paper);
+  padding: 12px 12px 14px;
+  border: 0;
+  cursor: zoom-in;
+  box-shadow: 0 2px 3px rgba(17, 17, 17, 0.1), 0 18px 34px -16px rgba(17, 17, 17, 0.4);
+  transform: rotate(var(--r));
+  transition: transform 0.4s var(--spring), box-shadow 0.3s var(--ease);
+}
+.cs-pol:hover { transform: rotate(0deg) scale(1.02); }
+.cs-pol:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.cs-pol .tape { top: -11px; left: 50%; margin-left: -46px; transform: rotate(3deg); }
+.cs-pol .ph { display: block; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--hair); background: var(--bg); }
+.cs-pol .ph img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; }
+.cs-pol.mobile { max-width: 240px; justify-self: center; }
+.cs-pol.mobile .ph { aspect-ratio: 390 / 600; }
+.cs-pol .cap { display: block; padding-top: 10px; font-family: var(--font-hand); font-size: 1.08rem; line-height: 1.25; color: var(--ink); }
+
+.cs-lightbox img { width: 100%; height: auto; max-height: 72vh; object-fit: contain; display: block; background: var(--bg); border: 1px solid var(--hair); }
+.cs-lightbox .cap { font-family: var(--font-hand); font-size: 1.2rem; margin-top: 12px; }
+.cs-lightbox .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+
+/* --- What's next --- */
+.cs-next { list-style: none; display: grid; gap: 12px; margin-top: 24px; max-width: 72ch; }
+.cs-next li { position: relative; padding-left: 36px; line-height: 1.6; }
+.cs-next li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper);
+  transform: rotate(-3deg);
+}
+
+/* --- Prev / next --- */
+.cs-pn { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: clamp(40px, 6vw, 64px); }
+.cs-pn a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  transition: background-color 0.3s var(--ease), transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
+  min-width: 0;
+}
+.cs-pn a:hover { background: var(--c); box-shadow: var(--shadow); transform: translate(-1px, -1px); }
+.cs-pn a.nx { text-align: right; }
+.cs-pn small { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-2); }
+.cs-pn b { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.1rem, 2.4vw, 1.6rem); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+
+/* --- Not found --- */
+.cs-404 { max-width: 760px; margin: clamp(40px, 8vw, 96px) auto 0; }
+.cs-404 ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.cs-404 li a { display: inline-block; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.3rem 0.75rem; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper); }
+.cs-404 li a:hover { background: var(--butter); }
+
+/* --- Responsive --- */
+@media (max-width: 1023px) {
+  .cs-body { grid-template-columns: minmax(0, 1fr); }
+  .cs-index { display: none; }
+}
+@media (max-width: 760px) {
+  .cs-facts { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .cs-facts > div:last-child { grid-column: 1 / -1; }
+  .cs-two { grid-template-columns: minmax(0, 1fr); }
+  .cs-pn { grid-template-columns: minmax(0, 1fr); }
+  .cs-pn a.nx { text-align: left; }
+  .cs-sheet { transform: none; }
+}
+@media (max-width: 420px) {
+  .cs-actions .cs-btn { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-dec:hover,
+  .cs-pol:hover { transform: rotate(var(--r)); }
+}
+
+/* Flagship stamp on the hero sheet */
+.cs-stamp {
+  position: absolute;
+  right: clamp(14px, 4vw, 44px);
+  top: clamp(14px, 3vw, 30px);
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 3px solid var(--red);
+  color: var(--red);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 96%;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  transform: rotate(-14deg);
+  background: rgba(251, 251, 248, 0.6);
+  box-shadow: inset 0 0 0 3px rgba(251, 251, 248, 0.6), inset 0 0 0 5px var(--red);
+}
+.cs-sheet.has-stamp .cs-kicker { padding-right: 116px; }
+@media (max-width: 520px) {
+  .cs-stamp { width: 78px; height: 78px; font-size: 0.6rem; }
+  .cs-sheet.has-stamp .cs-kicker { padding-right: 86px; }
+}
