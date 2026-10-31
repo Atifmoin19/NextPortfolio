@@ -43,51 +43,51 @@ const AdminLogin = () => {
   const inputStyle = {
     height: "56px",
     bg: "var(--paper)",
-    border: "1px solid var(--line)",
-    borderRadius: "var(--radius-md)",
+    border: "1px solid var(--hair)",
+    borderRadius: "var(--radius-btn)",
     color: "var(--ink)",
-    _placeholder: { color: "var(--ink-muted)" },
-    _hover: { borderColor: "var(--line-strong)" },
-    _focus: { borderColor: "var(--accent)", boxShadow: "0 0 0 1px var(--accent)" },
+    _placeholder: { color: "var(--ink-3)" },
+    _hover: { borderColor: "var(--ink-3)" },
+    _focus: { borderColor: "var(--red)", boxShadow: "0 0 0 1px var(--red)" },
   };
 
   return (
     <Box minH="100vh" bg="var(--paper)" position="relative">
-      <Box position="absolute" top={0} left={0} right={0} p={6} zIndex={10} borderBottom="1px solid var(--line)">
+      <Box as="header" position="absolute" top={0} left={0} right={0} p={6} zIndex={10} borderBottom="1px solid var(--hair)">
         <Container maxW="container.xl">
           <Flex justify="space-between" align="center">
-            <HStack spacing={2} as={Link} to="/" color="var(--ink-soft)" _hover={{ color: "var(--ink)" }}>
+            <HStack spacing={2} as={Link} to="/" color="var(--ink-2)" _hover={{ color: "var(--ink)" }}>
               <Icon as={FaArrowLeft} boxSize={3} />
               <Text fontWeight="700" fontSize="sm">
                 Back to Portfolio
               </Text>
             </HStack>
-            <Text className="label-mono" color="var(--ink-muted)">
+            <Text className="label-mono" color="var(--ink-3)">
               Secure Access
             </Text>
           </Flex>
         </Container>
       </Box>
 
-      <Flex minH="100vh" alignItems="center" justifyContent="center" pt={20} px={4}>
+      <Flex as="main" id="main" tabIndex={-1} minH="100vh" alignItems="center" justifyContent="center" pt={20} px={4}>
         <Container maxW="md">
-          <Box bg="var(--paper-raised)" border="1px solid var(--line)" borderRadius="var(--radius-bento)" p={{ base: 6, md: 10 }}>
+          <Box bg="var(--paper)" border="1px solid var(--hair)" borderRadius="var(--radius-card)" p={{ base: 6, md: 10 }}>
             <VStack spacing={8} as="form" onSubmit={handleLogin}>
               <VStack spacing={3} textAlign="center">
-                <Flex w="56px" h="56px" borderRadius="var(--radius-md)" bg="var(--ink)" align="center" justify="center">
+                <Flex w="56px" h="56px" borderRadius="var(--radius-btn)" bg="var(--ink)" align="center" justify="center">
                   <Icon as={FaLock} boxSize={5} color="var(--paper)" />
                 </Flex>
-                <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="2xl" letterSpacing="-0.02em" color="var(--ink)">
+                <Text as="h1" fontFamily="var(--font-display)" fontWeight="800" fontSize="2xl" letterSpacing="-0.02em" color="var(--ink)">
                   Admin Login
                 </Text>
-                <Text color="var(--ink-muted)" fontSize="sm">
+                <Text color="var(--ink-3)" fontSize="sm">
                   Authorized access only. Use your credentials to sign in.
                 </Text>
               </VStack>
 
               <VStack spacing={4} width="full">
                 <FormControl isRequired>
-                  <FormLabel className="label-mono" color="var(--ink-muted)">
+                  <FormLabel className="label-mono" color="var(--ink-3)">
                     Admin ID
                   </FormLabel>
                   <Input
@@ -99,7 +99,7 @@ const AdminLogin = () => {
                   />
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel className="label-mono" color="var(--ink-muted)">
+                  <FormLabel className="label-mono" color="var(--ink-3)">
                     Password
                   </FormLabel>
                   <Input
@@ -113,7 +113,7 @@ const AdminLogin = () => {
               </VStack>
 
               {error && (
-                <Text w="full" fontSize="sm" color="var(--orange-ink)" bg="var(--orange)" px={4} py={2} borderRadius="var(--radius-sm)">
+                <Text w="full" fontSize="sm" color="var(--ink)" bg="var(--butter)" px={4} py={2} borderRadius="var(--radius-sm)">
                   {error}
                 </Text>
               )}
@@ -129,7 +129,7 @@ const AdminLogin = () => {
                 color="var(--paper)"
                 isLoading={isLoading}
                 loadingText="Signing in"
-                _hover={{ bg: "var(--ink-soft)" }}
+                _hover={{ bg: "var(--ink-2)" }}
                 _active={{ transform: "scale(0.98)" }}
               >
                 Sign In to Dashboard

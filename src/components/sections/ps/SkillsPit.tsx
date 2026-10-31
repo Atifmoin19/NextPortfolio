@@ -120,6 +120,9 @@ function startPhysics(M: Matter, pit: HTMLDivElement, pills: HTMLElement[], grou
     buildBodies();
   };
 
+  // Size the pit up front, while it is still below the fold, so it never grows on screen.
+  fitHeight();
+
   // Physics only runs while the pit is on screen.
   const io = new IntersectionObserver(
     ([entry]) => {

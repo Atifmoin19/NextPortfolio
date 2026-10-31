@@ -24,6 +24,22 @@ const AdminLogin = lazy(() => import("pages/admin/Login"));
 const AdminDashboard = lazy(() => import("pages/admin/Dashboard"));
 const ContentEditor = lazy(() => import("pages/admin/ContentEditor"));
 
+// "#main" would be read as a route by HashRouter, so the link moves focus itself.
+const SkipLink = () => (
+  <a
+    className="skip-link"
+    href="#main"
+    onClick={(e) => {
+      e.preventDefault();
+      const main = document.getElementById("main");
+      main?.focus({ preventScroll: true });
+      main?.scrollIntoView({ block: "start" });
+    }}
+  >
+    Skip to main content
+  </a>
+);
+
 const PageTracker = () => {
   const location = useLocation();
 
@@ -50,6 +66,7 @@ function App() {
       <Router>
         <PageTracker />
         <SectionTintProvider>
+        <SkipLink />
         <CommandPalette />
         <ChatWidget />
         <MotionOptInPill />

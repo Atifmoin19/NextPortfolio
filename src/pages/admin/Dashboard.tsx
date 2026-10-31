@@ -47,9 +47,9 @@ interface Todo {
 
 const cardProps = {
   p: 6,
-  bg: "var(--paper-raised)",
-  borderRadius: "var(--radius-bento)",
-  border: "1px solid var(--line)",
+  bg: "var(--paper)",
+  borderRadius: "var(--radius-card)",
+  border: "1px solid var(--hair)",
 };
 
 const AdminDashboard = () => {
@@ -122,12 +122,12 @@ const AdminDashboard = () => {
               <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="3xl" color="var(--ink)">
                 Admin Dashboard
               </Text>
-              <Text color="var(--ink-muted)" fontSize="sm">
+              <Text color="var(--ink-3)" fontSize="sm">
                 Overview of your portfolio performance
               </Text>
             </VStack>
             <HStack spacing={3}>
-              <Button as={Link} to="/" variant="ghost" size="sm" borderRadius="full" color="var(--ink-soft)">
+              <Button as={Link} to="/" variant="ghost" size="sm" borderRadius="full" color="var(--ink-2)">
                 View Portfolio
               </Button>
               <Button
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
                 variant="outline"
                 size="sm"
                 borderRadius="full"
-                borderColor="var(--line-strong)"
+                borderColor="var(--ink-3)"
                 color="var(--ink)"
               >
                 Open Google Analytics
@@ -149,37 +149,37 @@ const AdminDashboard = () => {
                 px={6}
                 bg="var(--ink)"
                 color="var(--paper)"
-                _hover={{ bg: "var(--ink-soft)" }}
+                _hover={{ bg: "var(--ink-2)" }}
               >
                 Logout
               </Button>
             </HStack>
           </Flex>
 
-          <Divider borderColor="var(--line)" />
+          <Divider borderColor="var(--hair)" />
 
           {/* Quick Stats */}
           <SimpleGrid columns={[1, 2, 3]} spacing={6}>
             <Stat {...cardProps}>
-              <StatLabel color="var(--ink-muted)">Total Leads</StatLabel>
+              <StatLabel color="var(--ink-3)">Total Leads</StatLabel>
               <StatNumber fontFamily="var(--font-mono)" fontSize="3xl" fontWeight="600" color="var(--ink)">
                 {isStatsLoading ? <Spinner size="sm" /> : todos.length}
               </StatNumber>
-              <StatHelpText color="var(--ink-muted)">From contact form</StatHelpText>
+              <StatHelpText color="var(--ink-3)">From contact form</StatHelpText>
             </Stat>
             <Stat {...cardProps}>
-              <StatLabel color="var(--ink-muted)">Live Traffic</StatLabel>
+              <StatLabel color="var(--ink-3)">Live Traffic</StatLabel>
               <StatNumber fontSize="lg" fontWeight="700" color="var(--ink)">
                 See Google Analytics
               </StatNumber>
-              <StatHelpText color="var(--ink-muted)">Internal counter disabled</StatHelpText>
+              <StatHelpText color="var(--ink-3)">Internal counter disabled</StatHelpText>
             </Stat>
             <Stat {...cardProps}>
-              <StatLabel color="var(--ink-muted)">Response Rate</StatLabel>
+              <StatLabel color="var(--ink-3)">Response Rate</StatLabel>
               <StatNumber fontFamily="var(--font-mono)" fontSize="3xl" fontWeight="600" color="var(--ink)">
                 100%
               </StatNumber>
-              <StatHelpText color="var(--ink-muted)">All messages logged</StatHelpText>
+              <StatHelpText color="var(--ink-3)">All messages logged</StatHelpText>
             </Stat>
           </SimpleGrid>
 
@@ -192,7 +192,7 @@ const AdminDashboard = () => {
               <Box h="300px">
                 <Center h="full">
                   <VStack spacing={4}>
-                    <Text fontSize="sm" color="var(--ink-muted)" fontWeight="500" textAlign="center">
+                    <Text fontSize="sm" color="var(--ink-3)" fontWeight="500" textAlign="center">
                       Detailed traffic analytics are available in your Google
                       Analytics dashboard.
                     </Text>
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
                       target="_blank"
                       size="xs"
                       variant="outline"
-                      borderColor="var(--line-strong)"
+                      borderColor="var(--ink-3)"
                       color="var(--ink)"
                       borderRadius="full"
                     >
@@ -220,9 +220,9 @@ const AdminDashboard = () => {
               <Box h="300px">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={[{ name: "Total Inquiries", value: todos.length }]}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--line)" />
-                    <XAxis dataKey="name" stroke="var(--ink-muted)" />
-                    <YAxis stroke="var(--ink-muted)" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--hair)" />
+                    <XAxis dataKey="name" stroke="var(--ink-3)" />
+                    <YAxis stroke="var(--ink-3)" />
                     <Tooltip />
                     <Bar dataKey="value" fill="#f3a53d" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -237,7 +237,7 @@ const AdminDashboard = () => {
               <Heading size="sm" fontFamily="var(--font-display)" color="var(--ink)">
                 Recent Inquiries
               </Heading>
-              <Button variant="link" size="sm" as={Link} to="/admin/content" color="var(--accent)">
+              <Button variant="link" size="sm" as={Link} to="/admin/content" color="var(--red)">
                 Manage Content
               </Button>
             </Flex>
@@ -245,10 +245,10 @@ const AdminDashboard = () => {
               <Table variant="simple" size="sm">
                 <Thead>
                   <Tr>
-                    <Th color="var(--ink-muted)">Visitor</Th>
-                    <Th color="var(--ink-muted)">Email/Mobile</Th>
-                    <Th color="var(--ink-muted)">Message</Th>
-                    <Th color="var(--ink-muted)">Date</Th>
+                    <Th color="var(--ink-3)">Visitor</Th>
+                    <Th color="var(--ink-3)">Email/Mobile</Th>
+                    <Th color="var(--ink-3)">Message</Th>
+                    <Th color="var(--ink-3)">Date</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -260,7 +260,7 @@ const AdminDashboard = () => {
                       <Td>
                         <VStack align="start" spacing={0}>
                           <Text fontSize="xs" color="var(--ink)">{todo.email}</Text>
-                          <Text fontSize="xs" color="var(--ink-muted)">
+                          <Text fontSize="xs" color="var(--ink-3)">
                             {todo.mobile}
                           </Text>
                         </VStack>
@@ -270,7 +270,7 @@ const AdminDashboard = () => {
                           {todo.message}
                         </Text>
                       </Td>
-                      <Td fontSize="xs" color="var(--ink-muted)">
+                      <Td fontSize="xs" color="var(--ink-3)">
                         {todo.date}
                       </Td>
                     </Tr>
@@ -281,7 +281,7 @@ const AdminDashboard = () => {
 
             {loading && (
               <Center py={10}>
-                <Spinner color="var(--accent)" />
+                <Spinner color="var(--red)" />
               </Center>
             )}
 
@@ -292,7 +292,7 @@ const AdminDashboard = () => {
                   size="sm"
                   onClick={fetchNextPage}
                   borderRadius="full"
-                  borderColor="var(--line-strong)"
+                  borderColor="var(--ink-3)"
                   color="var(--ink)"
                 >
                   Load More Leads

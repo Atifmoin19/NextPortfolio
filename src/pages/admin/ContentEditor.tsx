@@ -255,7 +255,7 @@ const ContentEditor = () => {
           <Button
             leftIcon={<FaArrowLeft />}
             variant="ghost"
-            color="var(--ink-soft)"
+            color="var(--ink-2)"
             onClick={() => navigate("/admin/dashboard")}
           >
             Back to Dashboard
@@ -266,7 +266,7 @@ const ContentEditor = () => {
           <HStack>
             <Button
               variant="outline"
-              borderColor="var(--line-strong)"
+              borderColor="var(--ink-3)"
               color="var(--ink)"
               onClick={() => {
                 if (
@@ -284,7 +284,7 @@ const ContentEditor = () => {
               leftIcon={<FaSave />}
               bg="var(--ink)"
               color="var(--paper)"
-              _hover={{ bg: "var(--ink-soft)" }}
+              _hover={{ bg: "var(--ink-2)" }}
               isLoading={saving}
               onClick={handleSave}
             >
@@ -296,13 +296,13 @@ const ContentEditor = () => {
         <Accordion allowMultiple defaultIndex={[0]}>
           {/* HERO SECTION */}
           <AccordionItem
-            borderRadius="var(--radius-bento)"
+            borderRadius="var(--radius-card)"
             mb={4}
             border="1px solid"
-            borderColor="var(--line)"
+            borderColor="var(--hair)"
             overflow="hidden"
           >
-            <AccordionButton className="bento-mint" py={4} _hover={{ filter: "brightness(0.97)" }}>
+            <AccordionButton bg="var(--mint)" border="2px solid var(--ink)" py={4} _hover={{ filter: "brightness(0.97)" }}>
               <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Hero Section
               </Box>
@@ -364,7 +364,7 @@ const ContentEditor = () => {
                         href={data.hero.resumeUrl}
                         isExternal
                         fontSize="sm"
-                        color="var(--accent)"
+                        color="var(--red)"
                         isTruncated
                         maxW="320px"
                       >
@@ -394,13 +394,13 @@ const ContentEditor = () => {
 
           {/* SKILLS SECTION */}
           <AccordionItem
-            borderRadius="var(--radius-bento)"
+            borderRadius="var(--radius-card)"
             mb={4}
             border="1px solid"
-            borderColor="var(--line)"
+            borderColor="var(--hair)"
             overflow="hidden"
           >
-            <AccordionButton className="bento-lavender" py={4} _hover={{ filter: "brightness(0.97)" }}>
+            <AccordionButton bg="var(--lilac)" border="2px solid var(--ink)" py={4} _hover={{ filter: "brightness(0.97)" }}>
               <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Skills ({data.skills.length})
               </Box>
@@ -412,10 +412,10 @@ const ContentEditor = () => {
                   <HStack
                     key={index}
                     spacing={4}
-                    bg="var(--paper-raised)"
-                    border="1px solid var(--line)"
+                    bg="var(--paper)"
+                    border="1px solid var(--hair)"
                     p={3}
-                    borderRadius="var(--radius-md)"
+                    borderRadius="var(--radius-btn)"
                   >
                     <FormControl size="sm">
                       <FormLabel fontSize="xs">Name</FormLabel>
@@ -475,13 +475,13 @@ const ContentEditor = () => {
 
           {/* EXPERIENCE SECTION */}
           <AccordionItem
-            borderRadius="var(--radius-bento)"
+            borderRadius="var(--radius-card)"
             mb={4}
             border="1px solid"
-            borderColor="var(--line)"
+            borderColor="var(--hair)"
             overflow="hidden"
           >
-            <AccordionButton className="bento-orange" py={4} _hover={{ filter: "brightness(0.97)" }}>
+            <AccordionButton bg="var(--butter)" border="2px solid var(--ink)" py={4} _hover={{ filter: "brightness(0.97)" }}>
               <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Experience ({data.experience.length})
               </Box>
@@ -493,9 +493,9 @@ const ContentEditor = () => {
                   <Box
                     key={index}
                     p={4}
-                    bg="var(--paper-raised)"
-                    border="1px solid var(--line)"
-                    borderRadius="var(--radius-md)"
+                    bg="var(--paper)"
+                    border="1px solid var(--hair)"
+                    borderRadius="var(--radius-btn)"
                     position="relative"
                   >
                     <Tooltip label="Remove experience entry">
@@ -573,13 +573,13 @@ const ContentEditor = () => {
 
           {/* PROJECTS SECTION */}
           <AccordionItem
-            borderRadius="var(--radius-bento)"
+            borderRadius="var(--radius-card)"
             mb={4}
             border="1px solid"
-            borderColor="var(--line)"
+            borderColor="var(--hair)"
             overflow="hidden"
           >
-            <AccordionButton className="bento-black" py={4} _hover={{ filter: "brightness(1.15)" }}>
+            <AccordionButton bg="var(--ink)" color="var(--paper)" border="2px solid var(--ink)" py={4} _hover={{ filter: "brightness(1.15)" }}>
               <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Projects ({data.projects.length})
               </Box>
@@ -591,9 +591,9 @@ const ContentEditor = () => {
                   <Box
                     key={index}
                     p={4}
-                    bg="var(--paper-raised)"
-                    border="1px solid var(--line)"
-                    borderRadius="var(--radius-md)"
+                    bg="var(--paper)"
+                    border="1px solid var(--hair)"
+                    borderRadius="var(--radius-btn)"
                     position="relative"
                   >
                     <Tooltip label="Remove project">
@@ -667,13 +667,13 @@ const ContentEditor = () => {
 
           {/* CONTACT SECTION */}
           <AccordionItem
-            borderRadius="var(--radius-bento)"
+            borderRadius="var(--radius-card)"
             mb={4}
             border="1px solid"
-            borderColor="var(--line)"
+            borderColor="var(--hair)"
             overflow="hidden"
           >
-            <AccordionButton className="bento-mint" py={4} _hover={{ filter: "brightness(0.97)" }}>
+            <AccordionButton bg="var(--mint)" border="2px solid var(--ink)" py={4} _hover={{ filter: "brightness(0.97)" }}>
               <Box flex="1" textAlign="left" fontFamily="var(--font-display)" fontWeight="800">
                 Contact & Socials
               </Box>
@@ -758,13 +758,13 @@ const ContentEditor = () => {
         <Button
           size="lg"
           leftIcon={<FaSave />}
-          bg="var(--accent)"
-          color="var(--accent-ink)"
-          _hover={{ bg: "var(--accent-strong)" }}
+          bg="var(--red)"
+          color="var(--paper)"
+          _hover={{ bg: "var(--red-strong)" }}
           isLoading={saving}
           onClick={handleSave}
           width="full"
-          borderRadius="var(--radius-md)"
+          borderRadius="var(--radius-btn)"
           mt={4}
         >
           Save All Portfolio Changes

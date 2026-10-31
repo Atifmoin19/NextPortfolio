@@ -195,7 +195,7 @@ export default function CommandPalette() {
       >
         <ModalBody p={0}>
           <HStack px={5} py={4} borderBottom="2px solid var(--ink)" spacing={3}>
-            <Icon as={FaMagnifyingGlass} color="var(--ink-muted)" boxSize={4} />
+            <Icon as={FaMagnifyingGlass} color="var(--ink-3)" boxSize={4} />
             <Input
               ref={inputRef}
               autoFocus
@@ -206,14 +206,14 @@ export default function CommandPalette() {
               variant="unstyled"
               fontSize="md"
             />
-            <Text className="label-mono" color="var(--ink-muted)">
+            <Text className="label-mono" color="var(--ink-3)">
               ESC
             </Text>
           </HStack>
 
           <VStack align="stretch" spacing={0} maxH="360px" overflowY="auto" py={2}>
             {filtered.length === 0 && (
-              <Text px={5} py={6} color="var(--ink-muted)" fontSize="sm">
+              <Text px={5} py={6} color="var(--ink-3)" fontSize="sm">
                 No matches.
               </Text>
             )}
@@ -232,13 +232,13 @@ export default function CommandPalette() {
                 textAlign="left"
               >
                 <HStack spacing={3}>
-                  <Icon as={command.icon} boxSize={4} color="var(--ink-soft)" />
+                  <Icon as={command.icon} boxSize={4} color="var(--ink-2)" />
                   <Text fontSize="sm" fontWeight="600">
                     {command.label}
                   </Text>
                 </HStack>
                 {command.hint && (
-                  <Text fontSize="xs" color="var(--ink-muted)" isTruncated maxW="220px">
+                  <Text fontSize="xs" color="var(--ink-3)" isTruncated maxW="220px">
                     {command.hint}
                   </Text>
                 )}

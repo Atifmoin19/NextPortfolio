@@ -9,8 +9,10 @@ import {
   IconButton,
   Text,
   VStack,
+  VisuallyHidden,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
@@ -32,10 +34,20 @@ export default function Navbar() {
   const active = useActiveSection();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // From the mobile drawer, wait until it has closed: its scroll lock would swallow the jump.
+  const pending = useRef<string | null>(null);
   const goTo = (id: string) => {
-    onClose();
     if (location.pathname !== "/") navigate("/");
-    scrollToId(id);
+    if (isOpen) {
+      pending.current = id;
+      onClose();
+    } else {
+      scrollToId(id);
+    }
+  };
+  const afterDrawerClose = () => {
+    if (pending.current) scrollToId(pending.current);
+    pending.current = null;
   };
 
   const goHome = () => {
@@ -114,17 +126,18 @@ export default function Navbar() {
             <Box
               as="button"
               onClick={() => window.dispatchEvent(new CustomEvent("toggle-command-palette"))}
-              aria-label="Open command palette"
+              aria-keyshortcuts="Meta+K Control+K"
               display={{ base: "none", md: "inline-flex" }}
               className="mono"
               px="0.6rem"
               py="0.2rem"
               border="2px solid var(--ink)"
-              borderRadius="6px"
+              borderRadius="var(--radius-sm)"
               bg="var(--paper)"
               _hover={{ bg: "var(--butter)" }}
             >
-              &#8984;K
+              <span aria-hidden="true">&#8984;K</span>
+              <VisuallyHidden>Search</VisuallyHidden>
             </Box>
             <Box display={{ base: "none", sm: "block" }}>
               <OpenToRoles />
@@ -142,7 +155,7 @@ export default function Navbar() {
         </Box>
       </Box>
 
-      <Drawer isOpen={isOpen} placement="top" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="top" onClose={onClose} onCloseComplete={afterDrawerClose}>
         <DrawerOverlay />
         <DrawerContent borderBottom="2px solid var(--ink)">
           <DrawerBody className="ps-wrap" w="full" py={4}>

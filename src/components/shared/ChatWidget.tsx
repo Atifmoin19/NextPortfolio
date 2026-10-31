@@ -32,6 +32,7 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const isSlow = useSlowHint(isLoading);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -83,6 +84,15 @@ export default function ChatWidget() {
             }}
           >
             <Box
+              id="chat-panel"
+              role="dialog"
+              aria-label="Ask about Atif"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setIsOpen(false);
+                  toggleRef.current?.focus();
+                }
+              }}
               bg="var(--paper)"
               border="2px solid var(--ink)"
               borderRadius="var(--radius-card)"
@@ -95,7 +105,7 @@ export default function ChatWidget() {
                 </Text>
               </HStack>
 
-              <VStack ref={scrollRef} align="stretch" spacing={3} p={4} maxH="360px" overflowY="auto">
+              <VStack ref={scrollRef} align="stretch" spacing={3} p={4} maxH="360px" overflowY="auto" aria-live="polite">
                 {messages.map((m, i) => (
                   <Box
                     key={i}
@@ -121,6 +131,8 @@ export default function ChatWidget() {
 
               <HStack p={3} borderTop="2px solid var(--ink)" spacing={2}>
                 <Input
+                  autoFocus
+                  aria-label="Your question"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && send()}
@@ -142,7 +154,10 @@ export default function ChatWidget() {
       </AnimatePresence>
 
       <IconButton
+        ref={toggleRef}
         aria-label={isOpen ? "Close chat" : "Open chat"}
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? "chat-panel" : undefined}
         icon={<Icon as={isOpen ? FaXmark : FaComment} boxSize={5} />}
         onClick={() => setIsOpen((v) => !v)}
         w="56px"

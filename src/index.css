@@ -15,11 +15,10 @@
    Deliberately a single light theme. */
 :root {
   --bg: #f1f1ec;
-  --bg-default: #f1f1ec;
   --paper: #fbfbf8;
   --ink: #111111;
   --ink-2: #55554f;
-  --ink-3: #8a8a83;
+  --ink-3: #696962; /* AA (4.8:1) on every section tint */
   --rule: #111111;
   --hair: rgba(17, 17, 17, 0.14);
   --rule-blue: rgba(70, 110, 200, 0.16);
@@ -49,38 +48,6 @@
   --radius-card: 18px;
 
   --nav-h: 66px;
-
-  /* --- Legacy aliases. The old sections and the admin still reference these; they map
-     onto Paper Studio values until parts 2-4 replace those sections. --- */
-  --paper-raised: var(--paper);
-  --ink-soft: var(--ink-2);
-  --ink-muted: var(--ink-3);
-  --line: var(--hair);
-  --line-strong: rgba(17, 17, 17, 0.32);
-  --accent: var(--red);
-  --accent-strong: var(--red-strong);
-  --accent-ink: #ffffff;
-  --accent-soft: rgba(226, 50, 27, 0.1);
-  --accent-border: rgba(226, 50, 27, 0.45);
-  --mint-deep: var(--mint);
-  --mint-ink: var(--ink);
-  --mint-shadow: var(--ink);
-  --lavender: var(--lilac);
-  --lavender-deep: var(--lilac);
-  --lavender-ink: var(--ink);
-  --lavender-shadow: var(--ink);
-  --orange: var(--butter);
-  --orange-deep: var(--butter);
-  --orange-ink: var(--ink);
-  --orange-shadow: var(--ink);
-  --black-card: var(--ink);
-  --black-card-deep: var(--ink);
-  --black-card-ink: var(--paper);
-  --black-shadow: var(--ink);
-  --font-script: var(--font-hand);
-  --ease-out: var(--ease);
-  --radius-md: 12px;
-  --radius-bento: var(--radius-card);
 
   font-family: var(--font-body);
   line-height: 1.55;
@@ -149,6 +116,23 @@ button {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--butter);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-btn);
+  box-shadow: var(--shadow);
+  font-weight: 700;
+}
+.skip-link:focus { top: 12px; }
+
+main:focus { outline: none; }
 
 /* --- Layout + type helpers --- */
 .ps-wrap {
@@ -232,34 +216,6 @@ button {
   font-size: 1.06rem;
   max-width: 58ch;
   margin-top: 12px;
-}
-
-/* --- Old bento card fills, flattened into Paper Studio blocks (2px ink, hard shadow).
-   Kept so the current sections still render until they are replaced. --- */
-.bento-mint,
-.bento-lavender,
-.bento-orange,
-.bento-black,
-.bento-paper {
-  border: 2px solid var(--ink);
-  box-shadow: var(--shadow);
-  color: var(--ink);
-  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-}
-.bento-mint { background: var(--mint); }
-.bento-lavender { background: var(--lilac); }
-.bento-orange { background: var(--butter); }
-.bento-black { background: var(--ink); color: var(--paper); }
-.bento-paper { background: var(--paper); }
-.bento-mint:hover,
-.bento-lavender:hover,
-.bento-orange:hover,
-.bento-black:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-.hero-blob {
-  position: relative;
 }
 
 /* --- Scrollbar --- */

@@ -228,7 +228,7 @@ export default function ProjectDetail() {
     <>
       <ScrollProgress />
       <Navbar />
-      <main className="cs-main ps-wrap" id="main">
+      <main className="cs-main ps-wrap" id="main" tabIndex={-1}>
         <RouterLink to="/" className="cs-back">
           <span aria-hidden="true">&larr;</span> All work
         </RouterLink>

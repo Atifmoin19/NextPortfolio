@@ -46,7 +46,7 @@ export default function MotionOptInPill() {
                 textAlign="left"
                 _hover={{ textDecoration: "underline" }}
               >
-                <Text fontSize="xs" color="var(--ink-muted)" lineHeight="1.3">
+                <Text fontSize="xs" color="var(--ink-3)" lineHeight="1.3">
                   Reduced motion is on
                 </Text>
                 <Text fontSize="sm" fontWeight="600" color="var(--ink)" lineHeight="1.3">
@@ -59,9 +59,9 @@ export default function MotionOptInPill() {
                 onClick={() => setDismissed(true)}
                 p={2}
                 borderRadius="full"
-                _hover={{ bg: "var(--paper-raised)" }}
+                _hover={{ bg: "var(--paper)" }}
               >
-                <Icon as={FaXmark} boxSize={3} color="var(--ink-muted)" />
+                <Icon as={FaXmark} boxSize={3} color="var(--ink-3)" />
               </Box>
             </HStack>
           </Box>

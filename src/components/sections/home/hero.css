@@ -21,7 +21,7 @@
 .ps-hero h1 .hl {
   background: var(--pink);
   padding: 0 0.12em;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
