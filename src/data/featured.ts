@@ -39,15 +39,20 @@ export const backendCity: FeaturedProject = {
     },
   ],
   screens: [
+    { src: "/projects/backend-city/hero-day.webp", label: "Day city" },
     { src: "/projects/backend-city/hero-night.webp", label: "Night city" },
     { src: "/projects/backend-city/game-night.webp", label: "The game" },
     { src: "/projects/backend-city/map-night.webp", label: "City map" },
-    { src: "/projects/backend-city/hero-day.webp", label: "Daybreak theme" },
   ],
   gallery: [
     {
+      src: "/projects/backend-city/hero-day.webp",
+      label: "Homepage, day theme",
+      caption: "The city at golden hour. One token system drives the UI, WebGL, Pixi and canvas scenes.",
+    },
+    {
       src: "/projects/backend-city/hero-night.webp",
-      label: "Homepage",
+      label: "Homepage, night theme",
       caption: "Scroll-driven three.js city: every packet is a request that passes, bounces at the gate, or crashes a tower.",
     },
     {
@@ -64,11 +69,6 @@ export const backendCity: FeaturedProject = {
       src: "/projects/backend-city/academy-night.webp",
       label: "District tour",
       caption: "Districts light up in their own color as the story reaches them.",
-    },
-    {
-      src: "/projects/backend-city/hero-day.webp",
-      label: "Daybreak theme",
-      caption: "The same city at golden hour: one token system drives the UI, WebGL, Pixi and canvas scenes.",
     },
   ],
   stack: [

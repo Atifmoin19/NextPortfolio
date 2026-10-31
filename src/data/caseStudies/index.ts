@@ -5,7 +5,6 @@ import { dayline } from "./dayline";
 import { zenova } from "./zenova";
 import { emailTemplateFlow } from "./emailTemplateFlow";
 import { interestingUi } from "./interestingUi";
-import { zopperUi } from "./zopperUi";
 import { vitePwaUpdater } from "./vitePwaUpdater";
 import { smartVirtualScroll } from "./smartVirtualScroll";
 
@@ -16,10 +15,9 @@ export const caseStudies: CaseStudy[] = [
   dayline,
   backendCity,
   allSquare,
-  zenova,
   emailTemplateFlow,
   interestingUi,
-  zopperUi,
+  zenova,
   vitePwaUpdater,
   smartVirtualScroll,
 ];

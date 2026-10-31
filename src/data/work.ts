@@ -67,7 +67,7 @@ const CURATED: Curated[] = [
     type: "Game that teaches backend development",
     outcome: "Live, FastAPI running in the browser",
     color: "butter",
-    img: "/projects/backend-city/game-night.webp",
+    img: "/projects/backend-city/hero-day.webp",
     live: backendCity.liveUrl,
     repos: backendCity.repos,
     project: backendCity,
@@ -149,21 +149,6 @@ const CURATED: Curated[] = [
     },
   },
   {
-    year: "2024",
-    slug: "zopper-ui",
-    name: "Zopper UI",
-    type: "Internal React component library",
-    outcome: "Shared across Zopper's fintech products",
-    color: "sky",
-    project: {
-      ...(seedProject("Zopper UI") ?? {}),
-      highlights: [
-        "Shipped features used in multiple production fintech applications.",
-        "A shared design system that keeps the UI consistent across products.",
-      ],
-    },
-  },
-  {
     year: "2026",
     slug: "vite-pwa-updater",
     name: "vite-pwa-updater",
@@ -205,12 +190,33 @@ function toItem(c: Curated): WorkItem {
   return { ...c, project: c.name === backendCity.projectName ? backendCity : project };
 }
 
-const CURATED_ITEMS = CURATED.map(toItem);
+/** Page order for the work index and the case-study prev / next links. */
+export const WORK_ORDER = [
+  "dayline",
+  "backend-city",
+  "all-square",
+  "email-template-flow",
+  "interesting-ui",
+  "zenova",
+  "vite-pwa-updater",
+  "smart-virtual-scroll",
+];
+
+const rank = (slug: string) => {
+  const i = WORK_ORDER.indexOf(slug);
+  return i < 0 ? WORK_ORDER.length : i;
+};
+
+const CURATED_ITEMS = CURATED.map(toItem).sort((x, y) => rank(x.slug) - rank(y.slug));
+
+/** Projects that were retired from the site; CMS rows with these slugs are ignored. */
+const RETIRED = new Set(["zopper-ui"]);
+export const isRetired = (slug: string | undefined) => !!slug && RETIRED.has(slug);
 
 /** Curated rows first, then any CMS project that isn't already curated. */
 export function getWorkItems(cms: Project[] = []): WorkItem[] {
   // Match CMS entries by slug and by slugified name (EmailTemplateFlow's slug is hyphenated).
-  const known = new Set(CURATED_ITEMS.flatMap((w) => [w.slug, slugify(w.name)]));
+  const known = new Set([...RETIRED, ...CURATED_ITEMS.flatMap((w) => [w.slug, slugify(w.name)])]);
   const extra = cms
     .filter((p) => p.projectName && !known.has(slugify(p.projectName)))
     .map<WorkItem>((p, i) => ({

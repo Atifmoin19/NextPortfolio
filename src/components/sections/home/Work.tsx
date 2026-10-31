@@ -21,9 +21,13 @@ function Peek({ item, index, on }: { item: WorkItem | null; index: number; on: b
     let tx = px;
     let ty = py;
     let raf = 0;
+    // Keep the whole card (plus room for its tilt) inside the viewport.
+    const EDGE = 16;
     const place = () => {
-      el.style.left = `${Math.min(px, window.innerWidth - 300)}px`;
-      el.style.top = `${Math.max(8, py)}px`;
+      const maxX = window.innerWidth - el.offsetWidth - EDGE;
+      const maxY = window.innerHeight - el.offsetHeight - EDGE;
+      el.style.left = `${Math.max(EDGE, Math.min(px, maxX))}px`;
+      el.style.top = `${Math.max(EDGE, Math.min(py, maxY))}px`;
     };
     const tick = () => {
       px += (tx - px) * 0.15;
@@ -32,7 +36,9 @@ function Peek({ item, index, on }: { item: WorkItem | null; index: number; on: b
       raf = Math.abs(tx - px) + Math.abs(ty - py) > 0.5 ? requestAnimationFrame(tick) : 0;
     };
     const onMove = (e: PointerEvent) => {
-      tx = e.clientX + 28;
+      // Sits right of the cursor; flips to the left near the right edge.
+      const w = el.offsetWidth;
+      tx = e.clientX + 28 + w + EDGE > window.innerWidth ? e.clientX - 28 - w : e.clientX + 28;
       ty = e.clientY - 110;
       if (reduce || px < -300) {
         px = tx;
@@ -60,7 +66,7 @@ function Peek({ item, index, on }: { item: WorkItem | null; index: number; on: b
         <>
           <span className="tape" style={{ ["--tc" as string]: TAPES[index % TAPES.length] }} />
           <div className="ph" style={{ background: `var(--${item.color})` }}>
-            {item.img ? <img src={item.img} alt="" /> : <b>{item.name}</b>}
+            {item.img ? <img src={item.img} alt="" width={1440} height={900} decoding="async" /> : <b>{item.name}</b>}
           </div>
           <div className="cap">
             {item.name}

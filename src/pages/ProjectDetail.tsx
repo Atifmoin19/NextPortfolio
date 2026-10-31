@@ -10,6 +10,7 @@ import ArchDiagram from "../components/case/ArchDiagram";
 import Polaroids from "../components/case/Polaroids";
 import { caseStudies, getCaseStudy, getNeighbours, sharedHosting, type CaseStudy, type Pastel } from "../data/caseStudies";
 import { slugify } from "../utils/slugify";
+import { isRetired } from "../data/work";
 import "../components/case/case.css";
 
 const NOTE_COLORS: Pastel[] = ["butter", "pink", "mint", "sky", "lilac"];
@@ -191,7 +192,7 @@ export default function ProjectDetail() {
 
   const curated = getCaseStudy(slug);
   const cms = useMemo(() => {
-    if (curated) return undefined;
+    if (curated || isRetired(slug)) return undefined;
     const p = portfolioData?.projects.find((x) => slugify(x.projectName) === slug);
     return p ? fromProject(p) : undefined;
   }, [curated, portfolioData, slug]);
