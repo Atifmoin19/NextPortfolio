@@ -11,7 +11,6 @@ import {
   Icon,
   Box,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { scrollToId } from "../../lib/smoothScroll";
 import {
@@ -25,8 +24,9 @@ import {
   FaFolderOpen,
   FaLock,
 } from "react-icons/fa6";
-import type { RootState } from "../../store";
 import { getWorkItems } from "../../data/work";
+import { NAV_SECTIONS } from "../../data/sections";
+import { usePortfolioContent } from "../sections/ps/usePortfolioContent";
 import { resolveResumeUrl } from "../../utils/resumeUrl";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
@@ -45,7 +45,7 @@ interface Command {
 }
 
 export default function CommandPalette() {
-  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
+  const portfolioData = usePortfolioContent();
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -84,10 +84,13 @@ export default function CommandPalette() {
 
   const commands: Command[] = useMemo(() => {
     const list: Command[] = [
-      { id: "nav-skills", label: "Skills", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("skills") },
-      { id: "nav-experience", label: "Experience", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("experience") },
-      { id: "nav-work", label: "Work", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("work") },
-      { id: "nav-contact", label: "Contact", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("contact") },
+      ...NAV_SECTIONS.map((sec) => ({
+        id: `nav-${sec.id}`,
+        label: sec.label,
+        hint: "Jump to section",
+        icon: FaArrowRight,
+        run: () => goHomeThenScroll(sec.id),
+      })),
     ];
 
     if (portfolioData) {

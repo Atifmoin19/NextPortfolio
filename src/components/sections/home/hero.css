@@ -112,6 +112,18 @@
   .ps-hero h1, .ps-hero-side { grid-column: 1 / -1; }
   .ps-meta { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 520px) {
-  .ps-meta { grid-template-columns: 1fr; }
+
+/* Phones and small tablets: the stamped name leads, so the owner's name, the headline
+   and both CTAs all sit in the first screen. Stickers and meta follow below. */
+@media (max-width: 768px) {
+  .ps-hero { display: flex; flex-direction: column; padding-top: 28px; }
+  .ps-stamp-sheet { order: -1; margin: 0 0 22px; padding: 12px 12px 8px; }
+  .ps-word { font-size: clamp(2.6rem, 15vw, 7rem); }
+  .ps-hint { padding-top: 6px; margin-top: 6px; font-size: 0.7rem; }
+  .ps-hint span:last-child { display: none; }
+  .ps-hero h1 { font-size: clamp(2rem, 8.6vw, 3.4rem); }
+  .ps-hero-top { gap: 12px; }
+  .ps-hero-side { gap: 12px; }
+  .ps-stickers { margin-top: 20px; }
+  .ps-meta { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
 }

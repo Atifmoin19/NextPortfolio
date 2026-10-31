@@ -20,7 +20,7 @@ export interface WorkItem {
   img?: string;
   live?: string;
   repos?: { label: string; url: string }[];
-  /** The flagship project: listed first and marked in the index. */
+  /** Flagship projects (Dayline, Backend City): listed first and stamped in the index. */
   featured?: boolean;
   /** Full record for the case-study page. */
   project: Project;
@@ -63,6 +63,7 @@ const CURATED: Curated[] = [
   {
     year: "2026",
     slug: "backend-city",
+    featured: true,
     name: backendCity.projectName,
     type: "Game that teaches backend development",
     outcome: "Live, FastAPI running in the browser",
@@ -194,9 +195,9 @@ function toItem(c: Curated): WorkItem {
 export const WORK_ORDER = [
   "dayline",
   "backend-city",
+  "interesting-ui",
   "all-square",
   "email-template-flow",
-  "interesting-ui",
   "zenova",
   "vite-pwa-updater",
   "smart-virtual-scroll",

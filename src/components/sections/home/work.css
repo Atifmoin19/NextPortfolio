@@ -114,7 +114,7 @@
   .ps-peek { display: none; }
 }
 
-/* Flagship project (Dayline): a red stamp beside the name and a heavier top rule. */
+/* Flagship projects (Dayline, Backend City): a red stamp beside the name and a heavier top rule. */
 .ps-row.featured { border-top-width: 2px; }
 .ps-row .flag {
   display: inline-block;

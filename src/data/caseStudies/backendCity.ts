@@ -13,6 +13,7 @@ export const backendCity: CaseStudy = {
   status: "live",
   statusLabel: "Live",
   color: "butter",
+  flagship: true,
   links: {
     live: featured.liveUrl,
     repos: featured.repos,

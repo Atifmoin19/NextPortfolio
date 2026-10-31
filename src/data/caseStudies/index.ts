@@ -10,13 +10,13 @@ import { smartVirtualScroll } from "./smartVirtualScroll";
 
 export type * from "./types";
 
-/** Same order as the Selected work index on the home page; drives prev / next. */
+/** Same order as WORK_ORDER in data/work.ts (the Selected work index); drives prev / next. */
 export const caseStudies: CaseStudy[] = [
   dayline,
   backendCity,
+  interestingUi,
   allSquare,
   emailTemplateFlow,
-  interestingUi,
   zenova,
   vitePwaUpdater,
   smartVirtualScroll,
