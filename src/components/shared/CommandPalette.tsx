@@ -61,12 +61,8 @@ export default function CommandPalette() {
 
   const goHomeThenScroll = (section: string) => {
     close();
-    if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => scrollToId(section, -88), 200);
-    } else {
-      scrollToId(section, -88);
-    }
+    if (location.pathname !== "/") navigate("/");
+    scrollToId(section);
   };
 
   useEffect(() => {

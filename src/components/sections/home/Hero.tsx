@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../store";
+import { usePortfolioContent } from "../ps/usePortfolioContent";
 import { scrollToId } from "../../../lib/smoothScroll";
 import { resolveResumeUrl } from "../../../utils/resumeUrl";
 import Wordmark from "./Wordmark";
@@ -33,7 +32,8 @@ function earliestStart(durations: string[]) {
 }
 
 export default function Hero() {
-  const data = useSelector((state: RootState) => state.portfolio.data);
+  // Seed content paints immediately; Firestore values replace it when they arrive.
+  const data = usePortfolioContent();
   const hero = data?.hero;
   const experience = data?.experience ?? [];
 
@@ -68,7 +68,7 @@ export default function Hero() {
               href="#work"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToId("work", -80);
+                scrollToId("work");
               }}
             >
               See the work <span aria-hidden="true">&darr;</span>

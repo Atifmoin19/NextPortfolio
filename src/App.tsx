@@ -11,7 +11,6 @@ import Home from "pages/Home";
 import CommandPalette from "./components/shared/CommandPalette";
 import ChatWidget from "./components/shared/ChatWidget";
 import MotionOptInPill from "./components/shared/MotionOptInPill";
-import SmoothScroll from "./components/layout/SmoothScroll";
 import { MotionPreferenceProvider } from "./lib/motionPreference";
 import { SectionTintProvider } from "./lib/sectionTint";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
@@ -54,7 +53,6 @@ function App() {
         <CommandPalette />
         <ChatWidget />
         <MotionOptInPill />
-        <SmoothScroll>
           <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -65,7 +63,6 @@ function App() {
             <Route path="/admin/content" element={<ContentEditor />} />
           </Routes>
           </Suspense>
-        </SmoothScroll>
         </SectionTintProvider>
       </Router>
     </MotionPreferenceProvider>

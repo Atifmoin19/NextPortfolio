@@ -17,8 +17,6 @@ import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
 import { useActiveSection } from "../../lib/activeSection";
 import { NAV_SECTIONS } from "../../data/sections";
 
-const NAV_OFFSET = -80;
-
 function OpenToRoles() {
   return (
     <HStack spacing={2} fontSize="0.9rem" whiteSpace="nowrap">
@@ -36,12 +34,8 @@ export default function Navbar() {
 
   const goTo = (id: string) => {
     onClose();
-    if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => scrollToId(id, NAV_OFFSET), 150);
-    } else {
-      scrollToId(id, NAV_OFFSET);
-    }
+    if (location.pathname !== "/") navigate("/");
+    scrollToId(id);
   };
 
   const goHome = () => {

@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store";
+import { usePortfolioContent } from "../sections/ps/usePortfolioContent";
 
+const SITE = "https://portfolio.fullstackcity.in/";
+
+// JSON-LD Person, built from the same content the page renders (seed first, then CMS).
 const StructuredData = () => {
-  const data = useSelector((state: RootState) => state.portfolio.data);
-
-  if (!data) return null;
+  const data = usePortfolioContent();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -12,8 +12,10 @@ const StructuredData = () => {
     name: data.hero.name,
     jobTitle: data.hero.role,
     description: data.hero.description,
-    url: window.location.origin,
-    sameAs: data.contact.socials.map((s) => s.url),
+    url: SITE,
+    image: `${SITE}og-image.png`,
+    address: { "@type": "PostalAddress", addressLocality: "Noida", addressCountry: "IN" },
+    sameAs: data.contact.socials.map((s) => s.url).filter((u) => /^https?:/.test(u)),
     knowsAbout: data.skills.map((s) => s.name),
     email: data.contact.email,
   };

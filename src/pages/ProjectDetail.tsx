@@ -9,7 +9,6 @@ import ScrollProgress from "../components/layout/ScrollProgress";
 import ArchDiagram from "../components/case/ArchDiagram";
 import Polaroids from "../components/case/Polaroids";
 import { caseStudies, getCaseStudy, getNeighbours, sharedHosting, type CaseStudy, type Pastel } from "../data/caseStudies";
-import "../lib/smoothScroll"; // window.__lenis typing
 import { slugify } from "../utils/slugify";
 import "../components/case/case.css";
 
@@ -216,11 +215,8 @@ export default function ProjectDetail() {
     e.preventDefault();
     const el = document.getElementById(id);
     if (!el) return;
-    // Numeric target: Lenis' element mode drifted after the first jump on this page.
-    const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - 84);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (window.__lenis) window.__lenis.scrollTo(top, { immediate: reduce });
-    else window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     el.focus({ preventScroll: true });
   };
 
