@@ -1,0 +1,93 @@
+/* Shared bits for the Paper Studio sections in this folder: section frame, heading,
+   lede and the hard-shadow press button. Prefixed kit- so they never collide with the
+   hero/work styles. */
+.kit-sec {
+  padding-block: clamp(64px, 9vw, 112px);
+  border-top: 2px solid var(--rule);
+}
+.kit-h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 112%;
+  font-size: clamp(2.1rem, 4.6vw, 3.8rem);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+.kit-lede {
+  color: var(--ink-2);
+  font-size: 1.06rem;
+  max-width: 58ch;
+  margin-top: 12px;
+}
+.kit-btn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  padding: 0.72rem 1.15rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-btn);
+  background: var(--butter);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
+  white-space: nowrap;
+}
+.kit-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.kit-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--ink);
+}
+.kit-btn:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}
+.kit-btn.ghost {
+  background: var(--paper);
+}
+.kit-btn.pink {
+  background: var(--pink);
+}
+.kit-btn.sm {
+  font-size: 0.82rem;
+  padding: 0.42rem 0.75rem;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.kit-btn.sm:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+.kit-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.kit-acts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.kit-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
