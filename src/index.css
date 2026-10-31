@@ -79,7 +79,7 @@ html {
 body {
   min-width: 320px;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip, not hidden: hidden makes body a scroll container and breaks position: sticky */
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent, type RefObject } from "react";
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store";
@@ -58,6 +58,8 @@ function sectionsFor(c: CaseStudy): SectionDef[] {
   return s;
 }
 
+/** Scrollspy: the section crossing the upper third of the viewport is active; at the
+ *  very bottom of the page the last section wins even if it is short. */
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0] ?? "");
   useEffect(() => {
@@ -73,9 +75,29 @@ function useActiveSection(ids: string[]) {
       const el = document.getElementById(id);
       if (el) obs.observe(el);
     });
-    return () => obs.disconnect();
+    const atBottom = () => {
+      const el = document.documentElement;
+      if (window.scrollY + window.innerHeight >= el.scrollHeight - 4) setActive(ids[ids.length - 1]);
+    };
+    window.addEventListener("scroll", atBottom, { passive: true });
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("scroll", atBottom);
+    };
   }, [ids]);
   return active;
+}
+
+/** Keeps the active chip in view when the index is a horizontal bar (narrow screens). */
+function useActiveChipInView(navRef: RefObject<HTMLElement | null>, active: string) {
+  useEffect(() => {
+    const list = navRef.current?.querySelector("ol");
+    const link = list?.querySelector<HTMLElement>('[aria-current="true"]');
+    if (!list || !link || list.scrollWidth <= list.clientWidth) return;
+    const left = link.offsetLeft - list.offsetLeft - (list.clientWidth - link.offsetWidth) / 2;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    list.scrollTo({ left, behavior: reduce ? "auto" : "smooth" });
+  }, [navRef, active]);
 }
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -201,6 +223,8 @@ export default function ProjectDetail() {
   const sections = useMemo(() => (c ? sectionsFor(c) : []), [c]);
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
   const active = useActiveSection(ids);
+  const indexRef = useRef<HTMLElement>(null);
+  useActiveChipInView(indexRef, active);
   const index = c ? caseStudies.findIndex((x) => x.slug === c.slug) : -1;
   const nb = c ? getNeighbours(c.slug) : undefined;
 
@@ -250,7 +274,7 @@ export default function ProjectDetail() {
 
             <div className="cs-body" style={sections.length ? undefined : { display: "block" }}>
               {sections.length > 0 && (
-                <nav className="cs-index" aria-label="On this page">
+                <nav className="cs-index" aria-label="On this page" ref={indexRef}>
                   <p className="lbl">On this page</p>
                   <ol>
                     {sections.map((s) => (
