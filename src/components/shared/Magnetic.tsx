@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { ReactNode, PointerEvent } from "react";
 import { motion, useMotionValue } from "framer-motion";
-import { useReducedMotion } from "../../lib/motionPreference";
+import { useReducedMotion } from "../../lib/useMotionPreference";
 import { useLerpMotionValue } from "../../hooks/useLerpMotionValue";
 
 export default function Magnetic({

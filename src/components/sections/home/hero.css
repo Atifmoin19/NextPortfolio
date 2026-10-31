@@ -1,0 +1,117 @@
+/* Paper Studio hero: headline + side note, stickers, meta strip, stamped wordmark. */
+.ps-hero {
+  padding-block: clamp(40px, 6vw, 72px) 0;
+}
+.ps-hero-top {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: end;
+}
+.ps-hero h1 {
+  grid-column: 1 / 10;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 108%;
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin: 0;
+}
+.ps-hero h1 .hl {
+  background: var(--pink);
+  padding: 0 0.12em;
+  border-radius: 10px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.ps-hero-side {
+  grid-column: 10 / 13;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.ps-hero-side p { color: var(--ink-2); margin: 0; }
+.ps-hero-side .acts { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.ps-stickers { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.ps-stk {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.35s var(--ease);
+}
+.ps-stk:hover { transform: rotate(0) scale(1.06); }
+
+.ps-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 34px;
+  font-size: 0.92rem;
+}
+.ps-meta div { border-top: 1px solid var(--rule); padding-top: 8px; }
+.ps-meta small { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
+
+/* Stamped kinetic wordmark on a taped sheet */
+.ps-stamp-sheet {
+  position: relative;
+  margin-top: clamp(36px, 6vw, 60px);
+  background: var(--paper);
+  box-shadow: var(--lift);
+  padding: clamp(14px, 2.4vw, 28px) clamp(14px, 2.4vw, 28px) 12px;
+  transform: rotate(-0.5deg);
+}
+.ps-stamp-sheet .tape.a { top: -12px; left: 6%; transform: rotate(-4deg); --tc: var(--pink); }
+.ps-stamp-sheet .tape.b { top: -12px; right: 7%; transform: rotate(5deg); --tc: var(--mint); }
+.ps-word {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 0.8;
+  font-size: clamp(3rem, 14vw, 13.5rem);
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  user-select: none;
+  overflow: hidden;
+  padding-bottom: 0.05em;
+  touch-action: pan-y;
+  cursor: ew-resize;
+  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.2 0 0 0 2.6'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+  mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.2 0 0 0 2.6'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+  -webkit-mask-size: 240px;
+  mask-size: 240px;
+}
+.ps-word span {
+  display: inline-block;
+  font-variation-settings: "wdth" var(--w, 100), "wght" var(--g, 900);
+  will-change: font-variation-settings;
+}
+.ps-word span.sp { flex: 0 0 0.32em; }
+.ps-word.static { cursor: default; }
+.ps-word.static span { will-change: auto; }
+.ps-hint {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 10px;
+  margin-top: 8px;
+  border-top: 1px dashed var(--hair);
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+.ps-hint b { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .ps-hero h1, .ps-hero-side { grid-column: 1 / -1; }
+  .ps-meta { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .ps-meta { grid-template-columns: 1fr; }
+}

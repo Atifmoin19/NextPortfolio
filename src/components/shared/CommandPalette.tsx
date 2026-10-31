@@ -26,8 +26,7 @@ import {
   FaLock,
 } from "react-icons/fa6";
 import type { RootState } from "../../store";
-import { slugify } from "../../utils/slugify";
-import { backendCity } from "../../data/featured";
+import { getWorkItems } from "../../data/work";
 import { resolveResumeUrl } from "../../utils/resumeUrl";
 
 const SOCIAL_ICONS: Record<string, typeof FaGithub> = {
@@ -91,23 +90,20 @@ export default function CommandPalette() {
     const list: Command[] = [
       { id: "nav-skills", label: "Skills", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("skills") },
       { id: "nav-experience", label: "Experience", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("experience") },
-      { id: "nav-projects", label: "Projects", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("projects") },
+      { id: "nav-work", label: "Work", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("work") },
       { id: "nav-contact", label: "Contact", hint: "Jump to section", icon: FaArrowRight, run: () => goHomeThenScroll("contact") },
     ];
 
     if (portfolioData) {
-      const projects = portfolioData.projects.some((p) => p.projectName === backendCity.projectName)
-        ? portfolioData.projects
-        : [backendCity, ...portfolioData.projects];
-      for (const project of projects) {
+      for (const work of getWorkItems(portfolioData.projects)) {
         list.push({
-          id: `project-${project.projectName}`,
-          label: project.projectName,
+          id: `project-${work.slug}`,
+          label: work.name,
           hint: "Open case study",
           icon: FaFolderOpen,
           run: () => {
             close();
-            navigate(`/project/${slugify(project.projectName)}`);
+            navigate(`/project/${work.slug}`);
           },
         });
       }

@@ -208,7 +208,7 @@ CSS custom properties in `index.css`:
 ## Deployment
 
 - **Vercel** project `portfolio` (Vite preset, `npm run build`, output `dist`, SPA rewrite in
-  `vercel.json`). Env: `VITE_API_BASE_URL=https://atif-portfolio-api.onrender.com` plus the
+  `vercel.json`). Env: `VITE_API_BASE_URL=https://api.fullstackcity.in/portfolio` plus the
   `VITE_FIREBASE_*` keys.
 - **Production branch is `main`**, but work happens on `new_ui` (the two have diverged).
   Pushing `new_ui` creates a Preview; to go live either promote it
@@ -230,7 +230,7 @@ CSS custom properties in `index.css`:
 - ✅ Backend City featured showcase + case study with screenshot gallery; Projects moved
   right after the Hero (2026-09-25)
 - ✅ Resume link fixed on production; SEO URLs moved to Vercel; real `og-image.jpg`
-- ✅ Deployed on Vercel; API on Render (`VITE_API_BASE_URL` set)
+- ✅ Deployed on Vercel; API at https://api.fullstackcity.in/portfolio (`VITE_API_BASE_URL` set)
 - ⏳ **Stored resume URL** in Firestore is still `localhost:8001` until the resume is
   re-uploaded (or the field edited) from the live admin; the frontend works around it
 - ⏳ **Testimonials section is empty** — waiting on real quotes to seed `data/content.ts`

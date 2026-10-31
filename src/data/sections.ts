@@ -11,7 +11,7 @@ export const DEFAULT_TINT = "#f1f1ec";
 
 export const SECTIONS: SectionDef[] = [
   { id: "hero", label: null, tint: DEFAULT_TINT },
-  { id: "projects", label: "Work", tint: "#eef0f2" },
+  { id: "work", label: "Work", tint: "#eef0f2" },
   { id: "skills", label: "Skills", tint: "#edf3ee" },
   { id: "experience", label: "Career", tint: "#f1eef5" },
   { id: "activity", label: null, tint: "#f3efe4" },

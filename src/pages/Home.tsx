@@ -7,8 +7,9 @@ import Footer from "../components/layout/Footer";
 import StructuredData from "../components/SEO/StructuredData";
 import type { RootState } from "../store";
 
-const Hero = lazy(() => import("../components/sections/Hero"));
-const Projects = lazy(() => import("../components/sections/Projects"));
+const Hero = lazy(() => import("../components/sections/home/Hero"));
+const StackMarquee = lazy(() => import("../components/sections/home/StackMarquee"));
+const Work = lazy(() => import("../components/sections/home/Work"));
 const Skills = lazy(() => import("../components/sections/Skills"));
 const Experience = lazy(() => import("../components/sections/Experience"));
 const GitHubActivity = lazy(() => import("../components/sections/GitHubActivity"));
@@ -28,7 +29,8 @@ export default function Home() {
           {dataReady && (
             <Suspense fallback={<Box minH="100vh" />}>
               <Hero />
-              <Projects />
+              <StackMarquee />
+              <Work />
               <Skills />
               <Experience />
               <GitHubActivity />

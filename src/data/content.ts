@@ -123,7 +123,6 @@ export const portfolioData = {
             problem: "Multiple fintech product teams were rebuilding the same UI patterns independently, slowing delivery and fragmenting the look and feel across products.",
             approach: "Designed and built a shared, reusable component library with a consistent design system adopted across production applications.",
             highlights: [
-                "Improved development efficiency by 40% across teams.",
                 "Shipped features used in multiple production fintech applications.",
                 "Established a scalable design system ensuring UI consistency across products."
             ],
@@ -137,7 +136,6 @@ export const portfolioData = {
             problem: "Marketing needed to build and ship HTML emails without engineering support, but hand-written templates routinely broke across email clients.",
             approach: "Built a drag-and-drop builder backed by a structured, client-safe email architecture.",
             highlights: [
-                "Reduced email creation time by 60%.",
                 "Solved cross-client rendering issues across Outlook and Gmail with structured markup."
             ],
             link: { code: "", project: "" },
@@ -146,11 +144,11 @@ export const portfolioData = {
         {
             projectName: "Interesting UI",
             projectType: "Animation component library",
-            stack: ["Next.js", "GSAP", "Framer Motion"],
+            stack: ["React", "Chakra UI v2", "GSAP", "Framer Motion"],
             problem: "Every new project was writing one-off animation code instead of reusing production-grade, tested components.",
             approach: "Built a standalone library of high-performance animated components tuned for smooth playback.",
             highlights: [
-                "40+ animated components achieving 60 FPS."
+                "62 animated components, about 38 kB gzipped, covered by 84 tests."
             ],
             link: { code: "", project: "" },
             image: ""
@@ -162,8 +160,7 @@ export const portfolioData = {
             problem: "Rendering large lists directly into the DOM caused severe scroll jank and memory bloat.",
             approach: "Built a virtualization library that only renders visible list items, and published it as an open-source npm package.",
             highlights: [
-                "Improved list rendering performance by 80%.",
-                "Reduced DOM node count and memory usage significantly."
+                "Only the rows in view are in the DOM, so long lists stay smooth."
             ],
             link: { code: "https://github.com/Atifmoin19/smart-virtual-scroll", project: "https://www.npmjs.com/package/smart-virtual-scroll" },
             image: ""

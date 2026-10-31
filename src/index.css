@@ -188,6 +188,52 @@ button {
   pointer-events: none;
 }
 
+/* Press button (same look as the Chakra "press" variant) for plain links. */
+.ps-btn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  padding: 0.72rem 1.15rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-btn);
+  background: var(--butter);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
+  white-space: nowrap;
+}
+.ps-btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.ps-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+.ps-btn.ghost { background: var(--paper); }
+.ps-btn.pink { background: var(--pink); }
+
+/* Section shell: 2px rule on top, generous vertical rhythm. */
+.ps-sec {
+  padding-block: clamp(64px, 9vw, 112px);
+  border-top: 2px solid var(--rule);
+}
+.ps-h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 112%;
+  font-size: clamp(2.1rem, 4.6vw, 3.8rem);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+.ps-lede {
+  color: var(--ink-2);
+  font-size: 1.06rem;
+  max-width: 58ch;
+  margin-top: 12px;
+}
+
 /* --- Old bento card fills, flattened into Paper Studio blocks (2px ink, hard shadow).
    Kept so the current sections still render until they are replaced. --- */
 .bento-mint,
@@ -230,26 +276,6 @@ button {
   scroll-margin-top: calc(var(--nav-h) + 16px);
 }
 
-/* --- Featured project (Backend City) --- */
-.fp-ping {
-  animation: fp-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes fp-ping {
-  75%,
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
-  }
-}
-.fp-spin {
-  animation: fp-spin 0.9s linear infinite;
-}
-@keyframes fp-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* --- Reduced motion, globally. Decorative CSS motion stops; JS motion is gated by
    lib/motionPreference (useReducedMotion). --- */
 @media (prefers-reduced-motion: reduce) {
@@ -265,13 +291,9 @@ button {
 
   /* A loading spinner communicates real async state, not decoration, so it keeps
      spinning for as long as it is shown. */
-  .chakra-spinner,
-  .fp-spin {
+  .chakra-spinner {
     animation-duration: 0.6s !important;
     animation-iteration-count: infinite !important;
   }
 
-  .fp-ping {
-    animation: none !important;
-  }
 }

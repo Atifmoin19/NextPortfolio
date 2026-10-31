@@ -2,7 +2,7 @@ import { useState, type KeyboardEvent } from "react";
 import { Box, HStack, Icon, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaExpand } from "react-icons/fa6";
-import { useReducedMotion } from "../../lib/motionPreference";
+import { useReducedMotion } from "../../lib/useMotionPreference";
 
 export interface GalleryShot {
   src: string;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, HStack, Text, Icon } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaWandMagicSparkles, FaXmark } from "react-icons/fa6";
-import { useMotionPreference } from "../../lib/motionPreference";
+import { useMotionPreference } from "../../lib/useMotionPreference";
 
 // Only rendered for visitors whose OS has Reduce Motion on - the vast
 // majority of visitors never see this. Gives them a way to opt back into

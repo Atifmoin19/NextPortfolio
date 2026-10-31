@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Box, Container, Text, VStack, HStack, IconButton, Icon } from "@chakra-ui/react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { useReducedMotion } from "../../lib/motionPreference";
+import { useReducedMotion } from "../../lib/useMotionPreference";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store";
 import { FaChevronLeft, FaChevronRight, FaQuoteLeft } from "react-icons/fa6";

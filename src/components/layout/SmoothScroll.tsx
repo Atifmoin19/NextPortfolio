@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "../../lib/motionPreference";
+import { useReducedMotion } from "../../lib/useMotionPreference";
 
 gsap.registerPlugin(ScrollTrigger);
 
