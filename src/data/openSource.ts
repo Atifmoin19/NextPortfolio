@@ -2,8 +2,8 @@
 // npm numbers are a snapshot, fetched by hand from the public npm APIs:
 //   version:   https://registry.npmjs.org/<name>            (dist-tags.latest)
 //   downloads: https://api.npmjs.org/downloads/point/last-year/<name>
-// Interesting UI: the repo stays private and it is not offered on npm yet (owner's call),
-// so its card links only to the live demo and shows no npm numbers.
+// Interesting UI: the repo stays private (owner's call) but the package is published on npm,
+// so its card shows the npm install line and npm link, plus the live demo, and no GitHub link.
 // Refresh them by re-running those two requests and updating FETCHED_AT.
 
 export const NPM_FETCHED_AT = "2026-11-01";
@@ -37,8 +37,8 @@ export const OPEN_SOURCE: OpenSourcePackage[] = [
     downloadsLastYear: null,
     fact: "62 components, about 38 kB gzipped",
     demo: "https://intresting-ui.vercel.app",
-    onNpm: false,
-    note: "Live demo, source private",
+    onNpm: true,
+    note: "On npm, source private",
     tint: "var(--lilac)",
     tape: "var(--pink)",
   },
