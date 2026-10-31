@@ -2,6 +2,8 @@
 // npm numbers are a snapshot, fetched by hand from the public npm APIs:
 //   version:   https://registry.npmjs.org/<name>            (dist-tags.latest)
 //   downloads: https://api.npmjs.org/downloads/point/last-year/<name>
+// Interesting UI: the repo stays private and it is not offered on npm yet (owner's call),
+// so its card links only to the live demo and shows no npm numbers.
 // Refresh them by re-running those two requests and updating FETCHED_AT.
 
 export const NPM_FETCHED_AT = "2026-11-01";
@@ -16,6 +18,12 @@ export interface OpenSourcePackage {
   /** Extra fact shown on the card, already measured. */
   fact?: string;
   github?: string;
+  /** Live demo URL. */
+  demo?: string;
+  /** False when the package is not offered on npm: no install snippet, no npm link. */
+  onNpm: boolean;
+  /** Short note shown instead of source links, e.g. when the repo is private. */
+  note?: string;
   tint: string;
   tape: string;
 }
@@ -28,6 +36,9 @@ export const OPEN_SOURCE: OpenSourcePackage[] = [
     version: "1.0.0",
     downloadsLastYear: null,
     fact: "62 components, about 38 kB gzipped",
+    demo: "https://intresting-ui.vercel.app",
+    onNpm: false,
+    note: "Live demo, source private",
     tint: "var(--lilac)",
     tape: "var(--pink)",
   },
@@ -37,6 +48,7 @@ export const OPEN_SOURCE: OpenSourcePackage[] = [
     what: "A hook and toast that tell users a new version of a Vite PWA is ready, instead of serving the stale cache.",
     version: "1.1.0",
     downloadsLastYear: 1358,
+    onNpm: true,
     github: "https://github.com/Atifmoin19/vite-pwa-updater",
     tint: "var(--butter)",
     tape: "var(--sky)",
@@ -47,6 +59,7 @@ export const OPEN_SOURCE: OpenSourcePackage[] = [
     what: "A virtualized React list that only renders the rows on screen, so huge lists scroll without jank.",
     version: "0.1.4",
     downloadsLastYear: 225,
+    onNpm: true,
     github: "https://github.com/Atifmoin19/smart-virtual-scroll",
     tint: "var(--mint)",
     tape: "var(--butter)",
@@ -57,6 +70,7 @@ export const OPEN_SOURCE: OpenSourcePackage[] = [
     what: "A hook that clones an element and flies it to a target, like a product dropping into a cart.",
     version: "0.0.50",
     downloadsLastYear: 523,
+    onNpm: true,
     github: "https://github.com/Atifmoin19/use-fly-component",
     tint: "var(--sky)",
     tape: "var(--mint)",

@@ -13,7 +13,7 @@ const NOW: { label: string; items: string[] }[] = [
     label: "Running",
     items: [
       "All Square and Dayline, two side projects I revived, served with this portfolio's API from one free backend.",
-      "Interesting UI, my animated component library, now on npm.",
+      "Interesting UI, my library of 62 animated React components, with a live demo.",
     ],
   },
   {
