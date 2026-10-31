@@ -1,0 +1,218 @@
+.notes {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  align-items: end;
+  list-style: none;
+}
+.note {
+  position: relative;
+  aspect-ratio: 1 / 1.02;
+  background: var(--nc);
+  padding: 22px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow);
+  transform: rotate(var(--r));
+  transition: transform 0.4s var(--ease);
+}
+.note:hover {
+  transform: rotate(0) translateY(-6px);
+}
+.note:nth-child(2) { margin-bottom: 46px; }
+.note:nth-child(3) { margin-bottom: 92px; }
+.note:nth-child(4) { margin-bottom: 138px; }
+.note small {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.note h3 {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+.note p {
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #2c2c28;
+}
+.note .tape {
+  top: -13px;
+  left: 50%;
+  margin-left: -46px;
+  --tc: rgba(255, 255, 255, 0.75);
+}
+.note .now {
+  position: absolute;
+  right: -14px;
+  bottom: -14px;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 3px solid var(--red);
+  color: var(--red);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 118%;
+  font-size: 0.95rem;
+  transform: rotate(-14deg);
+  background: rgba(251, 251, 248, 0.5);
+}
+
+/* Rise in, one note after another, when the row scrolls into view. */
+.notes.rise .note {
+  opacity: 0;
+  translate: 0 40px;
+}
+.notes.rise.in .note {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.6s var(--ease) calc(var(--i) * 110ms),
+    translate 0.8s var(--ease) calc(var(--i) * 110ms),
+    transform 0.4s var(--ease);
+}
+
+.steps-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+  color: var(--ink-3);
+}
+
+/* What I did, for the current role */
+.did {
+  margin-top: 44px;
+  max-width: 860px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+}
+.did-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink);
+}
+.did-toggle b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+.did-toggle small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+.did-toggle .plus {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--mint);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.2rem;
+  transition: transform 0.35s var(--ease);
+}
+.did-toggle[aria-expanded="true"] .plus {
+  transform: rotate(45deg);
+}
+.did-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease);
+}
+.did-body.open {
+  grid-template-rows: 1fr;
+}
+.did-body > div {
+  overflow: hidden;
+}
+.did-list {
+  list-style: none;
+  margin: 0 22px 22px;
+  border-top: 1px dashed var(--hair);
+  padding-top: 6px;
+  counter-reset: did;
+}
+.did-list li {
+  counter-increment: did;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--hair);
+  color: var(--ink);
+}
+.did-list li:last-child {
+  border-bottom: 0;
+}
+.did-list li::before {
+  content: counter(did, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-3);
+  padding-top: 3px;
+}
+.did-list mark {
+  background: var(--butter);
+  color: inherit;
+  padding: 0 0.2em;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .notes {
+    grid-template-columns: 1fr 1fr;
+  }
+  .note {
+    margin-bottom: 0 !important;
+  }
+}
+@media (max-width: 520px) {
+  .notes {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin-inline: auto;
+  }
+  .did-toggle,
+  .did-list {
+    padding-inline: 0;
+  }
+  .did-toggle {
+    padding: 16px;
+  }
+  .did-list {
+    margin: 0 16px 16px;
+  }
+}
