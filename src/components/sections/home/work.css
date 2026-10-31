@@ -113,3 +113,22 @@
 @media (hover: none) {
   .ps-peek { display: none; }
 }
+
+/* Flagship project (Dayline): a red stamp beside the name and a heavier top rule. */
+.ps-row.featured { border-top-width: 2px; }
+.ps-row .flag {
+  display: inline-block;
+  margin-left: 12px;
+  vertical-align: middle;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  font-stretch: 100%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  padding: 0.12rem 0.4rem;
+  transform: rotate(-4deg);
+}

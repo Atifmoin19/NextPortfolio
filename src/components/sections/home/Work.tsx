@@ -87,7 +87,7 @@ export default function Work() {
         {items.map((w, i) => (
           <div
             key={w.slug}
-            className="ps-row"
+            className={w.featured ? "ps-row featured" : "ps-row"}
             style={{ ["--c" as string]: `var(--${w.color})` }}
             onPointerEnter={(e) => e.pointerType === "mouse" && setHover({ i, on: true })}
             onPointerLeave={() => setHover((h) => ({ ...h, on: false }))}
@@ -95,6 +95,7 @@ export default function Work() {
             <span className="y">{w.year}</span>
             <Link className="n" to={`/project/${w.slug}`}>
               {w.name}
+              {w.featured && <span className="flag">Flagship</span>}
             </Link>
             <span className="t">{w.type}</span>
             <span className="o">

@@ -20,6 +20,8 @@ export interface WorkItem {
   img?: string;
   live?: string;
   repos?: { label: string; url: string }[];
+  /** The flagship project: listed first and marked in the index. */
+  featured?: boolean;
   /** Full record for the case-study page. */
   project: Project;
 }
@@ -36,6 +38,27 @@ interface Curated extends Omit<WorkItem, "project"> {
 }
 
 const CURATED: Curated[] = [
+  {
+    year: "2026",
+    slug: "dayline",
+    featured: true,
+    name: "Dayline",
+    type: "Live day-timeline for team task scheduling",
+    outcome: "Live, everyone's timeline updates over WebSockets",
+    color: "sky",
+    live: "https://dayline-alpha-ten.vercel.app",
+    repos: [{ label: "Repo", url: gh("dayline") }],
+    project: {
+      stack: ["React", "TypeScript", "FastAPI", "PostgreSQL", "WebSockets"],
+      problem: "Teams plan the day in chat threads and lose track of who is doing what, and when.",
+      approach: "A shared day timeline for a team's tasks, backed by FastAPI and Postgres, with live WebSocket updates and isolated demo workspaces.",
+      highlights: [
+        "Live updates over WebSockets, so every open timeline stays in sync.",
+        "FastAPI and PostgreSQL backend.",
+        "Isolated demo workspaces, so visitors never see each other's data.",
+      ],
+    },
+  },
   {
     year: "2026",
     slug: "backend-city",
@@ -68,26 +91,6 @@ const CURATED: Curated[] = [
         "Offline-first: expenses are captured without a connection and synced later.",
         "FastAPI and PostgreSQL backend.",
         "Demo sandbox for trying the app without an account.",
-      ],
-    },
-  },
-  {
-    year: "2026",
-    slug: "dayline",
-    name: "Dayline",
-    type: "Team day-timeline task scheduling",
-    outcome: "Live, everyone's timeline updates over WebSockets",
-    color: "sky",
-    live: "https://dayline-alpha-ten.vercel.app",
-    repos: [{ label: "Repo", url: gh("dayline") }],
-    project: {
-      stack: ["React", "TypeScript", "FastAPI", "PostgreSQL", "WebSockets"],
-      problem: "Teams plan the day in chat threads and lose track of who is doing what, and when.",
-      approach: "A shared day timeline for a team's tasks, backed by FastAPI and Postgres, with live WebSocket updates and isolated demo workspaces.",
-      highlights: [
-        "Live updates over WebSockets, so every open timeline stays in sync.",
-        "FastAPI and PostgreSQL backend.",
-        "Isolated demo workspaces, so visitors never see each other's data.",
       ],
     },
   },
