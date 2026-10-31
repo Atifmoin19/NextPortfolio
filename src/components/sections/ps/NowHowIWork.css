@@ -1,0 +1,167 @@
+.now-grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: clamp(24px, 3.5vw, 44px);
+  align-items: start;
+}
+
+/* The Now sheet */
+.now-sheet {
+  position: relative;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  padding: 30px clamp(18px, 2.4vw, 28px) 22px;
+  transform: rotate(-0.6deg);
+}
+.now-sheet .tape.a { top: -12px; left: 10%; transform: rotate(-5deg); --tc: var(--butter); }
+.now-sheet .tape.b { top: -12px; right: 10%; transform: rotate(4deg); --tc: var(--sky); }
+.now-sheet h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 115%;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.now-sheet h3 i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--red);
+  flex: none;
+}
+.now-list {
+  margin-top: 14px;
+  display: grid;
+}
+.now-list > div {
+  display: grid;
+  gap: 4px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+}
+.now-list dt {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.now-list dd {
+  margin: 0;
+  color: var(--ink);
+}
+.now-list dd ul {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  margin-top: 2px;
+}
+.now-list dd li {
+  padding-left: 18px;
+  position: relative;
+}
+.now-list dd li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--mint);
+}
+.now-updated {
+  margin-top: 6px;
+  color: var(--ink-3);
+}
+
+/* How I work index cards */
+.how h3.how-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+}
+.how-cards {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 22px;
+  list-style: none;
+}
+.icard {
+  position: relative;
+  padding: 16px 18px 18px 18px;
+  border: 1.5px solid rgba(17, 17, 17, 0.35);
+  background:
+    linear-gradient(transparent 46px, rgba(226, 50, 27, 0.45) 46px 48px, transparent 48px),
+    repeating-linear-gradient(transparent 0 27px, var(--rule-blue) 27px 28px) 0 48px / 100% calc(100% - 48px) no-repeat,
+    #fffefb;
+  box-shadow: var(--lift);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.4s var(--ease);
+}
+.icard:hover {
+  transform: rotate(0) translateY(-4px);
+}
+.icard .pin {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  margin-left: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--pc, var(--red));
+  box-shadow: 1px 2px 0 rgba(17, 17, 17, 0.3);
+}
+.icard h4 {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  min-height: 30px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.icard h4 small {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+.icard p {
+  margin-top: 14px;
+  font-family: var(--font-hand);
+  font-size: 1.04rem;
+  line-height: 28px;
+  color: #2c2c28;
+}
+.icard:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: calc(50% - 11px);
+  justify-self: center;
+}
+
+@media (max-width: 900px) {
+  .now-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .how-cards {
+    grid-template-columns: 1fr;
+  }
+  .icard:last-child:nth-child(odd) {
+    max-width: none;
+  }
+}

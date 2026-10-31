@@ -1,0 +1,127 @@
+.oss-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 26px;
+  list-style: none;
+}
+.oss-card {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 26px clamp(16px, 2.2vw, 24px) 20px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.oss-card .tape {
+  top: -12px;
+  left: 24px;
+  transform: rotate(-3deg);
+}
+.oss-card:nth-child(even) .tape {
+  left: auto;
+  right: 24px;
+  transform: rotate(4deg);
+}
+.oss-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.oss-head h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.oss-ver {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--oc);
+  white-space: nowrap;
+}
+.oss-card > p {
+  color: var(--ink-2);
+}
+.oss-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+}
+.oss-stat b {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 118%;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.oss-stat span {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+}
+.oss-install {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 12px;
+  min-width: 0;
+}
+.oss-install code {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.oss-install code::before {
+  content: "$ ";
+  color: var(--ink-3);
+}
+.oss-install .ps-btn {
+  flex: none;
+  box-shadow: 2px 2px 0 var(--paper);
+  border-color: var(--paper);
+}
+.oss-install .ps-btn:hover {
+  box-shadow: 3px 3px 0 var(--paper);
+}
+.oss-install .ps-btn:active {
+  box-shadow: 0 0 0 var(--paper);
+  transform: translate(2px, 2px);
+}
+.oss-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.oss-asof {
+  margin-top: 18px;
+  color: var(--ink-3);
+}
+@media (max-width: 760px) {
+  .oss-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,81 @@
+.pit {
+  position: relative;
+  margin-top: 30px;
+  height: 440px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(circle, var(--hair) 1.2px, transparent 1.3px) 0 0 / 22px 22px,
+    var(--paper);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.pit .pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.05rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  white-space: nowrap;
+  will-change: transform;
+  line-height: 1.2;
+  /* Parked above the pit until the physics places it. */
+  transform: translate(-9999px, -9999px);
+}
+.pit .pill:active {
+  cursor: grabbing;
+}
+.pit.static {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-content: flex-end;
+  padding: 18px;
+  height: auto;
+  min-height: 220px;
+}
+.pit.static .pill {
+  position: static;
+  transform: none !important;
+  cursor: default;
+  touch-action: auto;
+  will-change: auto;
+}
+.pit-legend {
+  display: flex;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+  list-style: none;
+}
+.pit-legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pit-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+}
+@media (max-width: 900px) {
+  .pit {
+    height: 520px;
+  }
+}
+@media (max-width: 520px) {
+  .pit .pill {
+    font-size: 0.84rem;
+    padding: 0.45rem 0.85rem;
+  }
+}

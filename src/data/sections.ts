@@ -14,8 +14,9 @@ export const SECTIONS: SectionDef[] = [
   { id: "work", label: "Work", tint: "#eef0f2" },
   { id: "skills", label: "Skills", tint: "#edf3ee" },
   { id: "experience", label: "Career", tint: "#f1eef5" },
-  { id: "activity", label: null, tint: "#f3efe4" },
-  { id: "testimonials", label: null, tint: "#f3efe4" },
+  { id: "now", label: null, tint: "#f4f0e8" },
+  { id: "open-source", label: null, tint: "#eaf1f4" },
+  { id: "breather", label: "Breather", tint: "#f3efe4" },
   { id: "contact", label: "Contact", tint: "#f6eeef" },
 ];
 
