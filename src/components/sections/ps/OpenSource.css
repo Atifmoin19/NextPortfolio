@@ -99,15 +99,15 @@
   content: "$ ";
   color: var(--ink-3);
 }
-.oss-install .kit-btn {
+.oss-install .ps-btn {
   flex: none;
   box-shadow: 2px 2px 0 var(--paper);
   border-color: var(--paper);
 }
-.oss-install .kit-btn:hover {
+.oss-install .ps-btn:hover {
   box-shadow: 3px 3px 0 var(--paper);
 }
-.oss-install .kit-btn:active {
+.oss-install .ps-btn:active {
   box-shadow: 0 0 0 var(--paper);
   transform: translate(2px, 2px);
 }

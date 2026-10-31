@@ -27,7 +27,7 @@ function InstallLine({ name }: { name: string }) {
   return (
     <div className="oss-install">
       <code ref={codeRef}>{cmd}</code>
-      <button type="button" className="kit-btn sm" onClick={onCopy}>
+      <button type="button" className="ps-btn sm" onClick={onCopy}>
         {label}
         <span className="kit-sr"> install command for {name}</span>
       </button>
@@ -44,7 +44,7 @@ function Card({ pkg }: { pkg: OpenSourcePackage }) {
       <span className="tape" aria-hidden="true" />
       <div className="oss-head">
         <h3>{pkg.title}</h3>
-        <span className="oss-ver">{pkg.onNpm ? `v${pkg.version}` : "Live demo"}</span>
+        <span className="oss-ver">{pkg.onNpm ? `v${pkg.version}` : "Source private"}</span>
       </div>
       <p>{pkg.what}</p>
       <div className="oss-stat">
@@ -54,24 +54,24 @@ function Card({ pkg }: { pkg: OpenSourcePackage }) {
             <span>npm downloads in the last year</span>
           </>
         ) : (
-          <span>{[pkg.fact, pkg.note].filter(Boolean).join(". ")}</span>
+          <span>{pkg.fact}</span>
         )}
       </div>
       {pkg.onNpm && <InstallLine name={pkg.name} />}
       <div className="oss-links">
         {pkg.demo && (
-          <a className="kit-btn sm" href={pkg.demo} target="_blank" rel="noopener noreferrer">
+          <a className="ps-btn sm" href={pkg.demo} target="_blank" rel="noopener noreferrer">
             Live demo <span aria-hidden="true">&#8599;</span>
           </a>
         )}
         {pkg.github && (
-          <a className="kit-btn sm ghost" href={pkg.github} target="_blank" rel="noopener noreferrer">
+          <a className="ps-btn sm ghost" href={pkg.github} target="_blank" rel="noopener noreferrer">
             GitHub <span aria-hidden="true">&#8599;</span>
           </a>
         )}
         {pkg.onNpm && (
           <a
-            className="kit-btn sm pink"
+            className="ps-btn sm pink"
             href={`https://www.npmjs.com/package/${pkg.name}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -86,10 +86,10 @@ function Card({ pkg }: { pkg: OpenSourcePackage }) {
 
 export default function OpenSource() {
   return (
-    <section id="open-source" className="kit-sec ps-wrap" aria-labelledby="oss-title">
-      <h2 id="oss-title" className="kit-h2">Open source</h2>
-      <p className="kit-lede">
-        Small tools I pulled out of real projects and published. Download counts are real numbers from npm.
+    <section id="open-source" className="ps-sec ps-wrap" aria-labelledby="oss-title">
+      <h2 id="oss-title" className="ps-h2">Open source</h2>
+      <p className="ps-lede">
+        Small tools I pulled out of real projects. Download counts come straight from npm.
       </p>
       <ul className="oss-grid">
         {OPEN_SOURCE.map((pkg) => (

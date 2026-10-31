@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { apiClient, ApiError } from "../../../services/apiClient";
 import { useSlowHint } from "../../../hooks/useSlowHint";
-import { useReducedMotion } from "../../../lib/motionPreference";
+import { useReducedMotion } from "../../../lib/useMotionPreference";
 import { copyText } from "./copyText";
 import { usePortfolioContent } from "./usePortfolioContent";
 import "./kit.css";
@@ -121,7 +121,7 @@ export default function ContactPostcard() {
     ) : null;
 
   return (
-    <section id="contact" className="kit-sec ps-wrap" aria-labelledby="contact-title">
+    <section id="contact" className="ps-sec ps-wrap" aria-labelledby="contact-title">
       <div className="contact-top">
         <h2 id="contact-title" className="kit-sr">Contact</h2>
         <p className="kicker">Have a role or a project in mind?</p>
@@ -129,16 +129,16 @@ export default function ContactPostcard() {
           {email}
         </a>
         <div className="ctl">
-          <button className="kit-btn" type="button" onClick={onCopy}>
+          <button className="ps-btn" type="button" onClick={onCopy}>
             <span aria-live="polite">{copyLabel}</span>
           </button>
           {linkedIn && (
-            <a className="kit-btn ghost" href={linkedIn} target="_blank" rel="noopener noreferrer">
+            <a className="ps-btn ghost" href={linkedIn} target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
           )}
           {gitHub && (
-            <a className="kit-btn ghost" href={gitHub} target="_blank" rel="noopener noreferrer">
+            <a className="ps-btn ghost" href={gitHub} target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
           )}
@@ -206,7 +206,7 @@ export default function ContactPostcard() {
             <label htmlFor="pc-website">Website</label>
             <input id="pc-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
           </div>
-          <button className="kit-btn" type="submit" style={{ justifySelf: "start", marginTop: 8 }} disabled={isSubmitting}>
+          <button className="ps-btn" type="submit" style={{ justifySelf: "start", marginTop: 8 }} disabled={isSubmitting}>
             {isSubmitting ? "Sending..." : "Stamp and send"}
           </button>
           <div aria-live="polite">

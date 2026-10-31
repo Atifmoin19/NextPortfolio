@@ -61,9 +61,9 @@ const PRINCIPLES: { title: string; body: string; pin: string; r: number }[] = [
 
 export default function NowHowIWork() {
   return (
-    <section id="now" className="kit-sec ps-wrap" aria-labelledby="now-title">
-      <h2 id="now-title" className="kit-h2">Now, and how I work</h2>
-      <p className="kit-lede">
+    <section id="now" className="ps-sec ps-wrap" aria-labelledby="now-title">
+      <h2 id="now-title" className="ps-h2">Now, and how I work</h2>
+      <p className="ps-lede">
         What I am busy with this month, and the habits I keep on every project. Each habit comes with a real example.
       </p>
 

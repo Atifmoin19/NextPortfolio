@@ -1,69 +1,17 @@
-/* Shared bits for the Paper Studio sections in this folder: section frame, heading,
-   lede and the hard-shadow press button. Prefixed kit- so they never collide with the
-   hero/work styles. */
-.kit-sec {
-  padding-block: clamp(64px, 9vw, 112px);
-  border-top: 2px solid var(--rule);
-}
-.kit-h2 {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 112%;
-  font-size: clamp(2.1rem, 4.6vw, 3.8rem);
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-}
-.kit-lede {
-  color: var(--ink-2);
-  font-size: 1.06rem;
-  max-width: 58ch;
-  margin-top: 12px;
-}
-.kit-btn {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 108%;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  padding: 0.72rem 1.15rem;
-  border: 2px solid var(--ink);
-  border-radius: var(--radius-btn);
-  background: var(--butter);
-  color: var(--ink);
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
-  white-space: nowrap;
-}
-.kit-btn:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 var(--ink);
-}
-.kit-btn:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0 0 0 var(--ink);
-}
-.kit-btn:disabled {
+/* Extras for the Paper Studio sections in this folder, on top of the shared
+   .ps-sec / .ps-h2 / .ps-lede / .ps-btn in index.css: small and disabled buttons,
+   the action bar and a screen-reader-only helper. */
+.ps-btn:disabled {
   cursor: progress;
   opacity: 0.75;
 }
-.kit-btn.ghost {
-  background: var(--paper);
-}
-.kit-btn.pink {
-  background: var(--pink);
-}
-.kit-btn.sm {
+.ps-btn.sm {
   font-size: 0.82rem;
   padding: 0.42rem 0.75rem;
   border-radius: 10px;
   box-shadow: 3px 3px 0 var(--ink);
 }
-.kit-btn.sm:active {
+.ps-btn.sm:active {
   transform: translate(3px, 3px);
   box-shadow: 0 0 0 var(--ink);
 }

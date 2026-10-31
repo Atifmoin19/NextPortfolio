@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type * as MatterNS from "matter-js";
-import { useReducedMotion } from "../../../lib/motionPreference";
+import { useReducedMotion } from "../../../lib/useMotionPreference";
 import { usePortfolioContent } from "./usePortfolioContent";
 import "./kit.css";
 import "./SkillsPit.css";
@@ -289,9 +289,9 @@ export default function SkillsPit() {
     : pills;
 
   return (
-    <section id="skills" className="kit-sec ps-wrap" aria-labelledby="skills-title">
-      <h2 id="skills-title" className="kit-h2">Skills ball pit</h2>
-      <p className="kit-lede">
+    <section id="skills" className="ps-sec ps-wrap" aria-labelledby="skills-title">
+      <h2 id="skills-title" className="ps-h2">Skills ball pit</h2>
+      <p className="ps-lede">
         {isStatic
           ? "Every pill is a tool I use at work, coloured by group."
           : "Every pill is a tool I use at work. Grab one and throw it, or press Shake."}
@@ -326,12 +326,12 @@ export default function SkillsPit() {
         </ul>
         <div className="kit-acts">
           {!isStatic && (
-            <button className="kit-btn ghost" type="button" onClick={() => physics.current?.shake()}>
+            <button className="ps-btn ghost" type="button" onClick={() => physics.current?.shake()}>
               Shake
             </button>
           )}
           <button
-            className="kit-btn"
+            className="ps-btn"
             type="button"
             onClick={() => (isStatic ? setSortedStatic(true) : physics.current?.sort())}
           >

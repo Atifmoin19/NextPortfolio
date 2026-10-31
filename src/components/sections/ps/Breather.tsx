@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "../../../lib/motionPreference";
+import { useReducedMotion } from "../../../lib/useMotionPreference";
 import "./kit.css";
 import "./Breather.css";
 
@@ -132,7 +132,7 @@ function Sketchpad({ reduce }: { reduce: boolean }) {
         <div className="pad-flip" ref={flipRef} aria-hidden="true" />
       </div>
       <div>
-        <button className="kit-btn" type="button" onClick={newPage}>
+        <button className="ps-btn" type="button" onClick={newPage}>
           New page
         </button>
       </div>
@@ -249,7 +249,7 @@ function BubbleWrap({ reduce }: { reduce: boolean }) {
         </span>
         <div className="kit-acts">
           <button
-            className="kit-btn pink"
+            className="ps-btn pink"
             type="button"
             onClick={() => {
               setPopped(Array(BUBBLES).fill(false));
@@ -258,7 +258,7 @@ function BubbleWrap({ reduce }: { reduce: boolean }) {
           >
             New sheet
           </button>
-          <button className="kit-btn ghost" type="button" onClick={() => setMuted((m) => !m)}>
+          <button className="ps-btn ghost" type="button" onClick={() => setMuted((m) => !m)}>
             {muted ? "Sound off" : "Sound on"}
           </button>
         </div>
@@ -270,9 +270,9 @@ function BubbleWrap({ reduce }: { reduce: boolean }) {
 export default function Breather() {
   const reduce = useReducedMotion();
   return (
-    <section id="breather" className="kit-sec ps-wrap" aria-labelledby="breather-title">
-      <h2 id="breather-title" className="kit-h2">Take a breather</h2>
-      <p className="kit-lede">Two small things to fidget with while you read. Nothing here is saved.</p>
+    <section id="breather" className="ps-sec ps-wrap" aria-labelledby="breather-title">
+      <h2 id="breather-title" className="ps-h2">Take a breather</h2>
+      <p className="ps-lede">Two small things to fidget with while you read. Nothing here is saved.</p>
       <div className="breath">
         <Sketchpad reduce={reduce} />
         <BubbleWrap reduce={reduce} />

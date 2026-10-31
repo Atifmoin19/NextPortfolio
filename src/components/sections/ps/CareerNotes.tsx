@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useId, useRef, useState } from "react";
-import { useReducedMotion } from "../../../lib/motionPreference";
+import { useReducedMotion } from "../../../lib/useMotionPreference";
 import { usePortfolioContent } from "./usePortfolioContent";
 import "./kit.css";
 import "./CareerNotes.css";
@@ -68,10 +68,10 @@ export default function CareerNotes() {
       : "Career, step by step";
 
   return (
-    <section id="experience" className="kit-sec ps-wrap" aria-labelledby="experience-title">
-      <h2 id="experience-title" className="kit-h2">{heading}</h2>
+    <section id="experience" className="ps-sec ps-wrap" aria-labelledby="experience-title">
+      <h2 id="experience-title" className="ps-h2">{heading}</h2>
       {first && current && (
-        <p className="kit-lede">
+        <p className="ps-lede">
           From {shortRole(first.role).toLowerCase()} to {shortRole(current.role).toLowerCase()} at {company}, starting{" "}
           {startOf(first.duration)}.
         </p>
