@@ -129,7 +129,7 @@ const CURATED: Curated[] = [
     outcome: "62 components, about 38 kB gzipped",
     color: "butter",
     live: "https://intresting-ui.vercel.app",
-    repos: [{ label: "Repo", url: gh("IntrestingUI") }],
+    // Source repo is private by choice: link the live demo only.
     project: {
       stack: ["React", "Chakra UI v2", "GSAP", "Framer Motion"],
       problem: seedProject("Interesting UI")?.problem,
