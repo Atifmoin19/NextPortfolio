@@ -6,6 +6,11 @@ declare global {
   }
 }
 
+// Native fallback (no Lenis, e.g. reduced motion): jump instead of animating.
+function nativeBehavior(): ScrollBehavior {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+}
+
 export function scrollToId(id: string, offset = 0) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -14,7 +19,7 @@ export function scrollToId(id: string, offset = 0) {
     lenis.scrollTo(el, { offset });
   } else {
     const top = el.getBoundingClientRect().top + window.scrollY + offset;
-    window.scrollTo({ top, behavior: "smooth" });
+    window.scrollTo({ top, behavior: nativeBehavior() });
   }
 }
 
@@ -23,6 +28,6 @@ export function scrollToTop() {
   if (lenis) {
     lenis.scrollTo(0);
   } else {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: nativeBehavior() });
   }
 }

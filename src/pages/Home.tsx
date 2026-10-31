@@ -1,87 +1,44 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Box } from "@chakra-ui/react";
-import Navbar from "../components/layout/Navbar";
-import Preloader from "../components/layout/Preloader";
-import FloatingBackground from "../components/layout/FloatingBackground";
-import ScrollProgress from "../components/layout/ScrollProgress";
-import SectionMinimap from "../components/layout/SectionMinimap";
-import Footer from "../components/layout/Footer";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store";
+import Navbar from "../components/layout/Navbar";
+import ScrollProgress from "../components/layout/ScrollProgress";
+import Footer from "../components/layout/Footer";
 import StructuredData from "../components/SEO/StructuredData";
+import type { RootState } from "../store";
 
-const importHero = () => import("../components/sections/Hero");
-const importSkills = () => import("../components/sections/Skills");
-const importExperience = () => import("../components/sections/Experience");
-const importGitHubActivity = () => import("../components/sections/GitHubActivity");
-const importProjects = () => import("../components/sections/Projects");
-const importTestimonials = () => import("../components/sections/Testimonials");
-const importContact = () => import("../components/sections/Contact");
-
-const Hero = lazy(importHero);
-const Skills = lazy(importSkills);
-const Experience = lazy(importExperience);
-const GitHubActivity = lazy(importGitHubActivity);
-const Projects = lazy(importProjects);
-const Testimonials = lazy(importTestimonials);
-const Contact = lazy(importContact);
+const Hero = lazy(() => import("../components/sections/Hero"));
+const Projects = lazy(() => import("../components/sections/Projects"));
+const Skills = lazy(() => import("../components/sections/Skills"));
+const Experience = lazy(() => import("../components/sections/Experience"));
+const GitHubActivity = lazy(() => import("../components/sections/GitHubActivity"));
+const Testimonials = lazy(() => import("../components/sections/Testimonials"));
+const Contact = lazy(() => import("../components/sections/Contact"));
 
 export default function Home() {
-  const { data, loading: dataLoading } = useSelector(
-    (state: RootState) => state.portfolio,
-  );
-  const dataReady = !dataLoading && !!data;
-  const [handoffDone, setHandoffDone] = useState(false);
-  const [flyStarted, setFlyStarted] = useState(false);
-
-  // Prefetch every below-the-fold chunk while the preloader is still playing, so the
-  // page is ready to mount (and its signature target measurable) the instant data loads.
-  useEffect(() => {
-    void Promise.all([
-      importHero(),
-      importSkills(),
-      importExperience(),
-      importGitHubActivity(),
-      importProjects(),
-      importTestimonials(),
-      importContact(),
-    ]);
-  }, []);
+  const dataReady = useSelector((state: RootState) => !!state.portfolio.data);
 
   return (
     <>
-      {!handoffDone && (
-        <Preloader
-          ready={dataReady}
-          onDone={() => setHandoffDone(true)}
-          onFlyStart={() => setFlyStarted(true)}
-        />
-      )}
-
-      {dataReady && (
-        <>
-          <StructuredData />
-          <FloatingBackground />
-          <ScrollProgress />
-          <SectionMinimap />
-
-          <Box minH="100vh" position="relative" overflow="hidden">
-            <Navbar />
-            <main>
-              <Suspense fallback={<Box minH="100vh" />}>
-                <Hero revealSignature={handoffDone} particlesActive={flyStarted} />
-                <Projects />
-                <Skills />
-                <Experience />
-                <GitHubActivity />
-                <Testimonials />
-                <Contact />
-              </Suspense>
-            </main>
-            <Footer />
-          </Box>
-        </>
-      )}
+      {dataReady && <StructuredData />}
+      <ScrollProgress />
+      <Box id="top" minH="100vh" position="relative" overflowX="clip">
+        <Navbar />
+        <Box as="main" minH="100vh">
+          {dataReady && (
+            <Suspense fallback={<Box minH="100vh" />}>
+              <Hero />
+              <Projects />
+              <Skills />
+              <Experience />
+              <GitHubActivity />
+              <Testimonials />
+              <Contact />
+            </Suspense>
+          )}
+        </Box>
+        <Footer />
+      </Box>
     </>
   );
 }

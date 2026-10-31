@@ -1,246 +1,212 @@
 import {
   Box,
-  Flex,
-  Container,
-  HStack,
-  Text,
-  Button,
-  IconButton,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
+  Flex,
+  HStack,
+  IconButton,
+  Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-import Magnetic from "../shared/Magnetic";
 import { scrollToId, scrollToTop } from "../../lib/smoothScroll";
+import { useActiveSection } from "../../lib/activeSection";
+import { NAV_SECTIONS } from "../../data/sections";
 
-const NAV_LINKS = ["Projects", "Skills", "Experience", "Contact"];
+const NAV_OFFSET = -80;
+
+function OpenToRoles() {
+  return (
+    <HStack spacing={2} fontSize="0.9rem" whiteSpace="nowrap">
+      <Box w="10px" h="10px" bg="var(--red)" flexShrink={0} aria-hidden="true" />
+      <Text as="span">Open to senior roles</Text>
+    </HStack>
+  );
+}
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    scrollToId(sectionId.toLowerCase(), -88);
-  };
-
-  const handleNavClick = (section: string) => {
+  const goTo = (id: string) => {
     onClose();
     if (location.pathname !== "/") {
       navigate("/");
-      setTimeout(() => scrollToSection(section), 150);
+      setTimeout(() => scrollToId(id, NAV_OFFSET), 150);
     } else {
-      scrollToSection(section);
+      scrollToId(id, NAV_OFFSET);
     }
+  };
+
+  const goHome = () => {
+    onClose();
+    if (location.pathname !== "/") navigate("/");
+    else scrollToTop();
   };
 
   return (
     <>
-      <motion.div
-        initial={{ y: -24, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          display: "flex",
-          justifyContent: "center",
-          padding: "16px 24px 0",
+      <Box
+        as="header"
+        position="sticky"
+        top="env(safe-area-inset-top, 0px)"
+        zIndex={40}
+        borderBottom="2px solid var(--rule)"
+        sx={{
+          background: "color-mix(in oklab, var(--bg) 88%, transparent)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          transition: "background-color 1.2s var(--ease)",
         }}
       >
         <Box
-          w="full"
-          maxW="1180px"
-          borderRadius="full"
-          bg={scrolled ? "rgba(255, 255, 255, 0.72)" : "rgba(255, 255, 255, 0.45)"}
-          border="1px solid"
-          borderColor={scrolled ? "var(--line-strong)" : "rgba(255, 255, 255, 0.6)"}
-          boxShadow={scrolled ? "0 12px 32px -16px rgba(22, 20, 15, 0.25)" : "none"}
-          sx={{
-            backdropFilter: "blur(18px) saturate(160%)",
-            WebkitBackdropFilter: "blur(18px) saturate(160%)",
-            transform: "translateZ(0)",
-            willChange: "backdrop-filter",
-          }}
-          transition="background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease"
+          className="ps-wrap"
+          display="grid"
+          gridTemplateColumns={{ base: "1fr auto", lg: "1fr auto 1fr" }}
+          alignItems="center"
+          gap={4}
+          minH="var(--nav-h)"
+          py={2}
         >
-          <Container maxW="container.xl" px={{ base: 4, md: 6 }}>
-            <Flex align="center" justify="space-between" h={{ base: "64px", md: "72px" }}>
-              <HStack
-                as="button"
-                spacing={3}
-                onClick={() => scrollToTop()}
-              >
-                <Flex
-                  w="36px"
-                  h="36px"
-                  borderRadius="full"
-                  bg="var(--ink)"
-                  color="var(--paper)"
-                  align="center"
-                  justify="center"
-                  fontFamily="var(--font-display)"
-                  fontWeight="800"
-                  fontSize="sm"
+          <Box
+            as="button"
+            onClick={goHome}
+            justifySelf="start"
+            fontFamily="var(--font-display)"
+            fontWeight={900}
+            fontSize="1.05rem"
+            letterSpacing="-0.01em"
+            sx={{ fontStretch: "115%" }}
+          >
+            Atif Moin
+          </Box>
+
+          <HStack as="nav" aria-label="Sections" spacing="6px" display={{ base: "none", lg: "flex" }}>
+            {NAV_SECTIONS.map((s) => {
+              const on = active === s.id;
+              return (
+                <Box
+                  key={s.id}
+                  as="a"
+                  href={`#${s.id}`}
+                  aria-current={on ? "true" : undefined}
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    goTo(s.id);
+                  }}
+                  fontWeight={500}
+                  px="0.75rem"
+                  py="0.35rem"
+                  borderRadius="999px"
+                  border="2px solid"
+                  borderColor={on ? "var(--ink)" : "transparent"}
+                  bg={on ? "var(--paper)" : "transparent"}
+                  transition="border-color 0.2s, background 0.2s"
+                  _hover={{ borderColor: "var(--ink)", bg: "var(--paper)" }}
                 >
-                  AM
-                </Flex>
-                <Text
-                  display={{ base: "none", sm: "block" }}
-                  fontFamily="var(--font-display)"
-                  fontWeight="800"
-                  fontSize="lg"
-                  letterSpacing="-0.02em"
-                  color="var(--ink)"
-                >
-                  Atif Moin
-                </Text>
-              </HStack>
+                  {s.label}
+                </Box>
+              );
+            })}
+          </HStack>
 
-              <HStack spacing={3} display={{ base: "none", md: "flex" }}>
-                {NAV_LINKS.map((item, i) => (
-                  <HStack key={item} spacing={3}>
-                    {i > 0 && (
-                      <Text color="var(--ink-muted)" fontSize="sm">
-                        /
-                      </Text>
-                    )}
-                    <Button
-                      variant="ghost"
-                      px={2}
-                      h="40px"
-                      fontSize="sm"
-                      fontWeight="600"
-                      color="var(--ink-soft)"
-                      _hover={{ bg: "transparent", color: "var(--ink)" }}
-                      onClick={() => handleNavClick(item)}
-                    >
-                      {item}
-                    </Button>
-                  </HStack>
-                ))}
-              </HStack>
-
-              <HStack spacing={3} display={{ base: "none", md: "flex" }}>
-                <Button
-                  onClick={() => window.dispatchEvent(new CustomEvent("toggle-command-palette"))}
-                  variant="outline"
-                  h="40px"
-                  minW="64px"
-                  px={4}
-                  borderRadius="full"
-                  borderColor="var(--line-strong)"
-                  fontSize="xs"
-                  fontFamily="var(--font-mono)"
-                  fontWeight="600"
-                  letterSpacing="0.04em"
-                  color="var(--ink-soft)"
-                  _hover={{ bg: "var(--paper)", color: "var(--ink)" }}
-                  aria-label="Open command palette"
-                >
-                  &#8984;&nbsp;K
-                </Button>
-
-              <Box display={{ base: "none", md: "block" }}>
-                <Magnetic>
-                  <Button
-                    h="44px"
-                    px={6}
-                    borderRadius="full"
-                    bg="var(--ink)"
-                    color="var(--paper)"
-                    fontSize="sm"
-                    fontWeight="700"
-                    _hover={{ bg: "var(--ink-soft)" }}
-                    _active={{ transform: "scale(0.97)" }}
-                    onClick={() => handleNavClick("Contact")}
-                  >
-                    Hire me
-                  </Button>
-                </Magnetic>
-              </Box>
-              </HStack>
-
-              <IconButton
-                aria-label="Open menu"
-                icon={<HiOutlineMenu size={22} />}
-                variant="ghost"
-                color="var(--ink)"
-                display={{ base: "flex", md: "none" }}
-                minW="44px"
-                h="44px"
-                onClick={onOpen}
-              />
-            </Flex>
-          </Container>
+          <HStack justifySelf="end" spacing={4}>
+            <Box
+              as="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("toggle-command-palette"))}
+              aria-label="Open command palette"
+              display={{ base: "none", md: "inline-flex" }}
+              className="mono"
+              px="0.6rem"
+              py="0.2rem"
+              border="2px solid var(--ink)"
+              borderRadius="6px"
+              bg="var(--paper)"
+              _hover={{ bg: "var(--butter)" }}
+            >
+              &#8984;K
+            </Box>
+            <Box display={{ base: "none", sm: "block" }}>
+              <OpenToRoles />
+            </Box>
+            <IconButton
+              aria-label="Open menu"
+              icon={<HiOutlineMenu size={22} />}
+              variant="ghost"
+              display={{ base: "flex", lg: "none" }}
+              minW="44px"
+              h="44px"
+              onClick={onOpen}
+            />
+          </HStack>
         </Box>
-      </motion.div>
+      </Box>
 
       <Drawer isOpen={isOpen} placement="top" onClose={onClose}>
-        <DrawerOverlay bg="rgba(22, 20, 15, 0.5)" />
-        <DrawerContent bg="var(--paper)" borderBottom="1px solid var(--line)">
-          <DrawerBody px={6} py={6}>
-            <Flex justify="space-between" align="center" mb={8}>
-              <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="xl" color="var(--ink)">
+        <DrawerOverlay />
+        <DrawerContent borderBottom="2px solid var(--ink)">
+          <DrawerBody className="ps-wrap" w="full" py={4}>
+            <Flex justify="space-between" align="center" mb={6}>
+              <Text fontFamily="var(--font-display)" fontWeight={900} sx={{ fontStretch: "115%" }}>
                 Atif Moin
               </Text>
               <IconButton
                 aria-label="Close menu"
                 icon={<HiOutlineX size={22} />}
                 variant="ghost"
-                color="var(--ink)"
                 minW="44px"
                 h="44px"
                 onClick={onClose}
               />
             </Flex>
-            <VStack align="stretch" spacing={1}>
-              {NAV_LINKS.map((item) => (
-                <Button
-                  key={item}
-                  variant="ghost"
-                  justifyContent="flex-start"
-                  h="56px"
-                  fontSize="lg"
-                  fontWeight="700"
-                  color="var(--ink)"
-                  _hover={{ bg: "var(--mint)" }}
-                  onClick={() => handleNavClick(item)}
+            <VStack as="nav" aria-label="Sections" align="stretch" spacing={0}>
+              {NAV_SECTIONS.map((s) => (
+                <Box
+                  key={s.id}
+                  as="button"
+                  textAlign="left"
+                  onClick={() => goTo(s.id)}
+                  py={3}
+                  borderTop="2px solid var(--ink)"
+                  fontFamily="var(--font-display)"
+                  fontWeight={900}
+                  fontSize="1.9rem"
+                  letterSpacing="-0.03em"
+                  sx={{ fontStretch: "110%" }}
+                  _hover={{ color: "var(--red)" }}
                 >
-                  {item}
-                </Button>
+                  {s.label}
+                </Box>
               ))}
-              <Button
-                mt={4}
-                h="56px"
-                borderRadius="full"
-                bg="var(--ink)"
-                color="var(--paper)"
-                fontWeight="700"
-                _hover={{ bg: "var(--ink-soft)" }}
-                onClick={() => handleNavClick("Contact")}
-              >
-                Hire me
-              </Button>
             </VStack>
+            <Flex
+              borderTop="2px solid var(--ink)"
+              pt={4}
+              mt={0}
+              justify="space-between"
+              align="center"
+              gap={4}
+              wrap="wrap"
+            >
+              <OpenToRoles />
+              <Box
+                as="button"
+                className="mono"
+                onClick={() => {
+                  onClose();
+                  window.dispatchEvent(new CustomEvent("toggle-command-palette"));
+                }}
+                textDecoration="underline"
+              >
+                Search (&#8984;K)
+              </Box>
+            </Flex>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

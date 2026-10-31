@@ -83,13 +83,13 @@ export default function ChatWidget() {
             }}
           >
             <Box
-              bg="var(--paper-raised)"
-              border="1px solid var(--line)"
-              borderRadius="var(--radius-bento)"
-              boxShadow="0 20px 40px -16px rgba(22, 20, 15, 0.3)"
+              bg="var(--paper)"
+              border="2px solid var(--ink)"
+              borderRadius="var(--radius-card)"
+              boxShadow="var(--shadow-lg)"
               overflow="hidden"
             >
-              <HStack px={4} py={3} borderBottom="1px solid var(--line)" justify="space-between">
+              <HStack px={4} py={3} borderBottom="2px solid var(--ink)" bg="var(--butter)" justify="space-between">
                 <Text fontFamily="var(--font-display)" fontWeight="800" fontSize="sm">
                   Ask about Atif
                 </Text>
@@ -103,8 +103,9 @@ export default function ChatWidget() {
                     maxW="85%"
                     px={3}
                     py={2}
-                    borderRadius="var(--radius-md)"
-                    bg={m.role === "user" ? "var(--ink)" : "var(--paper)"}
+                    borderRadius="var(--radius-sm)"
+                    border="2px solid var(--ink)"
+                    bg={m.role === "user" ? "var(--ink)" : "var(--bg)"}
                     color={m.role === "user" ? "var(--paper)" : "var(--ink)"}
                     fontSize="sm"
                   >
@@ -112,30 +113,25 @@ export default function ChatWidget() {
                   </Box>
                 ))}
                 {isLoading && (
-                  <Box alignSelf="flex-start" px={3} py={2} borderRadius="var(--radius-md)" bg="var(--paper)" fontSize="sm" color="var(--ink-muted)">
+                  <Box alignSelf="flex-start" px={3} py={2} borderRadius="var(--radius-sm)" border="2px dashed var(--ink-3)" fontSize="sm" color="var(--ink-2)">
                     {isSlow ? "Waking the server up (free hosting naps when idle), about 30 s..." : "Thinking..."}
                   </Box>
                 )}
               </VStack>
 
-              <HStack p={3} borderTop="1px solid var(--line)" spacing={2}>
+              <HStack p={3} borderTop="2px solid var(--ink)" spacing={2}>
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && send()}
                   placeholder="Ask a question..."
                   size="sm"
-                  borderRadius="full"
-                  bg="var(--paper)"
                 />
                 <IconButton
                   aria-label="Send"
                   icon={<Icon as={FaPaperPlane} boxSize={3.5} />}
                   size="sm"
-                  borderRadius="full"
-                  bg="var(--orange)"
-                  color="var(--orange-ink)"
-                  _hover={{ bg: "var(--accent-strong)" }}
+                  variant="press"
                   onClick={send}
                   isLoading={isLoading}
                 />
@@ -151,11 +147,8 @@ export default function ChatWidget() {
         onClick={() => setIsOpen((v) => !v)}
         w="56px"
         h="56px"
+        variant="press"
         borderRadius="full"
-        bg="var(--ink)"
-        color="var(--paper)"
-        _hover={{ bg: "var(--ink-soft)" }}
-        boxShadow="0 12px 24px -8px rgba(22, 20, 15, 0.4)"
       />
     </Box>
   );

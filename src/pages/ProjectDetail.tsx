@@ -7,7 +7,6 @@ import { FaArrowLeft, FaArrowUpRightFromSquare, FaGithub } from "react-icons/fa6
 import type { RootState } from "../store";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import FloatingBackground from "../components/layout/FloatingBackground";
 import ScrollProgress from "../components/layout/ScrollProgress";
 import { slugify } from "../utils/slugify";
 import { backendCity } from "../data/featured";
@@ -64,10 +63,9 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <FloatingBackground />
       <ScrollProgress />
       <Navbar />
-      <Box as="main" pt={{ base: "120px", md: "160px" }} pb={20} px={{ base: 6, md: 12, lg: 24 }}>
+      <Box as="main" pt={{ base: 10, md: 14 }} pb={20} px={{ base: 6, md: 12, lg: 24 }}>
         <Container maxW="container.lg">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
             <ChakraLink

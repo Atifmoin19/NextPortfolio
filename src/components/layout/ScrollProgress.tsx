@@ -15,9 +15,9 @@ export default function ScrollProgress() {
         top: 0,
         left: 0,
         right: 0,
-        height: "4px",
+        height: "3px",
         zIndex: 1100,
-        background: "var(--line-strong)",
+        background: "transparent",
       }}
     >
       <motion.div
@@ -25,7 +25,7 @@ export default function ScrollProgress() {
           height: "100%",
           transformOrigin: "left",
           scaleX: progress,
-          background: "linear-gradient(90deg, var(--lavender-deep), var(--orange))",
+          background: "var(--red)",
         }}
       />
     </div>

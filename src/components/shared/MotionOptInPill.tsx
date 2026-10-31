@@ -31,15 +31,15 @@ export default function MotionOptInPill() {
         >
           <Box
             bg="var(--paper)"
-            border="1px solid var(--line-strong)"
+            border="2px solid var(--ink)"
             borderRadius="full"
-            boxShadow="0 12px 28px -12px rgba(22, 20, 15, 0.28)"
+            boxShadow="var(--shadow)"
             pl={4}
             pr={2}
             py={2}
           >
             <HStack spacing={3}>
-              <Icon as={FaWandMagicSparkles} color="var(--orange)" boxSize={3.5} />
+              <Icon as={FaWandMagicSparkles} color="var(--red)" boxSize={3.5} />
               <Box
                 as="button"
                 onClick={enableMotion}

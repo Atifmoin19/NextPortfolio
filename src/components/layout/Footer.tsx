@@ -1,57 +1,58 @@
-import { Box, Container, Text, HStack, Icon, Flex } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
-import type { RootState } from "../../store";
-import type { IconType } from "react-icons";
+import { useEffect, useState } from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { scrollToTop } from "../../lib/smoothScroll";
 
-const SOCIAL_ICONS: Record<string, IconType> = {
-  GitHub: FaGithub,
-  LinkedIn: FaLinkedin,
-  Portfolio: FaGlobe,
-};
+const QUIET_SECONDS = 20;
+
+function stayLine(seconds: number) {
+  if (seconds < QUIET_SECONDS) return "Thanks for stopping by.";
+  const m = Math.floor(seconds / 60);
+  return m < 1
+    ? `You've been here ${seconds} seconds. Thanks for staying.`
+    : `You've been here ${m} min ${seconds % 60}s. Thanks for staying.`;
+}
 
 export default function Footer() {
-  const portfolioData = useSelector((state: RootState) => state.portfolio.data);
-  if (!portfolioData) return null;
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const t0 = Date.now();
+    const id = window.setInterval(() => {
+      setSeconds(Math.floor((Date.now() - t0) / 1000));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
 
   return (
-    <Box as="footer" py={16} borderTop="1px solid var(--line)" position="relative">
-      <Container maxW="container.xl">
-        <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center" gap={8}>
-          <Text color="var(--ink-muted)" fontSize="sm">
-            &copy; {new Date().getFullYear()} {portfolioData.hero.name}. Built with React and a lot of coffee.
-          </Text>
-
-          <HStack spacing={2}>
-            {portfolioData.contact.socials.map((social) => {
-              const IconComponent = SOCIAL_ICONS[social.network];
-              if (!IconComponent) return null;
-              return (
-                <Box
-                  key={social.network}
-                  as="a"
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.network}
-                  w="44px"
-                  h="44px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="full"
-                  border="1px solid var(--line)"
-                  color="var(--ink-soft)"
-                  _hover={{ color: "var(--ink)", bg: "var(--mint)", borderColor: "var(--mint)" }}
-                  transition="color 0.2s ease, background 0.2s ease, border-color 0.2s ease"
-                >
-                  <Icon as={IconComponent} boxSize={5} />
-                </Box>
-              );
-            })}
-          </HStack>
-        </Flex>
-      </Container>
+    <Box as="footer" borderTop="2px solid var(--rule)">
+      <Box
+        className="ps-wrap"
+        pt={6}
+        pb={10}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={4}
+        flexWrap="wrap"
+        fontSize="0.9rem"
+        color="var(--ink-2)"
+      >
+        <Text as="span">Atif Moin, {new Date().getFullYear()}</Text>
+        <Text as="span" fontFamily="var(--font-hand)" fontSize="1.1rem" color="var(--ink)">
+          {stayLine(seconds)}
+        </Text>
+        <Box
+          as="a"
+          href="#top"
+          onClick={(e: React.MouseEvent) => {
+            e.preventDefault();
+            scrollToTop();
+          }}
+          _hover={{ color: "var(--red)" }}
+        >
+          Back to top
+        </Box>
+      </Box>
     </Box>
   );
 }

@@ -192,10 +192,17 @@ export default function CommandPalette() {
 
   return (
     <Modal isOpen={isOpen} onClose={close} isCentered initialFocusRef={inputRef} size="lg">
-      <ModalOverlay bg="rgba(22, 20, 15, 0.5)" />
-      <ModalContent bg="var(--paper-raised)" borderRadius="var(--radius-bento)" mx={4} overflow="hidden">
+      <ModalOverlay bg="rgba(17, 17, 17, 0.35)" />
+      <ModalContent
+        bg="var(--paper)"
+        border="2px solid var(--ink)"
+        borderRadius="var(--radius-card)"
+        boxShadow="var(--shadow-lg)"
+        mx={4}
+        overflow="hidden"
+      >
         <ModalBody p={0}>
-          <HStack px={5} py={4} borderBottom="1px solid var(--line)" spacing={3}>
+          <HStack px={5} py={4} borderBottom="2px solid var(--ink)" spacing={3}>
             <Icon as={FaMagnifyingGlass} color="var(--ink-muted)" boxSize={4} />
             <Input
               ref={inputRef}
@@ -227,7 +234,7 @@ export default function CommandPalette() {
                 justifyContent="space-between"
                 px={5}
                 py={3}
-                bg={i === highlighted ? "var(--paper)" : "transparent"}
+                bg={i === highlighted ? "var(--butter)" : "transparent"}
                 onMouseEnter={() => setHighlighted(i)}
                 onClick={() => command.run()}
                 textAlign="left"

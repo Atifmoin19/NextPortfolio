@@ -22,7 +22,6 @@ import {
   FaGlobe,
 } from "react-icons/fa6";
 import Magnetic from "../shared/Magnetic";
-import ParticleText from "../webgl/ParticleText";
 import { scrollToId } from "../../lib/smoothScroll";
 import { resolveResumeUrl } from "../../utils/resumeUrl";
 
@@ -40,13 +39,7 @@ function earliestYear(durations: string[]) {
   return years.length ? Math.min(...years) : new Date().getFullYear();
 }
 
-export default function Hero({
-  revealSignature = true,
-  particlesActive = true,
-}: {
-  revealSignature?: boolean;
-  particlesActive?: boolean;
-}) {
+export default function Hero() {
   const portfolioData = useSelector((state: RootState) => state.portfolio.data);
   const [badgeOpen, setBadgeOpen] = useState(false);
 
@@ -73,44 +66,11 @@ export default function Hero({
   return (
     <Box
       id="hero"
-      pt={{ base: "120px", md: "160px" }}
+      pt={{ base: 10, md: 16 }}
       pb={{ base: 16, md: 24 }}
       position="relative"
       overflow="hidden"
     >
-      {/* One ambient gradient (zIndex 0) - the grid pattern (zIndex 1) paints on top of it so the
-          lines read crisply over the color instead of the color hiding behind them. */}
-      <Box
-        aria-hidden
-        position="absolute"
-        top="-15%"
-        right="-10%"
-        width={{ base: "420px", md: "620px" }}
-        height={{ base: "420px", md: "620px" }}
-        pointerEvents="none"
-        zIndex={0}
-        style={{
-          background:
-            "radial-gradient(circle, rgba(155, 147, 242, 0.42) 0%, rgba(127, 118, 239, 0.28) 42%, rgba(195, 233, 215, 0.16) 66%, transparent 80%)",
-          filter: "blur(45px)",
-        }}
-      />
-      <Box
-        aria-hidden
-        position="absolute"
-        inset={0}
-        pointerEvents="none"
-        zIndex={1}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(22,20,15,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(22,20,15,0.07) 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
-          maskImage:
-            "linear-gradient(to bottom, black 0%, black 55%, transparent 92%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, black 0%, black 55%, transparent 92%)",
-        }}
-      />
       <Container maxW="container.xl" position="relative" zIndex={1}>
         <Grid
           templateColumns={{ base: "1fr", lg: "1.4fr 1fr" }}
@@ -161,26 +121,6 @@ export default function Hero({
               )}
             </AnimatePresence>
 
-            {/* id is the landing target the preloader measures to compute its fly-in
-                transform - see Preloader.tsx. Stays invisible (but still measurable,
-                opacity doesn't affect layout) until the fly-in actually lands here, so
-                there's never a static copy showing underneath the one still traveling. */}
-            <motion.div
-              id="hero-signature-target"
-              style={{ display: "inline-block", opacity: revealSignature ? 1 : 0 }}
-            >
-              <Text
-                fontFamily="var(--font-script)"
-                fontSize="3xl"
-                color="var(--ink-muted)"
-                lineHeight="1"
-                transform="rotate(-3deg)"
-                display="inline-block"
-              >
-                {portfolioData.hero.name}
-              </Text>
-            </motion.div>
-
             <VStack align="start" spacing={0} w="full" mt={1}>
               {taglineLines.map((line, i) => (
                 <motion.div
@@ -193,8 +133,7 @@ export default function Hero({
                     ease: [0.16, 1, 0.3, 1],
                   }}
                 >
-                  <ParticleText active={particlesActive}>
-                    <Text
+                  <Text
                       fontFamily="var(--font-display)"
                       fontSize={{ base: "5xl", md: "6xl", lg: "7xl" }}
                       fontWeight="800"
@@ -204,7 +143,6 @@ export default function Hero({
                     >
                       {line}
                     </Text>
-                  </ParticleText>
                 </motion.div>
               ))}
             </VStack>

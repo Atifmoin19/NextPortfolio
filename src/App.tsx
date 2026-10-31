@@ -13,6 +13,7 @@ import ChatWidget from "./components/shared/ChatWidget";
 import MotionOptInPill from "./components/shared/MotionOptInPill";
 import SmoothScroll from "./components/layout/SmoothScroll";
 import { MotionPreferenceProvider } from "./lib/motionPreference";
+import { SectionTintProvider } from "./lib/sectionTint";
 import { fetchPortfolioData } from "store/slices/portfolioSlice";
 import type { AppDispatch } from "store";
 import { apiClient } from "./services/apiClient";
@@ -49,6 +50,7 @@ function App() {
     <MotionPreferenceProvider>
       <Router>
         <PageTracker />
+        <SectionTintProvider>
         <CommandPalette />
         <ChatWidget />
         <MotionOptInPill />
@@ -64,6 +66,7 @@ function App() {
           </Routes>
           </Suspense>
         </SmoothScroll>
+        </SectionTintProvider>
       </Router>
     </MotionPreferenceProvider>
   );

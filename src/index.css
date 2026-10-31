@@ -1,61 +1,93 @@
-@import "@fontsource-variable/bricolage-grotesque";
-@import "@fontsource-variable/geist";
-@import "@fontsource/geist-mono/400.css";
-@import "@fontsource/geist-mono/600.css";
-@import "@fontsource/caveat/400.css";
-@import "@fontsource/caveat/600.css";
+/* Paper Studio fonts (self-hosted via @fontsource).
+   Archivo ships the wdth + wght axes so headings can use font-stretch 62%..125%. */
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/schibsted-grotesk/400.css";
+@import "@fontsource/schibsted-grotesk/500.css";
+@import "@fontsource/schibsted-grotesk/700.css";
+@import "@fontsource/schibsted-grotesk/900.css";
+@import "@fontsource/dm-mono/400.css";
+@import "@fontsource/dm-mono/500.css";
+@import "@fontsource/kalam/400.css";
+@import "@fontsource/kalam/700.css";
 
+/* Paper Studio: soft neutral ground that tints per section (--bg is rewritten by
+   SectionTintProvider), paper cards, ink rules, pastel blocks, one red accent.
+   Deliberately a single light theme. */
 :root {
-  /* --- Clean white base, near-black ink --- */
-  --paper: #fdfdfc;
-  --paper-raised: #f6f5f2;
-  --ink: #16140f;
-  --ink-soft: #4a4539;
-  --ink-muted: #8a8371;
-  --line: rgba(22, 20, 15, 0.12);
-  --line-strong: rgba(22, 20, 15, 0.22);
+  --bg: #f1f1ec;
+  --bg-default: #f1f1ec;
+  --paper: #fbfbf8;
+  --ink: #111111;
+  --ink-2: #55554f;
+  --ink-3: #8a8a83;
+  --rule: #111111;
+  --hair: rgba(17, 17, 17, 0.14);
+  --rule-blue: rgba(70, 110, 200, 0.16);
 
-  /* --- Colorful bento palette (decorative card fills) --- */
-  --mint: #c3e9d7;
-  --mint-deep: #a3d9bf;
-  --mint-ink: #12352a;
-  --mint-shadow: rgba(18, 53, 42, 0.18);
-  --lavender: #9b93f2;
-  --lavender-deep: #7f76ef;
-  --lavender-ink: #fbfaf7;
-  --lavender-shadow: rgba(66, 55, 200, 0.25);
-  --orange: #f3a53d;
-  --orange-deep: #e2901f;
-  --orange-ink: #241300;
-  --orange-shadow: rgba(190, 106, 10, 0.28);
-  --black-card: #16140f;
-  --black-card-deep: #211e17;
-  --black-card-ink: #f4f1ea;
-  --black-shadow: rgba(22, 20, 15, 0.3);
+  --red: #e2321b;
+  --red-strong: #c22610;
 
-  /* --- One locked interactive accent (buttons, links, focus) --- */
-  --accent: #f3a53d;
-  --accent-strong: #e08a1a;
-  --accent-ink: #241300;
-  --accent-soft: rgba(243, 165, 61, 0.16);
-  --accent-border: rgba(243, 165, 61, 0.45);
+  --butter: #ffe27a;
+  --pink: #ffb3d1;
+  --sky: #9fd8ff;
+  --mint: #a8ebb6;
+  --lilac: #cbb8ff;
 
-  --font-display: "Bricolage Grotesque Variable", system-ui, sans-serif;
-  --font-body: "Geist Variable", system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
-  --font-script: "Caveat", cursive;
+  --font-display: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Schibsted Grotesk", Helvetica, Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
+  --font-hand: "Kalam", "Comic Sans MS", cursive;
 
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-bento: 28px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --shadow: 4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+  --lift: 0 1px 1px rgba(17, 17, 17, 0.08), 0 8px 18px -8px rgba(17, 17, 17, 0.28);
 
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 8px;
+  --radius-btn: 12px;
+  --radius-card: 18px;
+
+  --nav-h: 66px;
+
+  /* --- Legacy aliases. The old sections and the admin still reference these; they map
+     onto Paper Studio values until parts 2-4 replace those sections. --- */
+  --paper-raised: var(--paper);
+  --ink-soft: var(--ink-2);
+  --ink-muted: var(--ink-3);
+  --line: var(--hair);
+  --line-strong: rgba(17, 17, 17, 0.32);
+  --accent: var(--red);
+  --accent-strong: var(--red-strong);
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(226, 50, 27, 0.1);
+  --accent-border: rgba(226, 50, 27, 0.45);
+  --mint-deep: var(--mint);
+  --mint-ink: var(--ink);
+  --mint-shadow: var(--ink);
+  --lavender: var(--lilac);
+  --lavender-deep: var(--lilac);
+  --lavender-ink: var(--ink);
+  --lavender-shadow: var(--ink);
+  --orange: var(--butter);
+  --orange-deep: var(--butter);
+  --orange-ink: var(--ink);
+  --orange-shadow: var(--ink);
+  --black-card: var(--ink);
+  --black-card-deep: var(--ink);
+  --black-card-ink: var(--paper);
+  --black-shadow: var(--ink);
+  --font-script: var(--font-hand);
+  --ease-out: var(--ease);
+  --radius-md: 12px;
+  --radius-bento: var(--radius-card);
 
   font-family: var(--font-body);
-  line-height: 1.5;
+  line-height: 1.55;
   font-weight: 400;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--bg);
+  color-scheme: light;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -73,9 +105,6 @@
 
 html {
   color-scheme: light;
-  /* Reserves the vertical scrollbar's width up front - without this, the page is too
-     short to scroll while the preloader covers it, then gains a scrollbar the instant
-     the real (taller) content mounts, shifting everything left by the scrollbar's width. */
   scrollbar-gutter: stable;
   overflow-y: scroll;
 }
@@ -84,16 +113,16 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle, rgba(22, 20, 15, 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
-    var(--paper);
+  background: var(--bg);
   color: var(--ink);
+  font-family: var(--font-body);
+  transition: background-color 1.2s var(--ease);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 900;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
@@ -111,112 +140,94 @@ button {
 }
 
 ::selection {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--butter);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--red);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* --- Bento card fills, used across stat tiles / skill groups / project cards ---
-   A soft top-left sheen sits over the base gradient (glossy, not flat), plus an inset
-   top rim highlight for a glass-like edge. */
-.bento-mint {
-  background:
-    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 48%),
-    linear-gradient(155deg, var(--mint) 0%, var(--mint-deep) 100%);
-  color: var(--mint-ink);
-  box-shadow: 0 10px 24px -12px var(--mint-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+/* --- Layout + type helpers --- */
+.ps-wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.bento-lavender {
-  background:
-    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 48%),
-    linear-gradient(155deg, var(--lavender) 0%, var(--lavender-deep) 100%);
-  color: var(--lavender-ink);
-  box-shadow: 0 10px 24px -12px var(--lavender-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-}
-.bento-orange {
-  background:
-    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0) 48%),
-    linear-gradient(155deg, var(--orange) 0%, var(--orange-deep) 100%);
-  color: var(--orange-ink);
-  box-shadow: 0 10px 24px -12px var(--orange-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-}
-.bento-black {
-  background:
-    radial-gradient(130% 150% at 12% -10%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 48%),
-    linear-gradient(155deg, var(--black-card-deep) 0%, var(--black-card) 100%);
-  color: var(--black-card-ink);
-  box-shadow: 0 10px 24px -12px var(--black-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
-.bento-paper { background: var(--paper-raised); color: var(--ink); border: 1px solid var(--line); }
 
-.bento-mint, .bento-lavender, .bento-orange, .bento-black {
-  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+.mono,
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
 }
-.bento-mint:hover { box-shadow: 0 16px 32px -12px var(--mint-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
-.bento-lavender:hover { box-shadow: 0 16px 32px -12px var(--lavender-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
-.bento-orange:hover { box-shadow: 0 16px 32px -12px var(--orange-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.45); }
-.bento-black:hover { box-shadow: 0 16px 32px -12px var(--black-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.14); }
+.label-mono {
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
-/* --- Signature blob shape reserved for one hero visual, not every card --- */
-.hero-blob {
-  position: relative;
-  border-radius: var(--radius-bento) var(--radius-bento) var(--radius-bento) 6px;
+.hand {
+  font-family: var(--font-hand);
 }
-.hero-blob::after {
-  content: "";
+
+/* Washi tape strip. Position it absolutely and set --tc for the colour. */
+.tape {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  background: var(--paper);
-  border-radius: 0 0 0 100%;
+  height: 24px;
+  width: 92px;
+  opacity: 0.9;
+  z-index: 2;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 9px),
+    var(--tc, var(--butter));
+  clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 50%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   pointer-events: none;
 }
 
-/* --- Mono label style: small tracked caps used for meta/labels/tags --- */
-.label-mono {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+/* --- Old bento card fills, flattened into Paper Studio blocks (2px ink, hard shadow).
+   Kept so the current sections still render until they are replaced. --- */
+.bento-mint,
+.bento-lavender,
+.bento-orange,
+.bento-black,
+.bento-paper {
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.bento-mint { background: var(--mint); }
+.bento-lavender { background: var(--lilac); }
+.bento-orange { background: var(--butter); }
+.bento-black { background: var(--ink); color: var(--paper); }
+.bento-paper { background: var(--paper); }
+.bento-mint:hover,
+.bento-lavender:hover,
+.bento-orange:hover,
+.bento-black:hover {
+  box-shadow: var(--shadow-lg);
 }
 
-/* --- Custom scrollbar --- */
+.hero-blob {
+  position: relative;
+}
+
+/* --- Scrollbar --- */
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
+  background: var(--ink-3);
   border-radius: 999px;
-  border: 2px solid var(--paper);
+  border: 2px solid var(--bg);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-2); }
 
-#hero, #skills, #experience, #projects, #contact {
-  scroll-margin-top: 96px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  /* A loading spinner communicates real async state, not decorative motion -
-     the blanket override above was capping it at one rotation, so it froze
-     mid-spin instead of indicating "still working" for as long as it's shown. */
-  .chakra-spinner {
-    animation-duration: 0.6s !important;
-    animation-iteration-count: infinite !important;
-  }
+[id] {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
 }
 
 /* --- Featured project (Backend City) --- */
@@ -238,8 +249,29 @@ button {
     transform: rotate(360deg);
   }
 }
+
+/* --- Reduced motion, globally. Decorative CSS motion stops; JS motion is gated by
+   lib/motionPreference (useReducedMotion). --- */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* A loading spinner communicates real async state, not decoration, so it keeps
+     spinning for as long as it is shown. */
+  .chakra-spinner,
+  .fp-spin {
+    animation-duration: 0.6s !important;
+    animation-iteration-count: infinite !important;
+  }
+
   .fp-ping {
-    animation: none;
+    animation: none !important;
   }
 }
