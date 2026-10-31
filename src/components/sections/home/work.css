@@ -2,7 +2,7 @@
 .ps-idx { margin-top: 36px; }
 .ps-row {
   display: grid;
-  grid-template-columns: 70px minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 1.1fr) 44px;
+  grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1.2fr) minmax(0, 1.1fr) 44px;
   gap: 16px;
   align-items: center;
   padding: 20px 12px;
@@ -15,9 +15,11 @@
 .ps-row .n {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-size: clamp(1.2rem, 2.1vw, 1.8rem);
   letter-spacing: -0.02em;
   font-stretch: 100%;
+  /* Never split a project name mid-word (it used to wrap "EmailTemplateFlo / w" on hover). */
+  white-space: nowrap;
   line-height: 1.1;
   transition: font-stretch 0.45s var(--ease);
   text-decoration: none;
@@ -56,7 +58,7 @@
   pointer-events: none;
 }
 .ps-row:hover { background: var(--c); }
-.ps-row:hover .n { font-stretch: 122%; }
+.ps-row:hover .n { font-stretch: 112%; }
 .ps-row:hover .ar { transform: rotate(-45deg); }
 
 .ps-peek {
@@ -86,8 +88,8 @@
 .ps-peek .ph b {
   font-family: var(--font-display);
   font-weight: 900;
-  font-stretch: 118%;
-  font-size: 1.5rem;
+  font-stretch: 100%;
+  font-size: 1.25rem;
   line-height: 1.05;
   text-align: center;
   padding: 14px;
@@ -105,6 +107,8 @@
   .ps-row { grid-template-columns: 56px 1fr 40px; }
   .ps-row .t, .ps-row .o { grid-column: 2; }
   .ps-row .ar { grid-row: 1 / 4; grid-column: 3; }
+  /* Narrow screens: allow wrapping, but only at natural break points (spaces, hyphens). */
+  .ps-row .n { white-space: normal; overflow-wrap: normal; }
 }
 @media (hover: none) {
   .ps-peek { display: none; }
