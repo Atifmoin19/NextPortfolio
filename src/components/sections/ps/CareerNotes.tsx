@@ -14,9 +14,9 @@ const BLURBS: Record<string, string> = {
 };
 // One photo per step, oldest first, pinned inside each sticky note.
 const PHOTOS: { src: string; alt: string; pos?: string }[] = [
+  { src: "/career/zopper-sunset.webp", alt: "The Zopper office building at sunset", pos: "center 12%" },
   { src: "/career/zopper-logo.webp", alt: "The Zopper sign on the office building in Noida" },
   { src: "/career/zopper-tower.webp", alt: "The Zopper office tower with a plane passing overhead", pos: "center 14%" },
-  { src: "/career/zopper-sunset.webp", alt: "The Zopper office building at sunset", pos: "center 12%" },
   { src: "/career/zopper-desk.webp", alt: "My desk at Zopper: laptop, monitor and a Zopper mug" },
 ];
 const NOTE_COLORS =["var(--butter)", "var(--pink)", "var(--sky)", "var(--mint)", "var(--lilac)"];
