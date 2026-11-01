@@ -12,7 +12,14 @@ const BLURBS: Record<string, string> = {
   "Software Engineer": "Refactors and responsiveness across fintech apps.",
   "Senior Software Engineer (Frontend)": "Owns React apps end to end. Built the shared component system.",
 };
-const NOTE_COLORS = ["var(--butter)", "var(--pink)", "var(--sky)", "var(--mint)", "var(--lilac)"];
+// One photo per step, oldest first, pinned inside each sticky note.
+const PHOTOS: { src: string; alt: string; pos?: string }[] = [
+  { src: "/career/zopper-logo.webp", alt: "The Zopper sign on the office building in Noida" },
+  { src: "/career/zopper-tower.webp", alt: "The Zopper office tower with a plane passing overhead", pos: "center 14%" },
+  { src: "/career/zopper-sunset.webp", alt: "The Zopper office building at sunset", pos: "center 12%" },
+  { src: "/career/zopper-desk.webp", alt: "My desk at Zopper: laptop, monitor and a Zopper mug" },
+];
+const NOTE_COLORS =["var(--butter)", "var(--pink)", "var(--sky)", "var(--mint)", "var(--lilac)"];
 const ROTATIONS = [-2, 1.5, -1, 2, -1.5];
 const COUNT_WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
 
@@ -97,6 +104,11 @@ export default function CareerNotes() {
                 <small>{r.duration}</small>
                 <h3>{shortRole(r.role)}</h3>
               </div>
+              {PHOTOS[i] && (
+                <figure className="note-photo">
+                  <img src={PHOTOS[i].src} alt={PHOTOS[i].alt} loading="lazy" decoding="async" width={640} height={480} style={PHOTOS[i].pos ? { objectPosition: PHOTOS[i].pos } : undefined} />
+                </figure>
+              )}
               <p>{BLURBS[r.role] ?? sentences(r.description)[0]}</p>
               {isNow && (
                 <span className="now">
